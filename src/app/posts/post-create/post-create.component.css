@@ -1,0 +1,7 @@
+.form-container {
+  padding: 1rem;
+  margin: auto;
+}
+mat-form-field {
+  display: block;
+}
