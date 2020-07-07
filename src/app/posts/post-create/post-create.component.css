@@ -1,7 +1,13 @@
 .form-container {
+  max-width: 60rem;
   padding: 1rem;
   margin: auto;
 }
 mat-form-field {
   display: block;
+  margin-bottom: 1rem;
+}
+button {
+  display: block;
+  margin-left: auto;
 }

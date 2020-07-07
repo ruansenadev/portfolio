@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-post-create',
@@ -11,9 +11,13 @@ export class PostCreateComponent implements OnInit {
   form: FormGroup;
   ngOnInit(): void {
     this.form = new FormGroup({
-      title: new FormControl(),
-      content: new FormControl()
+      title: new FormControl('', {validators: [Validators.required, Validators.maxLength(120)]}),
+      content: new FormControl('', {validators: [Validators.required]}),
+      description: new FormControl('', {validators: [Validators.maxLength(200)]})
     })
   }
-
+  onSend() {
+    if (this.form.invalid) {return}
+    console.log(this.form)
+  }
 }
