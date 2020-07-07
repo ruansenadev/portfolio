@@ -1,6 +1,8 @@
 export interface Post {
+  _id: string;
   title: string;
   date: Date;
-  content: string;
+  markdown: string;
   description: string | null;
+  modified: Date | null;
 }
