@@ -1,6 +1,6 @@
 export interface Post {
   title: string;
-  date_created: number;
+  date: Date;
   content: string;
   description: string | null;
 }
