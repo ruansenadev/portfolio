@@ -7,15 +7,19 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
+import { MatListModule } from "@angular/material/list";
+import { MatDividerModule } from "@angular/material/divider";
 
 import { AppComponent } from './app.component';
-import { PostCreateComponent } from './blog/post-create/post-create.component';
+import { PostFormComponent } from './blog/post-form/post-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PostListComponent } from './blog/post-list/post-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostCreateComponent,
+    PostFormComponent,
+    PostListComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,7 +29,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatListModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

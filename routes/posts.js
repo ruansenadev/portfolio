@@ -5,7 +5,7 @@ const router = express.Router()
 router.get('/', function (req, res, next) {
   Post.find({}).lean().exec((err, posts) => {
     if (err) { return next(err) }
-    res.json(posts)
+    res.json({posts})
   })
 })
 router.post('/', function (req, res, next) {
@@ -15,9 +15,9 @@ router.post('/', function (req, res, next) {
     markdown: req.body.markdown
   })
   if (req.body.description) post.description = req.body.description;
-  post.save((err) => {
+  post.save((err, postSaved) => {
     if (err) { return next(err) }
-    res.json({ message: 'Post created' })
+    res.json({ message: 'Post created', post: postSaved })
   })
 })
 router.get('/:id', function (req, res, next) {

@@ -3,11 +3,11 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { PostsService } from "../posts.service";
 
 @Component({
-  selector: 'app-post-create',
-  templateUrl: './post-create.component.html',
-  styleUrls: ['./post-create.component.css']
+  selector: 'app-post-form',
+  templateUrl: './post-form.component.html',
+  styleUrls: ['./post-form.component.css']
 })
-export class PostCreateComponent implements OnInit {
+export class PostFormComponent implements OnInit {
   constructor(private postsService: PostsService) { }
   form: FormGroup;
   ngOnInit(): void {

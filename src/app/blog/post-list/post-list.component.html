@@ -1,0 +1,9 @@
+<mat-nav-list>
+  <h3 matSubheader>Blog</h3>
+  <mat-list-item *ngFor="let post of posts; last as last">
+    <img matListAvatar src="http://placekitten.com/150" alt="Catenho">
+    <h4 matLine>{{post.title}}</h4>
+    <p matLine>{{post.markdown}}</p>
+    <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+  </mat-list-item>
+</mat-nav-list>
