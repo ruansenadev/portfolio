@@ -32,6 +32,7 @@ router.put('/:id', function (req, res, next) {
     title: req.body.title,
     date: req.body.date,
     markdown: req.body.markdown,
+    modified: req.body.modified
   })
   if (req.body.description) post.description = req.body.description;
   Post.updateOne({ _id: req.params.id }, post, (err, result) => {

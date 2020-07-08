@@ -1,5 +1,6 @@
 <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
 <div *ngIf="!isLoading" class="form-container">
+
   <form [formGroup]="form" (submit)="onSend()">
     <mat-form-field appearance="standard" hintLabel="Max 120 characters">
       <mat-label>Título</mat-label>
@@ -17,5 +18,6 @@
       <mat-hint align="end">{{ form.get('description').value?.length || 0 }}/200</mat-hint>
     </mat-form-field>
     <button type="submit" mat-flat-button color="primary">Enviar</button>
+    <p *ngIf="modified" class="mat-body-1">Última modificação {{modified}}</p>
   </form>
 </div>

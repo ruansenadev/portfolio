@@ -9,9 +9,4 @@ const postSchema = new Schema({
   markdown: { type: String, required: true }
 })
 
-postSchema.pre('updateOne', function (next) {
-  this.modified = new Date()
-  next()
-})
-
 module.exports = mongoose.model('Post', postSchema)

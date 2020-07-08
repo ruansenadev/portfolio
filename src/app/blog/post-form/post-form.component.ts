@@ -15,6 +15,7 @@ export class PostFormComponent implements OnInit {
   form: FormGroup;
   private postID: string;
   private post: Post;
+  modified: string;
   ngOnInit(): void {
     this.isLoading = true;
     this.postID = this.route.snapshot.paramMap.get('id')
@@ -31,6 +32,7 @@ export class PostFormComponent implements OnInit {
           markdown: this.post.markdown,
           description: this.post.description || null
         })
+        if(this.post.modified) this.modified = new Date(this.post.modified).toLocaleString()
         this.isLoading = false
       })
     } else {
@@ -41,7 +43,7 @@ export class PostFormComponent implements OnInit {
     if (this.form.invalid) {return}
     this.isLoading = true
     if (this.postID) {
-      this.postsService.editPost(this.postID, this.form.value.title, this.post.date, this.form.value.markdown, this.form.value.description, this.post.modified)
+      this.postsService.editPost(this.postID, this.form.value.title, this.post.date, this.form.value.markdown, this.form.value.description)
     } else {
       this.postsService.addPost(this.form.value.title, this.form.value.markdown, this.form.value.description)
     }
