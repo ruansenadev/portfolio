@@ -32,6 +32,9 @@ export class PostsService {
       this.router.navigate(['/'])
     })
   }
+  getPost(id: string) {
+    return this.http.get<{post: Post}>(`${apiPosts}/${id}`)
+  }
   editPost(_id: string, title: string, date: Date, markdown: string, description: string | null, modified: Date | null): void {
     const post: Post = { _id, title, date, markdown, description, modified }
     this.http.put<{ message: string }>(`${apiPosts}/${_id}`, post).subscribe((res) => {

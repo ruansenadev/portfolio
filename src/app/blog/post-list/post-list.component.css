@@ -2,3 +2,7 @@ mat-nav-list {
   max-width: 50rem;
   margin: auto;
 }
+.btn-action {
+  margin: 0 .5rem;
+  padding: 0 .5rem;
+}

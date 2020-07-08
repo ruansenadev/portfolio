@@ -4,6 +4,8 @@
     <img matListAvatar src="http://placekitten.com/150" alt="Catenho">
     <h4 matLine>{{post.title}}</h4>
     <p matLine>{{post.markdown}}</p>
+    <a class="btn-action" mat-stroked-button [routerLink]="['edit', post._id]">Editar</a>
+    <button class="btn-action" mat-button type="button" color="warn">Deletar</button>
     <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
   </mat-list-item>
 </mat-nav-list>

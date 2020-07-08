@@ -40,7 +40,7 @@ router.put('/:id', function (req, res, next) {
     res.json({ message: 'Post updated' })
   })
 })
-router.delete('/:id', function (req, re) {
+router.delete('/:id', function (req, res) {
   Post.deleteOne({ _id: req.params.id }, (err) => {
     if (err) { return res.status(400).json({ message: 'Failed to delete' }) }
     res.json({ message: 'Post deleted' })
