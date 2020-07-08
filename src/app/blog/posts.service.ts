@@ -42,9 +42,7 @@ export class PostsService {
       this.router.navigate(['/'])
     })
   }
-  delPost(id: string): void {
-    this.http.delete<{ message: string }>(`${apiPosts}/${id}`).subscribe((res) => {
-      console.log(res.message)
-    })
+  delPost(id: string) {
+    return this.http.delete<{ message: string }>(`${apiPosts}/${id}`)
   }
 }
