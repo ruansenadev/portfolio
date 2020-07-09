@@ -22,8 +22,10 @@ router.post('/', function (req, res, next) {
   const post = new Post({
     title: req.body.title,
     date: req.body.date,
-    markdown: req.body.markdown
+    markdown: req.body.markdown,
+    labels: req.body.labels
   })
+  if (req.body.icon) post.icon = req.body.icon;
   if (req.body.description) post.description = req.body.description;
   post.save((err, postSaved) => {
     if (err) { return next(err) }
@@ -43,8 +45,10 @@ router.put('/:id', function (req, res, next) {
     _id: req.body._id,
     title: req.body.title,
     date: req.body.date,
+    icon: req.body.icon,
     markdown: req.body.markdown,
-    modified: req.body.modified
+    modified: req.body.modified,
+    labels: req.body.labels
   })
   if (req.body.description) post.description = req.body.description;
   Post.updateOne({ _id: req.params.id }, post, (err, result) => {

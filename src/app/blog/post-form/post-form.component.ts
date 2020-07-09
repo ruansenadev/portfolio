@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatChipInputEvent } from "@angular/material/chips";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { PostsService } from "../posts.service";
 import { ActivatedRoute } from "@angular/router";
@@ -16,13 +17,17 @@ export class PostFormComponent implements OnInit {
   private postID: string;
   private post: Post;
   modified: string;
+  labels: string[] = []
+
   ngOnInit(): void {
     this.isLoading = true;
     this.postID = this.route.snapshot.paramMap.get('id')
     this.form = new FormGroup({
-      title: new FormControl(null, {validators: [Validators.required, Validators.maxLength(120)]}),
-      markdown: new FormControl(null, {validators: [Validators.required]}),
-      description: new FormControl(null, {validators: [Validators.maxLength(200)]})
+      title: new FormControl(null, { validators: [Validators.required, Validators.maxLength(120)] }),
+      markdown: new FormControl(null, { validators: [Validators.required] }),
+      description: new FormControl(null, { validators: [Validators.maxLength(200)] }),
+      icon: new FormControl(null, { validators: [Validators.pattern('^[a-z0-9_]+[a-z0-9]$')] }),
+      labelsInput: new FormControl(null, { validators: [Validators.required] })
     })
     if (this.postID) {
       this.postsService.getPost(this.postID).subscribe((res) => {
@@ -30,22 +35,34 @@ export class PostFormComponent implements OnInit {
         this.form.setValue({
           title: this.post.title,
           markdown: this.post.markdown,
-          description: this.post.description || null
+          description: this.post.description || null,
+          icon: this.post.icon || null,
+          labelsInput: null
         })
-        if(this.post.modified) this.modified = new Date(this.post.modified).toLocaleString()
+        this.labels = this.post.labels
+        if (this.post.modified) this.modified = new Date(this.post.modified).toLocaleString()
         this.isLoading = false
       })
     } else {
       this.isLoading = false
     }
   }
+  addLabel(e: MatChipInputEvent): void {
+    const value = (e.value || '').trim()
+    if (value.length > 1) this.labels.push(value);
+    if (e.input) e.input.value = '';
+  }
+  removeLabel(label: string): void {
+    const index = this.labels.indexOf(label)
+    if (index > -1) { this.labels.splice(index, 1) }
+  }
   onSend() {
-    if (this.form.invalid) {return}
+    if (this.form.invalid) { return }
     this.isLoading = true
     if (this.postID) {
-      this.postsService.editPost(this.postID, this.form.value.title, this.post.date, this.form.value.markdown, this.form.value.description)
+      this.postsService.editPost(this.postID, this.form.value.title, this.post.date, this.form.value.markdown, this.form.value.icon, this.form.value.description, this.labels)
     } else {
-      this.postsService.addPost(this.form.value.title, this.form.value.markdown, this.form.value.description)
+      this.postsService.addPost(this.form.value.title, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
     }
     this.form.reset()
   }

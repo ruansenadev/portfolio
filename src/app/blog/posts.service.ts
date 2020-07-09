@@ -24,8 +24,8 @@ export class PostsService {
   getStream() {
     return this.stream.asObservable()
   }
-  addPost(title: string, markdown: string, description: string | null): void {
-    const post = { title, date: new Date(), markdown, description }
+  addPost(title: string, icon: string | null, markdown: string, description: string | null, labels: string[]): void {
+    const post: Post = { _id: null, title, date: new Date(), icon, markdown, description, modified: null, labels }
     this.http.post<{ message: string, post: Post, max: number}>(apiPosts, post).subscribe((res) => {
       console.log(res.message)
       this.posts.push(res.post)
@@ -36,8 +36,8 @@ export class PostsService {
   getPost(id: string) {
     return this.http.get<{post: Post}>(`${apiPosts}/${id}`)
   }
-  editPost(_id: string, title: string, date: Date, markdown: string, description: string | null): void {
-    const post: Post = { _id, title, date, markdown, description, modified: new Date() }
+  editPost(_id: string, title: string, date: Date, markdown: string, icon: string, description: string | null, labels: string[]): void {
+    const post: Post = { _id, title, date, markdown, icon, description, modified: new Date(), labels }
     this.http.put<{ message: string }>(`${apiPosts}/${_id}`, post).subscribe((res) => {
       console.log(res.message)
       this.router.navigate(['/'])

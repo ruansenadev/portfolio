@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { ENTER, COMMA } from "@angular/cdk/keycodes";
 
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatIconModule } from "@angular/material/icon";
@@ -12,6 +13,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatPaginatorModule, MatPaginatorIntl } from "@angular/material/paginator";
 import { MatPaginatorIntlBr } from "./blog/MatPaginatorIntlBr";
+import { MatChipsModule, MAT_CHIPS_DEFAULT_OPTIONS } from "@angular/material/chips";
 
 @NgModule({
   exports: [
@@ -25,8 +27,12 @@ import { MatPaginatorIntlBr } from "./blog/MatPaginatorIntlBr";
     MatInputModule,
     MatFormFieldModule,
     MatDialogModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatChipsModule
   ],
-  providers: [{provide: MatPaginatorIntl, useClass: MatPaginatorIntlBr}]
+  providers: [
+    { provide: MatPaginatorIntl, useClass: MatPaginatorIntlBr },
+    { provide: MAT_CHIPS_DEFAULT_OPTIONS, useValue: { separatorKeyCodes: [ENTER, COMMA] } }
+  ]
 })
-export class MaterialModule {}
+export class MaterialModule { }
