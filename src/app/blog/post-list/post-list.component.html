@@ -1,15 +1,28 @@
-<mat-nav-list>
-  <h3 matSubheader>Blog</h3>
-  <mat-list-item *ngFor="let post of posts; last as last">
-    <img matListAvatar src="http://placekitten.com/150" alt="Catenho">
-    <h4 matLine>{{post.title}}</h4>
-    <p matLine>{{post.markdown}}</p>
-    <a class="btn-action" mat-mini-fab color="primary" [routerLink]="['edit', post._id]">
-      <mat-icon>edit</mat-icon>
+<mat-card>
+  <mat-card-header>
+    <a mat-fab [routerLink]="['/new']">
+      <mat-icon>post_add</mat-icon>
     </a>
-    <button class="btn-action" mat-icon-button type="button" color="warn" (click)="delPost(post)">
-      <mat-icon>delete_forever</mat-icon>
-    </button>
-    <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
-  </mat-list-item>
-</mat-nav-list>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-nav-list>
+      <h3 matSubheader>Últimos posts</h3>
+      <mat-list-item *ngFor="let post of posts; last as last">
+        <img matListAvatar src="http://placekitten.com/150" alt="Catenho">
+        <h4 matLine>{{post.title}}</h4>
+        <p matLine>{{post.markdown}}</p>
+        <a class="btn-action" mat-mini-fab color="primary" [routerLink]="['edit', post._id]">
+          <mat-icon>edit</mat-icon>
+        </a>
+        <button class="btn-action" mat-icon-button type="button" color="warn" (click)="delPost(post)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-paginator [length]="length" [pageSize]="items" [pageSizeOptions]="itemsOptions" (page)="onPaginate($event)">
+    </mat-paginator>
+  </mat-card-footer>
+</mat-card>

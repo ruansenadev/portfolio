@@ -3,10 +3,20 @@ const Post = require('../models/post')
 const router = express.Router()
 
 router.get('/', function (req, res, next) {
-  Post.find({}).lean().exec((err, posts) => {
-    if (err) { return next(err) }
-    res.json({posts})
-  })
+  const items = +req.query.items || 5;
+  const left = +req.query.left || 0;
+  Post.countDocuments()
+    .then((count) => {
+      Post.find({})
+        .skip(left * items)
+        .limit(items)
+        .lean()
+        .exec((err, posts) => {
+          if (err) { return next(err) }
+          res.json({ posts, max: count })
+        })
+    })
+    .catch(next)
 })
 router.post('/', function (req, res, next) {
   const post = new Post({
@@ -17,7 +27,9 @@ router.post('/', function (req, res, next) {
   if (req.body.description) post.description = req.body.description;
   post.save((err, postSaved) => {
     if (err) { return next(err) }
-    res.json({ message: 'Post created', post: postSaved })
+    Post.countDocuments().then((count) => {
+      res.json({ message: 'Post created', post: postSaved , max: count})
+    }).catch(next)
   })
 })
 router.get('/:id', function (req, res, next) {

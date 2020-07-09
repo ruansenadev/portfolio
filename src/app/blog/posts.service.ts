@@ -12,12 +12,13 @@ const apiPosts = environment.host + '/api/posts'
 export class PostsService {
   constructor(private http: HttpClient, private router: Router) { }
   private posts: Post[] = []
-  private stream = new Subject<Post[]>()
+  private stream = new Subject<{posts: Post[], max: number}>()
 
-  populatePosts(): void {
-    this.http.get<{ posts: Post[] }>(apiPosts).subscribe((res) => {
+  populatePosts(left: number, items: number): void {
+    const query = `?left=${left}&items=${items}`
+    this.http.get<{ posts: Post[], max: number }>(apiPosts+query).subscribe((res) => {
       this.posts = res.posts
-      this.stream.next([...this.posts])
+      this.stream.next({posts: [...this.posts], max: res.max})
     })
   }
   getStream() {
@@ -25,10 +26,10 @@ export class PostsService {
   }
   addPost(title: string, markdown: string, description: string | null): void {
     const post = { title, date: new Date(), markdown, description }
-    this.http.post<{ message: string, post: Post }>(apiPosts, post).subscribe((res) => {
+    this.http.post<{ message: string, post: Post, max: number}>(apiPosts, post).subscribe((res) => {
       console.log(res.message)
       this.posts.push(res.post)
-      this.stream.next([...this.posts])
+      this.stream.next({posts: [...this.posts], max: res.max})
       this.router.navigate(['/'])
     })
   }

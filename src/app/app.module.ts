@@ -6,10 +6,11 @@ import { ReactiveFormsModule } from "@angular/forms";
 
 import { MaterialModule } from "./material.module";
 import { AppComponent } from './app.component';
-import { PostFormComponent } from './blog/post-form/post-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PostListComponent } from './blog/post-list/post-list.component';
 import { HeaderComponent } from './header/header.component';
+import { PostFormComponent } from './blog/post-form/post-form.component';
+import { FeedComponent } from './blog/feed/feed.component';
+import { PostListComponent } from './blog/post-list/post-list.component';
 import { PostDialogComponent } from './blog/post-dialog/post-dialog.component';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { PostDialogComponent } from './blog/post-dialog/post-dialog.component';
     PostListComponent,
     HeaderComponent,
     PostDialogComponent,
+    FeedComponent,
   ],
   imports: [
     BrowserModule,
