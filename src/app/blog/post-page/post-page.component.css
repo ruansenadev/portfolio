@@ -1,0 +1,19 @@
+.article {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
+  align-items: flex-end;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.post {
+  width: 50rem;
+  margin-bottom: 1rem;
+}
+.aside {
+  width: 20rem;
+  margin-left: 1rem;
+}
+mat-card {
+  margin-bottom: 1rem;
+}

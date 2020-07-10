@@ -35,6 +35,7 @@ export class PostsService {
   }
   getPost(id: string) {
     return this.http.get<{post: Post}>(`${apiPosts}/${id}`)
+    // pipe before sending
   }
   editPost(_id: string, title: string, date: Date, markdown: string, icon: string, description: string | null, labels: string[]): void {
     const post: Post = { _id, title, date, markdown, icon, description, modified: new Date(), labels }

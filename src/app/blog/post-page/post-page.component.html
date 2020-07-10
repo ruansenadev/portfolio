@@ -1,0 +1,31 @@
+<main class="article">
+  <mat-card class="post">
+    <mat-card-header>
+      <img mat-card-avatar src="http://placekitten.com/150/150">
+      <mat-card-title>{{ post.title }}</mat-card-title>
+      <mat-card-subtitle>{{ post.date }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      {{ post.markdown }}
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-chip-list>
+        <mat-chip *ngFor="let label of post.labels">{{ label }}</mat-chip>
+      </mat-chip-list>
+    </mat-card-footer>
+  </mat-card>
+  <aside class="aside">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          Aside
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut, nesciunt quo voluptatibus odit nobis obcaecati
+        unde tenetur incidunt. Perspiciatis, labore non sapiente laboriosam iusto laborum excepturi distinctio
+        delectus minus odit!
+      </mat-card-content>
+    </mat-card>
+  </aside>
+</main>
