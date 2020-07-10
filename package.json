@@ -27,8 +27,10 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
+    "marked": "^1.1.0",
     "material-design-icons": "^3.0.1",
     "mongoose": "^5.9.21",
+    "ngx-markdown": "^10.0.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
