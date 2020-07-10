@@ -37,7 +37,7 @@ export class PostFormComponent implements OnInit {
           markdown: this.post.markdown,
           description: this.post.description || null,
           icon: this.post.icon || null,
-          labelsInput: null
+          labelsInput: ' '
         })
         this.labels = this.post.labels
         if (this.post.modified) this.modified = new Date(this.post.modified).toLocaleString()
@@ -57,6 +57,7 @@ export class PostFormComponent implements OnInit {
     if (index > -1) { this.labels.splice(index, 1) }
   }
   onSend() {
+    console.log(this.form)
     if (this.form.invalid) { return }
     this.isLoading = true
     if (this.postID) {
