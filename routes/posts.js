@@ -30,13 +30,14 @@ router.post('/', function (req, res, next) {
   post.save((err, postSaved) => {
     if (err) { return next(err) }
     Post.countDocuments().then((count) => {
-      res.json({ message: 'Post created', post: postSaved , max: count})
+      res.json({ message: 'Post created', post: postSaved, max: count })
     }).catch(next)
   })
 })
-router.get('/:id', function (req, res, next) {
-  Post.findById(req.params.id).lean().exec((err, post) => {
+router.get('/:slug', function (req, res, next) {
+  Post.findOne({ slug: req.params.slug }).lean().exec((err, post) => {
     if (err) { return next(err) }
+    if (!post) { return res.status(404).json({ post }) }
     res.json({ post })
   })
 })

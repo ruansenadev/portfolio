@@ -8,8 +8,8 @@ import { PostFormComponent } from "./blog/post-form/post-form.component";
 const routes: Routes = [
   { path: '', component: FeedComponent },
   { path: 'new', component: PostFormComponent },
-  { path: ':id', component: PostPageComponent },
-  { path: 'edit/:id', component: PostFormComponent }
+  { path: ':slug', component: PostPageComponent },
+  { path: 'edit/:slug', component: PostFormComponent }
 ]
 
 @NgModule({

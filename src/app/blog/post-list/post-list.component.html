@@ -7,11 +7,11 @@
   <mat-card-content>
     <mat-nav-list>
       <h3 matSubheader>Últimos posts</h3>
-      <mat-list-item *ngFor="let post of posts; last as last" [routerLink]="['/', post._id]">
+      <mat-list-item *ngFor="let post of posts; last as last" [routerLink]="['/', post.slug]">
         <mat-icon matListIcon>{{post.icon}}</mat-icon>
         <h4 matLine>{{post.title}}</h4>
         <p matLine>{{post.description || post.markdown}}</p>
-        <a class="btn-action" mat-mini-fab color="primary" [routerLink]="['edit', post._id]">
+        <a class="btn-action" mat-mini-fab color="primary" [routerLink]="['edit', post.slug]">
           <mat-icon>edit</mat-icon>
         </a>
         <button class="btn-action" mat-icon-button type="button" color="warn" (click)="delPost(post)">

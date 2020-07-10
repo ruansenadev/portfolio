@@ -14,14 +14,14 @@ export class PostFormComponent implements OnInit {
   constructor(private postsService: PostsService, private route: ActivatedRoute) { }
   isLoading: boolean;
   form: FormGroup;
-  private postID: string;
+  private postSlug: string;
   private post: Post;
   modified: string;
   labels: string[] = []
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.postID = this.route.snapshot.paramMap.get('id')
+    this.postSlug = this.route.snapshot.paramMap.get('slug')
     this.form = new FormGroup({
       title: new FormControl(null, { validators: [Validators.required, Validators.maxLength(120)] }),
       markdown: new FormControl(null, { validators: [Validators.required] }),
@@ -29,8 +29,8 @@ export class PostFormComponent implements OnInit {
       icon: new FormControl(null, { validators: [Validators.pattern('^[a-z0-9_]+[a-z0-9]$')] }),
       labelsInput: new FormControl(null, { validators: [Validators.required] })
     })
-    if (this.postID) {
-      this.postsService.getPost(this.postID).subscribe((res) => {
+    if (this.postSlug) {
+      this.postsService.getPost(this.postSlug).subscribe((res) => {
         this.post = res.post
         this.form.setValue({
           title: this.post.title,
@@ -57,11 +57,10 @@ export class PostFormComponent implements OnInit {
     if (index > -1) { this.labels.splice(index, 1) }
   }
   onSend() {
-    console.log(this.form)
     if (this.form.invalid) { return }
     this.isLoading = true
-    if (this.postID) {
-      this.postsService.editPost(this.postID, this.form.value.title, this.post.date, this.form.value.markdown, this.form.value.icon, this.form.value.description, this.labels)
+    if (this.postSlug) {
+      this.postsService.editPost(this.post._id, this.form.value.title, this.post.slug, this.post.date, this.form.value.markdown, this.form.value.icon, this.form.value.description, this.labels)
     } else {
       this.postsService.addPost(this.form.value.title, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
     }

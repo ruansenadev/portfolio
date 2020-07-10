@@ -10,11 +10,11 @@ import { PostsService } from "../posts.service";
 })
 export class PostPageComponent implements OnInit {
   constructor(private postService: PostsService, private route: ActivatedRoute) { }
-  private id: string
+  private slug: string
   post: Post
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id')
-    this.postService.getPost(this.id).subscribe((res) => {
+    this.slug = this.route.snapshot.paramMap.get('slug')
+    this.postService.getPost(this.slug).subscribe((res) => {
       this.post = res.post
     })
   }

@@ -1,6 +1,7 @@
 export interface Post {
   _id: string;
   title: string;
+  slug: string | null;
   date: Date;
   icon: string | null;
   markdown: string;
