@@ -16,3 +16,7 @@ mat-card {
 mat-card-footer {
   padding: .5rem 1rem;
 }
+mat-card-subtitle {
+  display: flex;
+  align-items: center;
+}

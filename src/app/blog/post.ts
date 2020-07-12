@@ -8,4 +8,5 @@ export interface Post {
   description: string | null;
   modified: Date | null;
   labels: string[];
+  reading: { minutes: number, text: string } | null;
 }

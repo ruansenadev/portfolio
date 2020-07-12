@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const slugify = require('slug')
+const readingTime = require('reading-time')
+const leanVirtuals = require('mongoose-lean-virtuals')
 const Schema = mongoose.Schema
 
 const postSchema = new Schema({
@@ -12,6 +14,13 @@ const postSchema = new Schema({
   modified: { type: Date },
   labels: [{type: String, required: true, minlength: 2}]
 })
+
+postSchema.virtual('reading')
+.get(function() {
+  return readingTime(this.markdown)
+})
+
+postSchema.plugin(leanVirtuals)
 
 postSchema.pre('validate', function(next) {
   this.slug = slugify(this.title)

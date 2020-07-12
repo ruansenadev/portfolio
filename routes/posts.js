@@ -35,11 +35,13 @@ router.post('/', function (req, res, next) {
   })
 })
 router.get('/:slug', function (req, res, next) {
-  Post.findOne({ slug: req.params.slug }).lean().exec((err, post) => {
-    if (err) { return next(err) }
-    if (!post) { return res.status(404).json({ post }) }
-    res.json({ post })
-  })
+  Post.findOne({ slug: req.params.slug })
+    .lean({ virtuals: true })
+    .exec((err, post) => {
+      if (err) { return next(err) }
+      if (!post) { return res.status(404).json({ post }) }
+      res.json({ post })
+    })
 })
 router.put('/:id', function (req, res, next) {
   const post = new Post({
