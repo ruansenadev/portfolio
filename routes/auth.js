@@ -11,7 +11,7 @@ router.post('/', function(req, res, next) {
     if (!account) {return res.status(401).json({message: 'E-mail incorreto.'})}
 
     if (bcrypt.compareSync(req.body.password, account.password)) {
-      return res.json({account})
+      return res.json({message: 'Autenticado com sucesso'})
     } else {
       return res.status(401).json({message: 'Senha incorreta.'})
     }
