@@ -3,8 +3,8 @@ const Post = require('../models/post')
 const router = express.Router()
 
 router.get('/', function (req, res, next) {
-  const items = +req.query.items || 5;
-  const left = +req.query.left || 0;
+  const items = +req.query.items
+  const left = +req.query.left
   Post.countDocuments()
     .then((count) => {
       Post.find({})
