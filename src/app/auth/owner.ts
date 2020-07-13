@@ -3,12 +3,13 @@ export interface Owner {
   surname: string,
   email: string,
   password: string,
+  birthdate: Date,
   photo: string,
-  birth: Date,
-  nickname: string | null,
-  logo: string | null,
-  biodata: string,
   profession: string,
-  skills: { [key: string]: any },
-  social: { [key: string]: string }
+  biodata: string,
+  logo: string | null,
+  nickname: string | null,
+  skills: { [key: string]: any } | null,
+  social: { [key: string]: string } | null,
+  fullName: string | null
 }

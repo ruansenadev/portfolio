@@ -7,14 +7,14 @@ const ownerSchema = new Schema({
   surname: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  birthdate: { type: Date, required: true },
   photo: { type: String, required: true },
-  birth: { type: Date, required: true },
   nickname: { type: String },
   logo: { type: String },
   biodata: { type: String, required: true },
   profession: { type: String, required: true },
   skills: {},
-  social: { type: Map, of: String },
+  social: { type: Map, of: String }
 })
 
 ownerSchema.virtual('fullName')
