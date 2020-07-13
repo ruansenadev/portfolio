@@ -14,6 +14,7 @@ import { FeedComponent } from './blog/feed/feed.component';
 import { PostListComponent } from './blog/post-list/post-list.component';
 import { PostDialogComponent } from './blog/post-dialog/post-dialog.component';
 import { PostPageComponent } from './blog/post-page/post-page.component';
+import { LoginComponent } from './auth/login/login.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { PostPageComponent } from './blog/post-page/post-page.component';
     PostDialogComponent,
     FeedComponent,
     PostPageComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

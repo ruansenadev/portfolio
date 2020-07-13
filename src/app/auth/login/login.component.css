@@ -1,0 +1,12 @@
+.form-container {
+  max-width: 40rem;
+  padding: 2rem;
+  margin: auto;
+}
+mat-form-field {
+  display: block;
+}
+button {
+  display: block;
+  margin-left: auto;
+}
