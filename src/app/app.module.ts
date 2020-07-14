@@ -4,6 +4,9 @@ import { AppRoutingModule } from "./app-routing.module";
 import { HttpClientModule } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
 
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { AuthInterceptor } from "./auth/auth.interceptor";
+
 import { MarkdownModule } from "ngx-markdown";
 import { MaterialModule } from "./material.module";
 import { AppComponent } from './app.component';
@@ -36,7 +39,9 @@ import { LoginComponent } from './auth/login/login.component';
     MaterialModule,
     MarkdownModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
