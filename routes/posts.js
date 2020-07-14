@@ -1,5 +1,6 @@
 const express = require('express')
 const Post = require('../models/post')
+const Auth = require('../middlewares/auth')
 const router = express.Router()
 
 router.get('/', function (req, res, next) {
@@ -18,7 +19,16 @@ router.get('/', function (req, res, next) {
     })
     .catch(next)
 })
-router.post('/', function (req, res, next) {
+router.get('/:slug', function (req, res, next) {
+  Post.findOne({ slug: req.params.slug })
+    .lean({ virtuals: true })
+    .exec((err, post) => {
+      if (err) { return next(err) }
+      if (!post) { return res.status(404).json({ post }) }
+      res.json({ post })
+    })
+})
+router.post('/', Auth, function (req, res, next) {
   const post = new Post({
     title: req.body.title,
     date: req.body.date,
@@ -34,16 +44,7 @@ router.post('/', function (req, res, next) {
     }).catch(next)
   })
 })
-router.get('/:slug', function (req, res, next) {
-  Post.findOne({ slug: req.params.slug })
-    .lean({ virtuals: true })
-    .exec((err, post) => {
-      if (err) { return next(err) }
-      if (!post) { return res.status(404).json({ post }) }
-      res.json({ post })
-    })
-})
-router.put('/:id', function (req, res, next) {
+router.put('/:id', Auth, function (req, res, next) {
   const post = new Post({
     _id: req.body._id,
     title: req.body.title,
@@ -60,7 +61,7 @@ router.put('/:id', function (req, res, next) {
     res.json({ message: 'Post updated' })
   })
 })
-router.delete('/:id', function (req, res) {
+router.delete('/:id', Auth, function (req, res) {
   Post.deleteOne({ _id: req.params.id }, (err) => {
     if (err) { return res.status(400).json({ message: 'Failed to delete' }) }
     res.json({ message: 'Post deleted' })
