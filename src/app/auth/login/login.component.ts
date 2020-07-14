@@ -9,19 +9,19 @@ import { AuthService } from "../auth.service";
 })
 export class LoginComponent implements OnInit {
   constructor(private authService: AuthService) { }
-  isLoading: boolean = true
+  isLoading: boolean
   form: FormGroup
   ngOnInit(): void {
     this.form = new FormGroup({
       email: new FormControl(null, { validators: [Validators.required, Validators.email] }),
       password: new FormControl(null, { validators: [Validators.required] })
     })
-    this.isLoading = false;
+    this.isLoading;
   }
 
   onSubmit(): void {
-    this.isLoading = true;
     if (this.form.invalid) { return }
+    this.isLoading = true;
     this.authService.login(this.form.value.email, this.form.value.password)
   }
 }
