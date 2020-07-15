@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TAB } from "@angular/cdk/keycodes";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { PostsService } from "../posts.service";
@@ -18,13 +19,18 @@ export class PostFormComponent implements OnInit {
   private post: Post;
   modified: string;
   labels: string[] = []
-
+  checkTab(e: KeyboardEvent) {
+    if(e.keyCode === TAB) {
+      e.preventDefault()
+      this.form.patchValue({'markdown': this.form.value.markdown + '\t'})
+    }
+  }
   ngOnInit(): void {
     this.isLoading = true;
     this.postSlug = this.route.snapshot.paramMap.get('slug')
     this.form = new FormGroup({
       title: new FormControl(null, { validators: [Validators.required, Validators.maxLength(120)] }),
-      markdown: new FormControl(null, { validators: [Validators.required] }),
+      markdown: new FormControl('', { validators: [Validators.required] }),
       description: new FormControl(null, { validators: [Validators.maxLength(200)] }),
       icon: new FormControl(null, { validators: [Validators.pattern('^[a-z0-9_]+[a-z0-9]$')] }),
       labelsInput: new FormControl(null, { validators: [Validators.required] })

@@ -10,23 +10,24 @@ const postSchema = new Schema({
   date: { type: Date, required: true, default: Date.now },
   icon: { type: String, required: true, default: 'article' },
   markdown: { type: String, required: true },
+  author: { type: Schema.Types.ObjectId, required: true },
   description: { type: String, maxlength: 220 },
   modified: { type: Date },
-  labels: [{type: String, required: true, minlength: 2}]
+  labels: [{ type: String, required: true, minlength: 2 }]
 })
 
 postSchema.virtual('reading')
-.get(function() {
-  return readingTime(this.markdown)
-})
+  .get(function () {
+    return readingTime(this.markdown)
+  })
 
 postSchema.plugin(leanVirtuals)
 
-postSchema.pre('validate', function(next) {
+postSchema.pre('validate', function (next) {
   this.slug = slugify(this.title)
   next()
 })
-postSchema.pre('updateOne', function(next) {
+postSchema.pre('updateOne', function (next) {
   this._update.slug = slugify(this._update.title)
   next()
 })
