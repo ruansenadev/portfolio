@@ -15,6 +15,7 @@ export class AuthService {
   private status: boolean
   private token: string
   private listener = new Subject<boolean>()
+  public redirect: string = '/'
 
   getStatus(): boolean {
     return this.status
@@ -33,7 +34,7 @@ export class AuthService {
       this.status = true;
       this.listener.next(true)
       console.log(res.message)
-      this.router.navigate(['/'])
+      this.router.navigate([this.redirect])
     })
   }
   logout(): void {
