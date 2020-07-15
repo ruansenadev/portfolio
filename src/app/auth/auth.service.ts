@@ -14,6 +14,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
   private status: boolean
   private token: string
+  private expiration: ReturnType<typeof setTimeout>
   private listener = new Subject<boolean>()
   public redirect: string = '/'
 
@@ -28,18 +29,45 @@ export class AuthService {
   }
 
   login(email: string, password: string): void {
-    const data = {email, password}
-    this.http.post<{message: string, token: string}>(apiAuth, data).subscribe((res) => {
+    const data = { email, password }
+    this.http.post<{ message: string, token: string, expiration: number }>(apiAuth, data).subscribe((res) => {
       this.token = res.token;
       this.status = true;
       this.listener.next(true)
-      console.log(res.message)
+      this.saveLocal(res.token, new Date(res.expiration).toISOString())
+      this.setExpTime(res.expiration - Date.now())
       this.router.navigate([this.redirect])
     })
   }
   logout(): void {
     this.status = false;
     this.listener.next(false);
+    localStorage.clear()
+    clearTimeout(this.expiration)
     this.router.navigate(['/'])
+  }
+  authBack(): void {
+    const token = localStorage.getItem('token')
+    const date = localStorage.getItem('expiration')
+    if (!token || !date) { return }
+    const interval = new Date(date).getTime() - Date.now()
+    if (interval > 0) {
+      this.token = token;
+      this.status = true;
+      this.listener.next(true)
+      this.setExpTime(interval)
+    } else {
+      localStorage.clear()
+    }
+  }
+
+  setExpTime(ms: number): void {
+    this.expiration = setTimeout(() => {
+      this.logout()
+    }, ms)
+  }
+  saveLocal(token: string, expiration: string): void {
+    localStorage.setItem('token', token)
+    localStorage.setItem('expiration', expiration)
   }
 }
