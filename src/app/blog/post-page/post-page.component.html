@@ -1,7 +1,7 @@
 <main class="article">
   <mat-card *ngIf="post" class="post">
     <mat-card-header>
-      <img mat-card-avatar src="http://placekitten.com/150/150">
+      <mat-icon mat-card-avatar>{{ post.icon }}</mat-icon>
       <mat-card-title>{{ post.title }}</mat-card-title>
       <mat-card-subtitle>
         <mat-icon>hourglass_empty</mat-icon>

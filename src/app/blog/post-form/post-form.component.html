@@ -9,8 +9,8 @@
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Conteúdo</mat-label>
-        <textarea matInput cdkTextareaAutosize rows="4" formControlName="markdown"></textarea>
-        <mat-hint>Markdown reference: https://commonmark.org/help</mat-hint>
+        <textarea matInput cdkTextareaAutosize rows="4" formControlName="markdown" (keydown)="checkTab($event)"></textarea>
+        <mat-hint><a href="https://commonmark.org/help" target="_blank">Markdown reference</a></mat-hint>
       </mat-form-field>
       <mat-form-field appearance="fill" hintLabel="Max 200 characters">
         <mat-label>Descrição</mat-label>
@@ -20,7 +20,7 @@
       <mat-form-field appearance="fill">
         <mat-label>Ícone</mat-label>
         <input matInput formControlName="icon">
-        <mat-hint>Icons reference: https://material.io/resources/icons</mat-hint>
+        <mat-hint><a href="https://material.io/resources/icons" target="_blank">Icons reference</a></mat-hint>
       </mat-form-field>
       <mat-form-field>
         <mat-chip-list #labelsList>
