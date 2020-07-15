@@ -7,10 +7,7 @@
     </h1>
     <span class="spacer"></span>
     <nav>
-      <a *ngIf="!isAuth" mat-stroked-button [routerLink]="['/login']" routerLinkActive="mat-accent">
-        LogIn
-      </a>
-      <a *ngIf="isAuth" mat-button [routerLink]="['/new']" routerLinkActive="mat-accent" >Novo Post</a>
+      <button *ngIf="isAuth" mat-stroked-button (click)="onLogout()" class="nav-item">Sair</button>
     </nav>
   </mat-toolbar>
 </header>

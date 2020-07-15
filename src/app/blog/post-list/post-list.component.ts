@@ -4,6 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { PostDialogComponent } from "../post-dialog/post-dialog.component";
 import { PageEvent } from '@angular/material/paginator';
 import { PostsService } from "../posts.service";
+import { AuthService } from "../../auth/auth.service";
 import { Post } from "../post";
 
 @Component({
@@ -12,9 +13,11 @@ import { Post } from "../post";
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  constructor(private postsService: PostsService, private dialog: MatDialog) { }
+  constructor(private postsService: PostsService, private dialog: MatDialog, private authService: AuthService) { }
   posts: Post[] = []
   private postsListener: Subscription;
+  isAuth: boolean = false;
+  private authListener: Subscription;
   left: number = 0;
   itemsOptions = [5, 10, 15];
   items: number = 5;
@@ -25,6 +28,8 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.posts = res.posts
       this.length = res.max
     })
+    this.isAuth = this.authService.getStatus()
+    this.authListener = this.authService.getListener().subscribe((status) => this.isAuth = status)
   }
   delPost(post: Post):void {
     this.dialog.open(PostDialogComponent, {

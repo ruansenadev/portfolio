@@ -1,24 +1,31 @@
 <mat-card>
   <mat-card-header>
-    <a mat-fab [routerLink]="['/new']">
+    <mat-card-title-group>
+      <mat-card-title>Blog</mat-card-title>
+      <mat-card-subtitle>Página {{left+1}}</mat-card-subtitle>
+    </mat-card-title-group>
+    <a *ngIf="isAuth" class="top-btn" mat-fab color="accent" [routerLink]="['/new']">
       <mat-icon>post_add</mat-icon>
     </a>
   </mat-card-header>
   <mat-card-content>
     <mat-nav-list>
-      <h3 matSubheader>Últimos posts</h3>
-      <mat-list-item *ngFor="let post of posts; last as last" [routerLink]="['/', post.slug]">
-        <mat-icon matListIcon>{{post.icon}}</mat-icon>
-        <h4 matLine>{{post.title}}</h4>
-        <p matLine>{{post.description || post.markdown}}</p>
-        <a class="btn-action" mat-mini-fab color="primary" [routerLink]="['edit', post.slug]">
-          <mat-icon>edit</mat-icon>
+      <div class="post-item" *ngFor="let post of posts; last as last">
+        <a mat-list-item [routerLink]="['/', post.slug]">
+          <mat-icon matListIcon>{{post.icon}}</mat-icon>
+          <h4 matLine>{{post.title}}</h4>
+          <p *ngIf="post.description" matLine>{{post.description}}</p>
+          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
         </a>
-        <button class="btn-action" mat-icon-button type="button" color="warn" (click)="delPost(post)">
-          <mat-icon>delete_forever</mat-icon>
-        </button>
-        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
-      </mat-list-item>
+        <mat-toolbar *ngIf="isAuth">
+          <a mat-mini-fab color="primary" class="btn-action" [routerLink]="['edit', post.slug]">
+            <mat-icon>edit</mat-icon>
+          </a>
+          <button mat-icon-button type="button" class="btn-action" color="warn" (click)="delPost(post)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </mat-toolbar>
+      </div>
     </mat-nav-list>
   </mat-card-content>
   <mat-card-footer>
