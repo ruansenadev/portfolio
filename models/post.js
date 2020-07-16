@@ -10,7 +10,6 @@ const postSchema = new Schema({
   date: { type: Date, required: true, default: Date.now },
   icon: { type: String, required: true, default: 'article' },
   markdown: { type: String, required: true },
-  author: { type: Schema.Types.ObjectId, required: true },
   description: { type: String, maxlength: 220 },
   modified: { type: Date },
   labels: [{ type: String, required: true, minlength: 2 }]

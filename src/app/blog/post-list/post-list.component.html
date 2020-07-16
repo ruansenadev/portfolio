@@ -4,14 +4,14 @@
       <mat-card-title>Blog</mat-card-title>
       <mat-card-subtitle>Página {{left+1}}</mat-card-subtitle>
     </mat-card-title-group>
-    <a *ngIf="isAuth" class="top-btn" mat-fab color="accent" [routerLink]="['/new']">
+    <a *ngIf="isAuth" class="top-btn" mat-fab color="accent" [routerLink]="['new']">
       <mat-icon>post_add</mat-icon>
     </a>
   </mat-card-header>
   <mat-card-content>
     <mat-nav-list>
       <div class="post-item" *ngFor="let post of posts; last as last">
-        <a mat-list-item [routerLink]="['/', post.slug]">
+        <a mat-list-item [routerLink]="[post.slug]">
           <mat-icon matListIcon>{{post.icon}}</mat-icon>
           <h4 matLine>{{post.title}}</h4>
           <p *ngIf="post.description" matLine>{{post.description}}</p>

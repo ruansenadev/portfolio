@@ -3,32 +3,32 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from "./app-routing.module";
 import { HttpClientModule } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
+import { MarkdownModule } from "ngx-markdown";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatIconModule } from "@angular/material/icon";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatDividerModule } from "@angular/material/divider";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthInterceptor } from "./auth/auth.interceptor";
 
-import { MarkdownModule } from "ngx-markdown";
-import { MaterialModule } from "./material.module";
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
-import { PostFormComponent } from './blog/post-form/post-form.component';
-import { FeedComponent } from './blog/feed/feed.component';
-import { PostListComponent } from './blog/post-list/post-list.component';
-import { PostDialogComponent } from './blog/post-dialog/post-dialog.component';
-import { PostPageComponent } from './blog/post-page/post-page.component';
 import { LoginComponent } from './auth/login/login.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostFormComponent,
-    PostListComponent,
     HeaderComponent,
-    PostDialogComponent,
-    FeedComponent,
-    PostPageComponent,
     LoginComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,11 +36,18 @@ import { LoginComponent } from './auth/login/login.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    MaterialModule,
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    MatFormFieldModule,
+    MatProgressBarModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatButtonModule,
+    MatInputModule,
+    MatDividerModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
