@@ -25,7 +25,8 @@ router.get('/:slug', function (req, res, next) {
     .exec((err, post) => {
       if (err) { return next(err) }
       if (!post) { return res.status(404).json({ post }) }
-      res.json({ post })
+      console.log(post)
+      res.json(post)
     })
 })
 router.post('/', Auth, function (req, res, next) {

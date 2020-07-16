@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { Post } from "../post";
-import { PostsService } from "../posts.service";
 
 @Component({
   selector: 'app-post-page',
@@ -9,14 +8,10 @@ import { PostsService } from "../posts.service";
   styleUrls: ['./post-page.component.css']
 })
 export class PostPageComponent implements OnInit {
-  constructor(private postService: PostsService, private route: ActivatedRoute) { }
-  private slug: string
+  constructor(private route: ActivatedRoute) { }
   post: Post
   ngOnInit(): void {
-    this.slug = this.route.snapshot.paramMap.get('slug')
-    this.postService.getPost(this.slug).subscribe((res) => {
-      this.post = res.post
-    })
+    this.post = this.route.snapshot.data["post"]
   }
 
 }
