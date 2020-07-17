@@ -8,6 +8,7 @@ const postSchema = new Schema({
   title: { type: String, maxlength: 120, required: true },
   slug: { type: String, required: true, unique: true },
   date: { type: Date, required: true, default: Date.now },
+  thumbnail: { type: String },
   icon: { type: String, required: true, default: 'article' },
   markdown: { type: String, required: true },
   description: { type: String, maxlength: 220 },

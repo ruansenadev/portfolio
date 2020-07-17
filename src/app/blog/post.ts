@@ -3,6 +3,7 @@ export interface Post {
   title: string;
   slug: string | null;
   date: Date;
+  thumbnail: string | null;
   icon: string | null;
   markdown: string;
   description: string | null;
