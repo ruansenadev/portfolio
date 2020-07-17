@@ -7,7 +7,29 @@ mat-form-field {
   display: block;
   margin-bottom: 1rem;
 }
-button {
+button[type="submit"] {
   display: block;
   margin-left: auto;
+}
+input[type="file"] {
+  opacity: 0;
+}
+mat-expansion-panel {
+  margin-bottom: 1rem !important;
+}
+mat-panel-description {
+  justify-content: space-between;
+}
+.imagePreview {
+  display: inline-flex;
+  align-items: center;
+  min-width: 6rem;
+  max-width: 22rem;
+  max-height: 16rem;
+  padding: .5rem;
+  border-radius: .5rem;
+  background-color: rgba(0, 0, 0, .1);
+}
+.imagePreview img {
+  max-width: 100%;
 }

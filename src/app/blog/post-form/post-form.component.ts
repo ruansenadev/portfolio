@@ -17,19 +17,16 @@ export class PostFormComponent implements OnInit {
   form: FormGroup;
   private postSlug: string;
   private post: Post;
+  thumbnail: string = null
+  preview: string;
   modified: string;
   labels: string[] = []
-  checkTab(e: KeyboardEvent) {
-    if(e.keyCode === TAB) {
-      e.preventDefault()
-      this.form.patchValue({'markdown': this.form.value.markdown + '\t'})
-    }
-  }
   ngOnInit(): void {
     this.isLoading = true;
     this.postSlug = this.route.snapshot.paramMap.get('slug')
     this.form = new FormGroup({
       title: new FormControl(null, { validators: [Validators.required, Validators.maxLength(120)] }),
+      thumbnail: new FormControl(null),
       markdown: new FormControl('', { validators: [Validators.required] }),
       description: new FormControl(null, { validators: [Validators.maxLength(200)] }),
       icon: new FormControl(null, { validators: [Validators.pattern('^[a-z0-9_]+[a-z0-9]$')] }),
@@ -40,18 +37,39 @@ export class PostFormComponent implements OnInit {
         this.post = res.post
         this.form.setValue({
           title: this.post.title,
+          thumbnail: this.post.thumbnail || null,
           markdown: this.post.markdown,
           description: this.post.description || null,
           icon: this.post.icon || null,
           labelsInput: ' '
         })
         this.labels = this.post.labels
+        if (this.post.thumbnail) this.thumbnail = this.post.thumbnail.slice(0, this.post.thumbnail.lastIndexOf('.'))
         if (this.post.modified) this.modified = new Date(this.post.modified).toLocaleString()
         this.isLoading = false
       })
     } else {
       this.isLoading = false
     }
+  }
+  checkTab(e: KeyboardEvent): void {
+    if (e.keyCode === TAB) {
+      e.preventDefault()
+      this.form.patchValue({ 'markdown': this.form.value.markdown + '\t' })
+    }
+  }
+  onPick(e: Event): void {
+    const imageBlob = (e.target as HTMLInputElement).files[0]
+    const reader = new FileReader()
+    reader.onerror = () => {
+      throw new Error("Imagem inválida");
+    }
+    reader.onloadend = () => {
+      this.thumbnail = imageBlob.name.slice(0, imageBlob.name.lastIndexOf('.')).slice(0, 25)
+      this.preview = reader.result as string
+    }
+    reader.readAsDataURL(imageBlob)
+    this.form.patchValue({ thumbnail: imageBlob })
   }
   addLabel(e: MatChipInputEvent): void {
     const value = (e.value || '').trim()
@@ -66,9 +84,9 @@ export class PostFormComponent implements OnInit {
     if (this.form.invalid) { return }
     this.isLoading = true
     if (this.postSlug) {
-      this.postsService.editPost(this.post._id, this.form.value.title, this.post.slug, this.post.date, this.form.value.markdown, this.form.value.icon, this.form.value.description, this.labels)
+      this.postsService.editPost(this.post._id, this.form.value.title, this.post.slug, this.post.date, this.form.value.thumbnail, this.thumbnail, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
     } else {
-      this.postsService.addPost(this.form.value.title, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
+      this.postsService.addPost(this.form.value.title, this.form.value.thumbnail, this.thumbnail, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
     }
     this.form.reset()
   }
