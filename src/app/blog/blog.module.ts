@@ -18,6 +18,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 import { PostFormComponent } from './post-form/post-form.component';
 import { FeedComponent } from './feed/feed.component';
@@ -49,7 +50,8 @@ import { PostPageComponent } from './post-page/post-page.component';
     MatFormFieldModule,
     MatProgressBarModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    MatExpansionModule
   ],
   providers: [
     { provide: MAT_CHIPS_DEFAULT_OPTIONS, useValue: { separatorKeyCodes: [ENTER, COMMA] } },
