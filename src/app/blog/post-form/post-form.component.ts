@@ -37,16 +37,16 @@ export class PostFormComponent implements OnInit {
         this.post = post
         this.form.setValue({
           title: this.post.title,
-          thumbnail: this.post.thumbnail || null,
+          thumbnail: null,
           markdown: this.post.markdown,
           description: this.post.description || null,
           icon: this.post.icon || null,
           labelsInput: ' '
         })
         this.labels = this.post.labels
-        if (this.post.thumbnail) {
-          this.thumbnail = this.post.thumbnail
-          this.preview = `/images/${this.thumbnail}`
+        if (this.post.thumbnailPath) {
+          this.thumbnail = this.post.thumbnailPath.slice(this.post.thumbnailPath.lastIndexOf('/')+1)
+          this.preview = this.post.thumbnailPath
         }
         if (this.post.modified) this.modified = new Date(this.post.modified).toLocaleString()
         this.isLoading = false
@@ -89,7 +89,7 @@ export class PostFormComponent implements OnInit {
     if (this.form.invalid) { return }
     this.isLoading = true
     if (this.postSlug) {
-      this.postsService.editPost(this.post._id, this.form.value.title, this.post.slug, this.post.date, this.form.value.thumbnail, this.thumbnail, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
+      this.postsService.editPost(this.post._id, this.form.value.title, this.post.date, this.form.value.thumbnail || this.post.thumbnailPath, this.thumbnail, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
     } else {
       this.postsService.addPost(this.form.value.title, this.form.value.thumbnail, this.thumbnail, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
     }
