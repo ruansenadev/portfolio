@@ -26,7 +26,7 @@
           </div>
           <input type="file" #thumb accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false" (change)="onPick($event)">
           <mat-action-row>
-            <button mat-stroked-button color="primary" (click)="thumb.click()">Upload</button>
+            <button mat-stroked-button type="button" color="primary" (click)="thumb.click()">Upload</button>
           </mat-action-row>
         </mat-expansion-panel>
       </mat-accordion>
