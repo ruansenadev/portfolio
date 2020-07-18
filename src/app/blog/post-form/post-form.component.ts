@@ -55,15 +55,16 @@ export class PostFormComponent implements OnInit {
   checkTab(e: KeyboardEvent): void {
     if (e.keyCode === TAB) {
       e.preventDefault()
-      this.form.patchValue({ 'markdown': this.form.value.markdown + '\t' })
+      const target = e.target as HTMLTextAreaElement;
+      const start = target.selectionStart;
+      const end = target.selectionEnd;
+      this.form.patchValue({ 'markdown': this.form.value.markdown.slice(0, target.selectionStart)+'\t'+this.form.value.markdown.slice(target.selectionEnd) })
+      target.selectionStart = target.selectionEnd = start + 1;
     }
   }
   onPick(e: Event): void {
     const imageBlob = (e.target as HTMLInputElement).files[0]
     const reader = new FileReader()
-    reader.onerror = () => {
-      throw new Error("Imagem inválida");
-    }
     reader.onloadend = () => {
       this.thumbnail = imageBlob.name.slice(0, imageBlob.name.lastIndexOf('.')).slice(0, 25)
       this.preview = reader.result as string
