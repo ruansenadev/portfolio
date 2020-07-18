@@ -45,7 +45,7 @@ export class PostFormComponent implements OnInit {
         })
         this.labels = this.post.labels
         if (this.post.thumbnailPath) {
-          this.thumbnail = this.post.thumbnailPath.slice(this.post.thumbnailPath.lastIndexOf('/')+1)
+          this.thumbnail = this.post.thumbnailPath.slice(this.post.thumbnailPath.lastIndexOf('/')+1).slice(20)
           this.preview = this.post.thumbnailPath
         }
         if (this.post.modified) this.modified = new Date(this.post.modified).toLocaleString()
