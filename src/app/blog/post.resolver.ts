@@ -5,9 +5,9 @@ import { Observable } from 'rxjs';
 import { PostsService } from "./posts.service";
 
 @Injectable()
-export class PostResolver implements Resolve<{post: Post}> {
+export class PostResolver implements Resolve<Post> {
   constructor(private postsService: PostsService) {}
-  resolve(route: ActivatedRouteSnapshot): Observable<{post: Post}> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Post> {
     const slug = route.paramMap.get('slug')
     return this.postsService.getPost(slug)
   }

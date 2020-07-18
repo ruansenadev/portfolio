@@ -33,8 +33,8 @@ export class PostFormComponent implements OnInit {
       labelsInput: new FormControl(null, { validators: [Validators.required] })
     })
     if (this.postSlug) {
-      this.postsService.getPost(this.postSlug).subscribe((res) => {
-        this.post = res.post
+      this.postsService.getPost(this.postSlug).subscribe((post) => {
+        this.post = post
         this.form.setValue({
           title: this.post.title,
           thumbnail: this.post.thumbnail || null,
@@ -44,7 +44,10 @@ export class PostFormComponent implements OnInit {
           labelsInput: ' '
         })
         this.labels = this.post.labels
-        if (this.post.thumbnail) this.thumbnail = this.post.thumbnail.slice(0, this.post.thumbnail.lastIndexOf('.'))
+        if (this.post.thumbnail) {
+          this.thumbnail = this.post.thumbnail
+          this.preview = `/images/${this.thumbnail}`
+        }
         if (this.post.modified) this.modified = new Date(this.post.modified).toLocaleString()
         this.isLoading = false
       })
