@@ -34,7 +34,7 @@ router.get('/:slug', function (req, res, next) {
     .lean({ virtuals: true })
     .exec((err, post) => {
       if (err) { return next(err) }
-      if (!post) { return res.status(404).json({ post }) }
+      if (!post) { return res.status(404).json({ message: 'Post não existe.' }) }
       res.json(post)
     })
 })
@@ -65,7 +65,7 @@ router.post('/', Auth, function (req, res, next) {
     post.save((err, postSaved) => {
       if (err) { return next(err) }
       Post.countDocuments().then((count) => {
-        res.json({ message: 'Post created', post: postSaved, max: count })
+        res.json({ message: 'Post adicionado!', post: postSaved, max: count })
       }).catch(next)
     })
   })
@@ -83,14 +83,14 @@ router.put('/:id', Auth, function (req, res, next) {
   if (req.body.description) post.description = req.body.description;
   Post.updateOne({ _id: req.params.id }, post, (err, result) => {
     if (err) { return next(err) }
-    if (!result.n) { return res.status(400).json({ message: 'Failed to update' }) }
-    res.json({ message: 'Post updated' })
+    if (!result.n) { return res.status(400).json({ message: 'Falha ao atualizar.' }) }
+    res.json({ message: 'Post atualizado!' })
   })
 })
 router.delete('/:id', Auth, function (req, res) {
   Post.deleteOne({ _id: req.params.id }, (err) => {
-    if (err) { return res.status(400).json({ message: 'Failed to delete' }) }
-    res.json({ message: 'Post deleted' })
+    if (err) { return res.status(400).json({ message: 'Falha ao deletar.' }) }
+    res.json({ message: 'Post deletado.' })
   })
 })
 

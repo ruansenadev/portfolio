@@ -41,7 +41,7 @@ export class PostsService {
     })
   }
   getPost(slug: string) {
-    return this.http.get<{ post: Post }>(`${apiPosts}/${slug}`)
+    return this.http.get<Post>(`${apiPosts}/${slug}`)
   }
   editPost(_id: string, title: string, slug: string, date: Date, thumbnail: string | null, thumbnailName: string | null, icon: string, markdown: string, description: string | null, labels: string[]): void {
     let data: FormData | Post;
