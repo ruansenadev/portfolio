@@ -58,19 +58,20 @@ export class PostFormComponent implements OnInit {
       const target = e.target as HTMLTextAreaElement;
       const start = target.selectionStart;
       const end = target.selectionEnd;
-      this.form.patchValue({ 'markdown': this.form.value.markdown.slice(0, target.selectionStart)+'\t'+this.form.value.markdown.slice(target.selectionEnd) })
+      this.form.patchValue({ 'markdown': this.form.value.markdown.slice(0, start)+'\t'+this.form.value.markdown.slice(end) })
       target.selectionStart = target.selectionEnd = start + 1;
     }
   }
   onPick(e: Event): void {
     const imageBlob = (e.target as HTMLInputElement).files[0]
+    this.form.patchValue({ thumbnail: imageBlob })
     const reader = new FileReader()
     reader.onloadend = () => {
-      this.thumbnail = imageBlob.name.slice(0, imageBlob.name.lastIndexOf('.')).slice(0, 25)
+      let extIndex = imageBlob.name.lastIndexOf('.')
+      this.thumbnail = imageBlob.name.slice(0, (extIndex<30?extIndex:30))+imageBlob.name.slice(extIndex)
       this.preview = reader.result as string
     }
     reader.readAsDataURL(imageBlob)
-    this.form.patchValue({ thumbnail: imageBlob })
   }
   addLabel(e: MatChipInputEvent): void {
     const value = (e.value || '').trim()
