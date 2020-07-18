@@ -43,22 +43,21 @@ export class PostsService {
   getPost(slug: string) {
     return this.http.get<Post>(`${apiPosts}/${slug}`)
   }
-  editPost(_id: string, title: string, slug: string, date: Date, thumbnail: string | null, thumbnailName: string | null, icon: string, markdown: string, description: string | null, labels: string[]): void {
-    let data: FormData | Post;
+  editPost(_id: string, title: string, date: Date, thumbnail: File | string | null, thumbnailName: string | null, icon: string, markdown: string, description: string | null, labels: string[]): void {
+    let data = new FormData();
+    data.append('_id', _id)
+    data.append('title', title)
+    data.append('date', new Date(date).toISOString())
     if (typeof thumbnail === "object") {
-      data = new FormData()
-      data.append('_id', _id)
-      data.append('title', title)
-      data.append('date', date.toISOString())
       data.append('thumbnail', thumbnail, thumbnailName)
-      data.append('icon', icon)
-      data.append('markdown', markdown)
-      data.append('description', description)
-      data.append('modified', new Date().toISOString())
-      data.append('labels', JSON.stringify(labels))
-    } else {
-      data = { _id, title, slug, date, thumbnail, icon, markdown, description, modified: new Date(), labels, reading: null }
+    } else if (thumbnail) {
+      data.append('thumbnailPath', thumbnail)
     }
+    data.append('icon', icon)
+    data.append('markdown', markdown)
+    if (description) data.append('description', description)
+    data.append('modified', new Date().toISOString())
+    data.append('labels', JSON.stringify(labels))
     this.http.put<{ message: string }>(`${apiPosts}/${_id}`, data).subscribe((res) => {
       console.log(res.message)
       this.router.navigate(['/'])
