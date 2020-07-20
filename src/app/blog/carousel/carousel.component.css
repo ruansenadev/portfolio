@@ -1,0 +1,33 @@
+h3 {
+  text-transform: uppercase;
+  padding-left: 1rem;
+  font-size: 1rem;
+}
+.posts-carousel {
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 1rem;
+  margin-left: -.5rem;
+  margin-right: .5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.posts-carousel::-webkit-scrollbar {
+  display: none;
+}
+.post {
+  flex: 0 0 auto;
+  min-width: 12rem;
+  max-width: 15rem;
+  margin-right: 1rem;
+}
+mat-card {
+  display: flex;
+  flex-direction: column;
+}
+mat-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin: auto 0 0 0;
+}

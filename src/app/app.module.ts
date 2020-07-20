@@ -21,6 +21,7 @@ import { AuthInterceptor } from "./auth/auth.interceptor";
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './auth/login/login.component';
+import { CarouselComponent } from './blog/carousel/carousel.component';
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
@@ -29,6 +30,7 @@ import { HomeComponent } from './home/home.component';
     HeaderComponent,
     LoginComponent,
     HomeComponent,
+    CarouselComponent
   ],
   imports: [
     BrowserModule,
