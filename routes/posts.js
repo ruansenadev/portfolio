@@ -2,7 +2,8 @@ const express = require('express')
 const Post = require('../models/post')
 const Auth = require('../middlewares/auth')
 const path = require('path')
-const moment = require('moment')
+const moment = require('moment-timezone')
+moment.tz.setDefault('America/Bahia').locale('pt-br')
 const router = express.Router()
 
 const { IncomingForm } = require('formidable')
@@ -22,7 +23,7 @@ router.get('/', function (req, res, next) {
       Post.find({})
         .skip(left * items)
         .limit(items)
-        .lean()
+        .lean({ virtuals: true })
         .exec((err, posts) => {
           if (err) { return next(err) }
           res.json({ posts, max: count })
