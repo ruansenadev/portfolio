@@ -8,7 +8,7 @@ import { AuthService } from "../../auth/auth.service";
 import { Post } from "../post";
 
 @Component({
-  selector: 'app-post-list',
+  selector: 'blog-post-list',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css']
 })
@@ -20,7 +20,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   private authListener: Subscription;
   left: number = 0;
   itemsOptions = [5, 10, 15];
-  items: number = 5;
+  items: number = 10;
   length: number;
   ngOnInit(): void {
     this.postsService.populatePosts(this.left, this.items)
