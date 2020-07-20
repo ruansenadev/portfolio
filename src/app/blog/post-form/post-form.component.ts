@@ -7,7 +7,7 @@ import { ActivatedRoute } from "@angular/router";
 import { Post } from "../post";
 
 @Component({
-  selector: 'app-post-form',
+  selector: 'blog-post-form',
   templateUrl: './post-form.component.html',
   styleUrls: ['./post-form.component.css']
 })

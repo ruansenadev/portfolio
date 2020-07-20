@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Post } from "../post";
 
 @Component({
-  selector: 'app-post-dialog',
+  selector: 'blog-post-dialog',
   templateUrl: './post-dialog.component.html',
   styleUrls: ['./post-dialog.component.css']
 })
