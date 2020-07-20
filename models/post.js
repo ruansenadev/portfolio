@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const slugify = require('slug')
 const readingTime = require('reading-time')
+const moment = require('moment-timezone')
+moment.tz.setDefault('America/Bahia').locale('pt-br')
 const leanVirtuals = require('mongoose-lean-virtuals')
 const Schema = mongoose.Schema
 
@@ -19,6 +21,12 @@ const postSchema = new Schema({
 postSchema.virtual('reading')
   .get(function () {
     return readingTime(this.markdown)
+  })
+
+postSchema.virtual('date_formated')
+  .get(function () {
+    const date = moment(this.date)
+    return { relative: date.fromNow(), locale: date.format('L') }
   })
 
 postSchema.plugin(leanVirtuals)
