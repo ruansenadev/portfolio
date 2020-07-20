@@ -14,7 +14,7 @@ export class PostsService {
   private posts: Post[] = []
   private stream = new Subject<{ posts: Post[], max: number }>()
 
-  populatePosts(left: number, items: number): void {
+  populatePosts(left: number = 0, items: number = 5): void {
     const query = `?left=${left}&items=${items}`
     this.http.get<{ posts: Post[], max: number }>(apiPosts + query).subscribe((res) => {
       this.posts = res.posts

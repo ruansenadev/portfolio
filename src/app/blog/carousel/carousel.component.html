@@ -1,0 +1,24 @@
+<h3>Últimos Posts</h3>
+<div class="posts-carousel">
+  <mat-card class="post" *ngFor="let post of posts">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>{{ post.icon }}</mat-icon>
+      <mat-card-title>
+        {{ post.title }}
+      </mat-card-title>
+      <mat-card-subtitle class="post-date">
+        <mat-icon [inline]="true">watch_later</mat-icon>
+        {{ post.date_formated.relative }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      {{ post.description || post.labels }}
+    </mat-card-content>
+    <mat-card-footer>
+      <a mat-mini-fab [routerLink]="['blog', post.slug]">
+        <mat-icon>read_more</mat-icon>
+      </a>
+    </mat-card-footer>
+  </mat-card>
+</div>
+<mat-divider></mat-divider>

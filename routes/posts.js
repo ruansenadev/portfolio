@@ -24,6 +24,7 @@ router.get('/', function (req, res, next) {
         .skip(left * items)
         .limit(items)
         .lean({ virtuals: true })
+        .sort('-date')
         .exec((err, posts) => {
           if (err) { return next(err) }
           res.json({ posts, max: count })
