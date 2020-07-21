@@ -2,7 +2,7 @@ require('dotenv').config()
 const bcrypt = require('bcryptjs')
 const md5 = require('md5')
 const moment = require('moment')
-const Owner = require('./models/owner')
+const Admin = require('./models/admin')
 const mongoose = require('mongoose')
 
 mongoose.connect(process.env.MONGO_URL, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
@@ -11,7 +11,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 const passwordEncrypted = bcrypt.hashSync(process.env.ACCOUNT_PASS, 10)
 
-async function createOwner(name, surname, email, password, birthdate, photo, nickname, profession, logo, biodata, skills, social) {
+async function createAdmin(name, surname, email, password, birthdate, photo, nickname, profession, logo, biodata, skills, social) {
   birthdate = moment(birthdate, 'DD-MM-YYYY').toDate();
   let data = {
     name,
@@ -29,11 +29,11 @@ async function createOwner(name, surname, email, password, birthdate, photo, nic
   if(skills) data.skills = skills
   if(social) data.social = social
 
-  const owner = new Owner(data)
-  return owner.save()
+  const admin = new Admin(data)
+  return admin.save()
 }
 
-createOwner('Ruan', 'Sena', 'ruansenadev@gmail.com', passwordEncrypted, '02-02-1999', null, 'ruansenadev', 'Fullstack developer', null, null, { JavaScript: ['Node', 'Express', 'Angular', 'MongoDB'], Git: true, English: 'Intermediate' }, {'GitHub': 'ruansenadev'})
+createAdmin('Ruan', 'Sena', 'ruansenadev@gmail.com', passwordEncrypted, '02-02-1999', null, 'ruansenadev', 'Fullstack developer', null, null, { JavaScript: ['Node', 'Express', 'Angular', 'MongoDB'], Git: true, English: 'Intermediate' }, {'GitHub': 'ruansenadev'})
 .then(console.log)
 .catch(console.error)
 .finally(() => {

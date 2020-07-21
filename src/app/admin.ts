@@ -1,8 +1,6 @@
-export interface Owner {
+export interface Admin {
   name: string,
   surname: string,
-  email: string,
-  password: string,
   birthdate: Date,
   photo: string,
   profession: string,
