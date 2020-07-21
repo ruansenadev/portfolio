@@ -1,0 +1,34 @@
+.social {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+.social-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  margin: .5rem 1rem;
+  width: 20%;
+  min-width: 10rem;
+  background-color: #23272a;
+  color: white;
+}
+.social-item:hover {
+  bottom: .25rem;
+  background-color: #36393f;
+}
+.social-text {
+  width: 6rem;
+  text-align: center;
+}
+.social-link {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
