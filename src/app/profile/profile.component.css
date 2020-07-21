@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex-flow: row wrap;
+}
+.personal, .professional {
+  margin: .5rem;
+}
+.professional {
+  flex: 1;
+}
+.photo {
+  margin-bottom: 0;
+}
+mat-list {
+  display: flex;
+  flex-flow: row-reverse wrap-reverse;
+}
+mat-list-item {
+  flex: 1;
+}
