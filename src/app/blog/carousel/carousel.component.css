@@ -1,12 +1,7 @@
-h3 {
-  text-transform: uppercase;
-  padding-left: 1rem;
-  font-size: 1rem;
-}
 .posts-carousel {
   display: flex;
   flex-flow: row nowrap;
-  padding: 1rem;
+  padding: 2rem 1rem;
   margin-left: -.5rem;
   margin-right: .5rem;
   overflow-x: auto;
