@@ -1,11 +1,11 @@
 const express = require('express');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const Owner = require('../models/owner')
+const Admin = require('../models/admin')
 const router = express.Router();
 
 router.post('/', function (req, res, next) {
-  Owner.findOne({ email: req.body.email })
+  Admin.findOne({ email: req.body.email })
     .lean({ virtuals: true })
     .exec((err, account) => {
       if (err) { return next(err) }
@@ -20,5 +20,7 @@ router.post('/', function (req, res, next) {
       }
     })
 })
+
+
 
 module.exports = router;

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const leanVirtuals = require('mongoose-lean-virtuals')
 const Schema = mongoose.Schema
 
-const ownerSchema = new Schema({
+const adminSchema = new Schema({
   name: { type: String, required: true },
   surname: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -17,11 +17,11 @@ const ownerSchema = new Schema({
   social: { type: Map, of: String }
 })
 
-ownerSchema.virtual('fullName')
+adminSchema.virtual('fullName')
   .get(function () {
     return `${this.name} ${this.surname}`
   })
 
-ownerSchema.plugin(leanVirtuals)
+adminSchema.plugin(leanVirtuals)
 
-module.exports = mongoose.model('Owner', ownerSchema)
+module.exports = mongoose.model('Admin', adminSchema)
