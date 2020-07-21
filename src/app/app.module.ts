@@ -14,6 +14,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDividerModule } from "@angular/material/divider";
+import { MatListModule } from "@angular/material/list";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthInterceptor } from "./auth/auth.interceptor";
@@ -24,6 +25,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { CarouselComponent } from './blog/carousel/carousel.component';
 import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { ContactComponent } from './contact/contact.component';
     LoginComponent,
     HomeComponent,
     CarouselComponent,
-    ContactComponent
+    ContactComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ import { ContactComponent } from './contact/contact.component';
     MatCardModule,
     MatButtonModule,
     MatInputModule,
-    MatDividerModule
+    MatDividerModule,
+    MatListModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
