@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { Post } from "./post";
 import { environment } from "../../environments/environment";
-const apiPosts = environment.host + '/api/posts'
+const apiPosts = environment.host + '/posts'
 
 @Injectable({
   providedIn: 'root'
