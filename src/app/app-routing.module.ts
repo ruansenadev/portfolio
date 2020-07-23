@@ -7,7 +7,8 @@ import { HomeComponent } from "./home/home.component";
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'blog', loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule) }
+  { path: 'blog', loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule) },
+  { path: 'album', loadChildren: () => import('./album/album.module').then(m => m.AlbumModule) }
 ]
 
 @NgModule({
