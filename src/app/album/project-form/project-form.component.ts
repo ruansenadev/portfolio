@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatChipInputEvent } from "@angular/material/chips";
+import { ActivatedRoute } from "@angular/router";
 import { ProjectsService } from "../projects.service";
+import { Project } from '../project';
 
 @Component({
   selector: 'app-project-form',
@@ -9,16 +11,20 @@ import { ProjectsService } from "../projects.service";
   styleUrls: ['./project-form.component.css']
 })
 export class ProjectFormComponent implements OnInit {
-  constructor(private projectsService: ProjectsService) { }
+  constructor(private projectsService: ProjectsService, private route: ActivatedRoute) { }
   isLoading: boolean
   form: FormGroup
-  thumbnail: string
+  private seq: number
+  private project: Project
+  thumbnail: string = null
   preview: string
   chips: { [key: string]: string[] } = {
     technologies: [],
     keywords: []
   }
   ngOnInit(): void {
+    this.isLoading = true
+    this.seq = +this.route.snapshot.paramMap.get('seq')
     this.form = new FormGroup({
       name: new FormControl(null, Validators.required),
       status: new FormControl(null, Validators.required),
@@ -29,6 +35,31 @@ export class ProjectFormComponent implements OnInit {
       homepage: new FormControl(null),
       keywords: new FormControl(null, Validators.required)
     })
+    if (this.seq) {
+      this.projectsService.getProject(this.seq).subscribe((project) => {
+        this.project = project
+        this.form.setValue({
+          name: this.project.name,
+          status: this.project.status,
+          description: this.project.description,
+          thumbnail: null,
+          technologies: ' ',
+          url: this.project.url,
+          homepage: this.project.homepage || null,
+          keywords: ' '
+        })
+        this.chips.technologies = this.project.technologies
+        this.chips.keywords = this.project.keywords
+        if (this.project.thumbnailPath) {
+          this.thumbnail = this.project.thumbnailPath.slice(this.project.thumbnailPath.lastIndexOf('/') + 1).slice(20)
+          this.preview = this.project.thumbnailPath
+        }
+        this.isLoading = false
+      })
+    } else {
+      this.isLoading = false
+    }
+
     this.isLoading = false;
   }
   onPick(e: Event): void {
@@ -54,8 +85,11 @@ export class ProjectFormComponent implements OnInit {
   onSend() {
     if (this.form.invalid) { return }
     this.isLoading = true
-    console.log('Validou?')
-    this.projectsService.addProject(this.form.value.name, this.form.value.status, this.form.value.thumbnail, this.thumbnail || null, this.form.value.description, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
+    if (this.seq) {
+      this.projectsService.editProject(this.project._id, this.seq, this.form.value.name, this.form.value.status, this.form.value.thumbnail || this.project.thumbnailPath, this.thumbnail, this.form.value.description, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
+    } else {
+      this.projectsService.addProject(this.form.value.name, this.form.value.status, this.form.value.thumbnail, this.thumbnail || null, this.form.value.description, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
+    }
     this.form.reset()
   }
 
