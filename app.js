@@ -11,6 +11,7 @@ const db = mongoose.connection
 db.on('error', console.error.bind(console, 'MongoDB connection error: '))
 db.once('open', () => console.log('MongoDB connected.'))
 
+const projectsRouter = require('./routes/projects')
 const postsRouter = require('./routes/posts')
 const authRouter = require('./routes/auth')
 const adminRouter = require('./routes/admin')
@@ -24,8 +25,9 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api', cors())
-app.use('/api/posts', postsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/admin', adminRouter)
+app.use('/api/projects', projectsRouter)
+app.use('/api/posts', postsRouter)
 
 module.exports = app;
