@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { ProjectsService } from "../projects.service";
-import { PostsService } from 'src/app/blog/posts.service';
 
 @Component({
   selector: 'app-project-form',
@@ -10,7 +9,7 @@ import { PostsService } from 'src/app/blog/posts.service';
   styleUrls: ['./project-form.component.css']
 })
 export class ProjectFormComponent implements OnInit {
-  constructor(private projectsService: PostsService) { }
+  constructor(private projectsService: ProjectsService) { }
   isLoading: boolean
   form: FormGroup
   thumbnail: string
@@ -38,7 +37,7 @@ export class ProjectFormComponent implements OnInit {
     const reader = new FileReader()
     reader.onloadend = () => {
       let extIndex = imageBlob.name.lastIndexOf('.')
-      this.thumbnail = imageBlob.name.slice(0, (extIndex<30?extIndex:30))+imageBlob.name.slice(extIndex)
+      this.thumbnail = imageBlob.name.slice(0, (extIndex < 30 ? extIndex : 30)) + imageBlob.name.slice(extIndex)
       this.preview = reader.result as string
     }
     reader.readAsDataURL(imageBlob)
@@ -54,8 +53,9 @@ export class ProjectFormComponent implements OnInit {
   }
   onSend() {
     if (this.form.invalid) { return }
-    // this.isLoading = true
-    // this.projectsService.addPost
+    this.isLoading = true
+    console.log('Validou?')
+    this.projectsService.addProject(this.form.value.name, this.form.value.status, this.form.value.thumbnail, this.thumbnail || null, this.form.value.description, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
     this.form.reset()
   }
 

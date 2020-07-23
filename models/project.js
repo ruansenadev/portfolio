@@ -9,10 +9,10 @@ const projectSchema = new Schema({
   description: { type: String, required: true },
   thumbnailPath: { type: String },
   slug: { type: String, required: true },
-  technologies: [String],
+  technologies: [{ type: String, required: true }],
   url: { type: String, required: true },
   homepage: { type: String },
-  keywords: [String]
+  keywords: [{ type: String, required: true }]
 })
 
 projectSchema.index({ reference: 1, homepage: 1 }, { unique: true })
