@@ -7,8 +7,8 @@ moment.tz.setDefault('America/Bahia').locale('pt-br')
 const router = express.Router()
 
 const { IncomingForm } = require('formidable')
-const formOptions = {
-  uploadDir: path.join(__dirname, '../public', 'images'),
+const postFormOptions = {
+  uploadDir: path.join(__dirname, '../public', 'images', 'blog'),
   keepExtensions: true,
   maxFileSize: 10 * 1024 * 1024,
   multiples: false
@@ -42,7 +42,7 @@ router.get('/:slug', function (req, res, next) {
     })
 })
 router.post('/', Auth, function (req, res, next) {
-  const form = new IncomingForm(formOptions)
+  const form = new IncomingForm(postFormOptions)
   const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
   form.on("fileBegin", function (filename, file) {
     // keep name uploaded
@@ -51,19 +51,22 @@ router.post('/', Auth, function (req, res, next) {
   form.onPart = (part) => {
     if (part.mime) {
       // check mimetype
-      if (!allowedTypes.includes(part.mime)) { return res.status(406).json({ message: 'Mime-type inválido.' }) }
+      if (!allowedTypes.includes(part.mime)) {
+        req.destroy()
+        return res.status(406).json({ message: 'Mime-type inválido.' })
+      }
     }
     form.handlePart(part)
   }
   form.parse(req, function (err, fields, files) {
-    if (err) { next(err) }
+    if (err) { return next(err) }
     let post = new Post({
       title: fields.title,
       date: new Date(fields.date),
       markdown: fields.markdown,
       labels: JSON.parse(fields.labels)
     })
-    if (files.thumbnail) post.thumbnailPath = `${req.protocol}://${req.get('host')}/images/${dateUpload}-${files.thumbnail.name}`;
+    if (files.thumbnail) post.thumbnailPath = `${req.protocol}://${req.get('host')}/images/blog/${dateUpload}-${files.thumbnail.name}`;
     if (fields.icon) post.icon = fields.icon;
     if (fields.description) post.description = fields.description;
     post.save((err, postSaved) => {
@@ -75,7 +78,7 @@ router.post('/', Auth, function (req, res, next) {
   })
 })
 router.put('/:id', Auth, function (req, res, next) {
-  const form = new IncomingForm(formOptions)
+  const form = new IncomingForm(postFormOptions)
   const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
   form.on("fileBegin", function (filename, file) {
     file.path = path.join(form.uploadDir, `${dateUpload}-${file.name}`)
@@ -87,7 +90,7 @@ router.put('/:id', Auth, function (req, res, next) {
     form.handlePart(part)
   }
   form.parse(req, function (err, fields, files) {
-    if (err) { next(err) }
+    if (err) { return next(err) }
     let post = new Post({
       _id: fields._id,
       title: fields.title,
@@ -97,7 +100,7 @@ router.put('/:id', Auth, function (req, res, next) {
       modified: new Date(fields.modified),
       labels: JSON.parse(fields.labels)
     })
-    if (files.thumbnail) post.thumbnailPath = `${req.protocol}://${req.get('host')}/images/${dateUpload}-${files.thumbnail.name}`;
+    if (files.thumbnail) post.thumbnailPath = `${req.protocol}://${req.get('host')}/images/blog/${dateUpload}-${files.thumbnail.name}`;
     if (fields.thumbnailPath) post.thumbnailPath = fields.thumbnailPath;
     if (fields.description) post.description = fields.description;
     Post.updateOne({ _id: req.params.id }, post, (err, result) => {
