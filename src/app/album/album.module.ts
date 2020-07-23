@@ -12,15 +12,23 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatIconModule } from "@angular/material/icon";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatDividerModule } from "@angular/material/divider";
+import { ClipboardModule } from "@angular/cdk/clipboard";
 
 import { ProjectFormComponent } from './project-form/project-form.component';
+import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
+import { ProjectCardsListComponent } from './project-cards-list/project-cards-list.component';
 
 @NgModule({
   declarations: [
-    ProjectFormComponent
+    ProjectFormComponent,
+    ProjectDialogComponent,
+    ProjectCardsListComponent
   ],
   imports: [
     CommonModule,
+    ClipboardModule,
     ReactiveFormsModule,
     AlbumRoutingModule,
     MatCardModule,
@@ -31,7 +39,9 @@ import { ProjectFormComponent } from './project-form/project-form.component';
     MatExpansionModule,
     MatChipsModule,
     MatProgressBarModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule,
+    MatDividerModule
   ]
 })
 export class AlbumModule { }

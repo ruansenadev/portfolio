@@ -1,0 +1,41 @@
+<main>
+  <div class="flex-container">
+    <mat-card *ngFor="let project of projects">
+      <mat-card-header>
+        <mat-card-title>{{ project.name }}</mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip-list>
+            <mat-chip>{{ project.seq }}</mat-chip>
+            <mat-chip [color]="statusColors[project.status]">{{ project.status }}</mat-chip>
+          </mat-chip-list>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider [inset]="true"></mat-divider>
+      <img *ngIf="project.thumbnailPath" mat-card-image [src]="project.thumbnailPath" [alt]="project.name">
+      <mat-card-content>
+        <mat-chip-list>
+          <mat-chip *ngFor="let item of project.technologies" color="primary">{{ item }}</mat-chip>
+        </mat-chip-list>
+        <mat-divider class="inset"></mat-divider>
+        <p class="mat-body-2">
+          {{ project.description }}
+        </p>
+        <mat-divider class="inset"></mat-divider>
+        <mat-form-field>
+          <input matInput type="url" readonly [value]="project.url">
+          <span class="prefix" matPrefix><mat-icon>link</mat-icon></span>
+          <button matSuffix mat-button [cdkCopyToClipboard]="project.url"><mat-icon>content_copy</mat-icon></button>
+        </mat-form-field>
+        <mat-form-field *ngIf="project.homepage">
+          <input matInput type="url" readonly [value]="project.homepage">
+          <span class="prefix" matPrefix><mat-icon>home</mat-icon></span>
+          <button matSuffix mat-button [cdkCopyToClipboard]="project.homepage"><mat-icon>content_copy</mat-icon></button>
+        </mat-form-field>
+        <mat-divider class="inset"></mat-divider>
+        <mat-chip-list>
+          <mat-chip *ngFor="let word of project.keywords">{{ word }}</mat-chip>
+        </mat-chip-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</main>
