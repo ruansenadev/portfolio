@@ -1,0 +1,28 @@
+.flex-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  margin: 0 auto;
+  padding: 1rem;
+}
+mat-card {
+  max-width: 26rem;
+  margin-bottom: 2rem;
+}
+img {
+  display: block;
+  max-width: 18rem;
+  margin: auto;
+}
+mat-divider.inset {
+  position: unset;
+  margin: 1rem 0;
+}
+mat-form-field {
+  display: block;
+}
+.prefix {
+  margin-right: .25rem;
+  user-select: none;
+}
