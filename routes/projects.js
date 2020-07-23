@@ -31,8 +31,8 @@ router.get('/', function (req, res, next) {
       res.json(projects)
     })
 })
-router.get('/:slug', function (req, res, next) {
-  Project.findOne({ slug: req.params.slug })
+router.get('/:seq', function (req, res, next) {
+  Project.findOne({ seq: +req.params.seq })
     .lean()
     .exec((err, project) => {
       if (err) { return next(err) }
