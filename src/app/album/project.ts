@@ -7,7 +7,7 @@ export interface Project {
   thumbnailPath: string | null;
   slug: string;
   technologies: string[];
-  url: string | null;
+  url: string;
   homepage: string | null;
   keywords: string[];
 }
