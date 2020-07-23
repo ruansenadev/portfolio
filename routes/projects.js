@@ -19,11 +19,7 @@ const projectFormOptions = {
 const allowedTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"]
 
 router.get('/', function (req, res, next) {
-  const items = +req.query.items
-  const left = +req.query.left
   Project.find({})
-    .skip(left * items)
-    .limit(items)
     .lean()
     .sort('-seq')
     .exec((err, projects) => {
