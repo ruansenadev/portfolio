@@ -5,7 +5,6 @@ export interface Project {
   status: string;
   description: string;
   thumbnailPath: string | null;
-  slug: string;
   technologies: string[];
   url: string;
   homepage: string | null;
