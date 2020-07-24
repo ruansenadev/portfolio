@@ -12,6 +12,12 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
   constructor(private projectsService: ProjectsService) { }
   projects: Project[]
   private projectsListen: Subscription
+  statusIcons: { [keys: string]: string } = {
+    'Protótipagem': 'construction',
+    'Desenvolvimento': 'build_circle',
+    'Encerrado': 'highlight_off',
+    'Finalizado': 'check_circle'
+  }
   statusColors: { [key: string]: string } = {
     'Protótipagem': undefined,
     'Desenvolvimento': 'accent',

@@ -1,10 +1,11 @@
 .flex-container {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: flex-start;
   margin: 0 auto;
   padding: 1rem;
+  max-width: 60rem;
 }
 mat-card {
   max-width: 26rem;
@@ -13,7 +14,7 @@ mat-card {
 img {
   display: block;
   max-width: 18rem;
-  margin: auto;
+  margin: .5rem auto;
 }
 mat-divider.inset {
   position: unset;
@@ -25,4 +26,8 @@ mat-form-field {
 .prefix {
   margin-right: .25rem;
   user-select: none;
+}
+.description {
+  font-size: 1rem;
+  font-weight: 500;
 }
