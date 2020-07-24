@@ -8,6 +8,14 @@
           <mat-icon [inline]="true">{{ statusIcons[project.status] }}</mat-icon>
         {{ project.status }}
         </mat-card-subtitle>
+        <div *ngIf="isAuth" class="options">
+          <a mat-mini-fab [routerLink]="['edit', project.seq]">
+            <mat-icon>edit</mat-icon>
+          </a>
+          <button mat-mini-fab color="warn" (click)="delProject(project)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </div>
       </mat-card-header>
       <mat-divider *ngIf="project.thumbnailPath" [inset]="true"></mat-divider>
       <img *ngIf="project.thumbnailPath" mat-card-image [src]="project.thumbnailPath" [alt]="project.name">

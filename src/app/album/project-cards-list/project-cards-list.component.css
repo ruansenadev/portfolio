@@ -7,6 +7,14 @@
   padding: 1rem;
   max-width: 60rem;
 }
+.options {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.options button {
+  margin: 0 .5rem;
+}
 mat-card {
   max-width: 26rem;
   margin-bottom: 2rem;

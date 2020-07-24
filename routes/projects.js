@@ -112,9 +112,23 @@ router.put('/:id', Auth, function (req, res, next) {
   })
 })
 router.delete('/:id', Auth, function (req, res) {
-  Project.deleteOne({ _id: req.params.id }, (err) => {
+  async.parallel({
+    projectDeleted: function (cb) {
+      Project.findByIdAndDelete({ _id: req.params.id }, { select: 'seq' }, (cb))
+    },
+    last: function (cb) {
+      Counter.findById(counterId, cb)
+    }
+  }, (err, results) => {
     if (err) { return res.status(400).json({ message: 'Falha ao deletar.' }) }
-    res.json({ message: 'Projeto deletado.' })
+    if (results.last.seq === results.projectDeleted.seq) {
+      Counter.updateOne({ _id: counterId }, { $inc: { seq: -1 } }, (err) => {
+        if (err) { return res.json({ message: `Projeto ${results.projectDeleted.seq} deletado.` }) }
+        res.json({ message: `Último projeto deletado.` })
+      })
+    } else {
+      res.json({ message: `Projeto ${results.projectDeleted.seq} deletado.` })
+    }
   })
 })
 
