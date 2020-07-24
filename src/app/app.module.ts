@@ -23,9 +23,11 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './auth/login/login.component';
 import { CarouselComponent } from './blog/carousel/carousel.component';
+import { AlbumCarouselComponent } from './album/album-carousel/album-carousel.component';
 import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
 import { ProfileComponent } from './profile/profile.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -34,8 +36,10 @@ import { ProfileComponent } from './profile/profile.component';
     LoginComponent,
     HomeComponent,
     CarouselComponent,
+    AlbumCarouselComponent,
     ContactComponent,
-    ProfileComponent
+    ProfileComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
