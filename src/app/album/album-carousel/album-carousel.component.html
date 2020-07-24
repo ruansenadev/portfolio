@@ -1,0 +1,24 @@
+<div class="projects-carousel">
+  <mat-card class="project" *ngFor="let project of projects">
+    <mat-card-header>
+      <span mat-card-avatar>{{ project.seq }}</span>
+      <mat-card-title>
+        {{ project.name }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        <mat-icon [inline]="true">{{ statusIcons[project.status] }}</mat-icon>
+        {{ project.status }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image *ngIf="project.thumbnailPath" [src]="project.thumbnailPath" [alt]="project.name">
+    <mat-card-content *ngIf="!project.thumbnailPath" class="description">
+      {{ project.description }}
+    </mat-card-content>
+    <mat-card-footer>
+      <a mat-mini-fab color="primary" [routerLink]="['album', project.seq]">
+        <mat-icon>read_more</mat-icon>
+      </a>
+    </mat-card-footer>
+  </mat-card>
+</div>
+<mat-divider></mat-divider>

@@ -1,0 +1,32 @@
+.projects-carousel {
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 2rem 1rem;
+  margin-left: -.5rem;
+  margin-right: .5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.projects-carousel::-webkit-scrollbar {
+  display: none;
+}
+.project {
+  flex: 0 0 auto;
+  min-width: 12rem;
+  max-width: 15rem;
+  margin-right: 1rem;
+}
+mat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+mat-card-footer {
+  margin: unset;
+}
+.description {
+  font-size: 1rem;
+  font-weight: 500;
+}
