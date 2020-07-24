@@ -39,8 +39,8 @@ export class ProjectsService {
     this.http.post<{ message: string, project: Project }>(apiProjects, data).subscribe((res) => {
       this.projects.push(res.project)
       this.stream.next([...this.projects])
-      console.log(res.message, res.project)
-      this.router.navigate(['/'])
+      console.log(res.message)
+      this.router.navigate(['/album', res.project.seq])
     })
   }
   editProject(_id: string, seq: number, name: string, status: string, thumbnail: File | string | null, thumbnailName: string | null, description: string, technologies: string[], url: string, homepage: string | null, keywords: string[]): void {
@@ -61,7 +61,10 @@ export class ProjectsService {
     data.append('keywords', JSON.stringify(keywords))
     this.http.put<{ message: string }>(`${apiProjects}/${_id}`, data).subscribe((res) => {
       console.log(res)
-      this.router.navigate(['/'])
+      this.router.navigate(['/album'])
     })
+  }
+  delProject(_id: string) {
+    return this.http.delete<{ message: string }>(`${apiProjects}/${_id}`)
   }
 }
