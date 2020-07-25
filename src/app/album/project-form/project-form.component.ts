@@ -53,7 +53,7 @@ export class ProjectFormComponent implements OnInit {
           homepage: this.project.homepage || null,
           keywords: ' '
         })
-        this.introduction = `## ${this.form.value.name}\n${this.form.value.description}\n---\n`
+        this.introduction = `## ${this.form.value.name}\n***\n${this.form.value.description}\n`
         this.chips.technologies = this.project.technologies
         this.chips.keywords = this.project.keywords
         if (this.project.thumbnailPath) {
@@ -72,13 +72,9 @@ export class ProjectFormComponent implements OnInit {
       // overview surely starts with last intro
       this.form.patchValue({ overview: this.form.value.overview.slice(this.introduction.length) })
     }
-    this.introduction = (this.form.value.name ? `## ${this.form.value.name}\n` : '') + (this.form.value.description ? `${this.form.value.description}\n` : '')
-    if (this.introduction.length) {
-      this.introduction += '---\n'
-      if (this.form.value.overview) {
-        // concats
-        this.form.patchValue({ overview: this.introduction + this.form.value.overview })
-      }
+    this.introduction = (this.form.value.name ? `## ${this.form.value.name}\n***\n` : '') + (this.form.value.description ? `${this.form.value.description}\n` : '')
+    if (this.introduction.length && this.form.value.overview) {
+      this.form.patchValue({ overview: this.introduction + this.form.value.overview })
     }
   }
   onOverviewChange(): void {
@@ -91,9 +87,6 @@ export class ProjectFormComponent implements OnInit {
           // intro was erased but left a slice of overview
           this.form.patchValue({ overview: this.introduction + this.form.value.overview })
         }
-      } else if (this.introduction.length === this.form.value.overview.length) {
-        // only intro was kept
-        this.form.patchValue({ overview: '' })
       }
     }
   }
@@ -133,9 +126,9 @@ export class ProjectFormComponent implements OnInit {
     if (this.form.invalid) { return }
     this.isLoading = true
     if (this.seq) {
-      this.projectsService.editProject(this.project._id, this.seq, this.form.value.name, this.form.value.status, this.form.value.thumbnail || this.project.thumbnailPath, this.thumbnail, this.form.value.description, this.form.value.overview || null, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
+      this.projectsService.editProject(this.project._id, this.seq, this.form.value.name, this.form.value.status, this.form.value.thumbnail || this.project.thumbnailPath, this.thumbnail, this.form.value.description, this.form.value.overview || this.introduction, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
     } else {
-      this.projectsService.addProject(this.form.value.name, this.form.value.status, this.form.value.thumbnail, this.thumbnail || null, this.form.value.description, this.form.value.overview || null, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
+      this.projectsService.addProject(this.form.value.name, this.form.value.status, this.form.value.thumbnail, this.thumbnail || null, this.form.value.description, this.form.value.overview || this.introduction, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
     }
     this.form.reset()
   }

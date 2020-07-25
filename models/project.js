@@ -6,7 +6,7 @@ const projectSchema = new Schema({
   name: { type: String, required: true },
   status: { type: String, required: true, enum: ['Protótipagem', 'Desenvolvimento', 'Encerrado', 'Finalizado'] },
   description: { type: String, required: true, maxlength: 330 },
-  overview: { type: String },
+  overview: { type: String, required: true },
   thumbnailPath: { type: String },
   technologies: [{ type: String, required: true }],
   url: { type: String, required: true },
@@ -14,6 +14,6 @@ const projectSchema = new Schema({
   keywords: [{ type: String, required: true }]
 })
 
-projectSchema.index({ reference: 1, homepage: 1 }, { unique: true })
+projectSchema.index({ url: 1, homepage: 1 }, { unique: true })
 
 module.exports = mongoose.model('Project', projectSchema)
