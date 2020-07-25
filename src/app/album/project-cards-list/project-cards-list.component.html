@@ -1,22 +1,18 @@
 <main>
   <div class="flex-container">
     <mat-card *ngFor="let project of projects" class="mat-elevation-z5">
-      <mat-card-header>
-        <span mat-card-avatar>{{ project.seq }}</span>
-        <mat-card-title>{{ project.name }}</mat-card-title>
-        <mat-card-subtitle>
-          <mat-icon [inline]="true">{{ statusIcons[project.status] }}</mat-icon>
-        {{ project.status }}
-        </mat-card-subtitle>
-        <div *ngIf="isAuth" class="options">
-          <a mat-mini-fab [routerLink]="['edit', project.seq]">
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button mat-mini-fab color="warn" (click)="delProject(project)">
-            <mat-icon>delete_forever</mat-icon>
-          </button>
-        </div>
-      </mat-card-header>
+      <a [routerLink]="[project.seq]" class="project-link">
+        <mat-card-header>
+          <span mat-card-avatar>{{ project.seq }}</span>
+          <mat-card-title-group>
+            <mat-card-title>{{ project.name }}</mat-card-title>
+            <mat-card-subtitle>
+              <mat-icon [inline]="true">{{ statusIcons[project.status] }}</mat-icon>
+              {{ project.status }}
+            </mat-card-subtitle>
+          </mat-card-title-group>
+        </mat-card-header>
+      </a>
       <mat-divider *ngIf="project.thumbnailPath" [inset]="true"></mat-divider>
       <img *ngIf="project.thumbnailPath" mat-card-image [src]="project.thumbnailPath" [alt]="project.name">
       <mat-card-content>
@@ -27,7 +23,6 @@
         <p [class]="project.thumbnailPath?'mat-body-2':'description'">
           {{ project.description }}
         </p>
-        <mat-divider class="inset"></mat-divider>
         <mat-form-field>
           <input matInput type="url" readonly [value]="project.url">
           <span class="prefix" matPrefix>
@@ -50,6 +45,19 @@
           <mat-chip *ngFor="let word of project.keywords">{{ word }}</mat-chip>
         </mat-chip-list>
       </mat-card-content>
+      <mat-card-actions>
+        <a mat-mini-fab color="primary" [routerLink]="[project.seq]">
+          <mat-icon>read_more</mat-icon>
+        </a>
+        <div *ngIf="isAuth" class="options">
+          <a mat-mini-fab [routerLink]="['edit', project.seq]">
+            <mat-icon>edit</mat-icon>
+          </a>
+          <button mat-mini-fab color="warn" (click)="delProject(project)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </div>
+      </mat-card-actions>
     </mat-card>
   </div>
 </main>

@@ -12,7 +12,6 @@
   display: none;
 }
 .project {
-  flex: 0 0 auto;
   min-width: 12rem;
   max-width: 15rem;
   margin-right: 1rem;
