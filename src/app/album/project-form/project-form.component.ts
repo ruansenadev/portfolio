@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatChipInputEvent } from "@angular/material/chips";
+import { LEFT_ARROW, UP_ARROW, DOWN_ARROW, RIGHT_ARROW } from "@angular/cdk/keycodes";
 import { ActivatedRoute } from "@angular/router";
 import { ProjectsService } from "../projects.service";
 import { Project } from '../project';
@@ -14,10 +15,12 @@ export class ProjectFormComponent implements OnInit {
   constructor(private projectsService: ProjectsService, private route: ActivatedRoute) { }
   isLoading: boolean
   form: FormGroup
+  private arrows = [LEFT_ARROW, UP_ARROW, DOWN_ARROW, RIGHT_ARROW]
   private seq: number
   private project: Project
   thumbnail: string = null
   preview: string
+  introduction: string = ''
   chips: { [key: string]: string[] } = {
     technologies: [],
     keywords: []
@@ -26,9 +29,10 @@ export class ProjectFormComponent implements OnInit {
     this.isLoading = true
     this.seq = +this.route.snapshot.paramMap.get('seq')
     this.form = new FormGroup({
-      name: new FormControl(null, Validators.required),
+      name: new FormControl('', Validators.required),
       status: new FormControl(null, Validators.required),
-      description: new FormControl(null, Validators.required),
+      description: new FormControl('', [Validators.required, Validators.maxLength(330)]),
+      overview: new FormControl(''),
       thumbnail: new FormControl(null),
       technologies: new FormControl(null, Validators.required),
       url: new FormControl(null, Validators.required),
@@ -42,12 +46,14 @@ export class ProjectFormComponent implements OnInit {
           name: this.project.name,
           status: this.project.status,
           description: this.project.description,
+          overview: this.project.overview || '',
           thumbnail: null,
           technologies: ' ',
           url: this.project.url,
           homepage: this.project.homepage || null,
           keywords: ' '
         })
+        this.introduction = `## ${this.form.value.name}\n${this.form.value.description}\n---\n`
         this.chips.technologies = this.project.technologies
         this.chips.keywords = this.project.keywords
         if (this.project.thumbnailPath) {
@@ -59,8 +65,49 @@ export class ProjectFormComponent implements OnInit {
     } else {
       this.isLoading = false
     }
-
     this.isLoading = false;
+  }
+  onIntroChange(): void {
+    if (this.form.value.overview) {
+      // overview surely starts with last intro
+      this.form.patchValue({ overview: this.form.value.overview.slice(this.introduction.length) })
+    }
+    this.introduction = (this.form.value.name ? `## ${this.form.value.name}\n` : '') + (this.form.value.description ? `${this.form.value.description}\n` : '')
+    if (this.introduction.length) {
+      this.introduction += '---\n'
+      if (this.form.value.overview) {
+        // concats
+        this.form.patchValue({ overview: this.introduction + this.form.value.overview })
+      }
+    }
+  }
+  onOverviewChange(): void {
+    if (this.introduction.length) {
+      if (!this.form.value.overview.startsWith(this.introduction)) {
+        if (this.introduction.startsWith(this.form.value.overview)) {
+          // only left a slice of intro
+          this.form.patchValue({ overview: '' })
+        } else {
+          // intro was erased but left a slice of overview
+          this.form.patchValue({ overview: this.introduction + this.form.value.overview })
+        }
+      } else if (this.introduction.length === this.form.value.overview.length) {
+        // only intro was kept
+        this.form.patchValue({ overview: '' })
+      }
+    }
+  }
+  onOverviewInput(e: KeyboardEvent): void {
+    const target = e.target as HTMLTextAreaElement;
+    if (this.introduction && !target.value.indexOf(this.introduction)) {
+      // if introduction is in start
+      const start = target.selectionStart;
+      const end = target.selectionEnd;
+      if (start < this.introduction.length || end < this.introduction.length) {
+        // dont alter introduction text
+        if (!this.arrows.includes(e.keyCode)) e.preventDefault()
+      }
+    }
   }
   onPick(e: Event): void {
     const imageBlob = (e.target as HTMLInputElement).files[0]
@@ -86,9 +133,9 @@ export class ProjectFormComponent implements OnInit {
     if (this.form.invalid) { return }
     this.isLoading = true
     if (this.seq) {
-      this.projectsService.editProject(this.project._id, this.seq, this.form.value.name, this.form.value.status, this.form.value.thumbnail || this.project.thumbnailPath, this.thumbnail, this.form.value.description, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
+      this.projectsService.editProject(this.project._id, this.seq, this.form.value.name, this.form.value.status, this.form.value.thumbnail || this.project.thumbnailPath, this.thumbnail, this.form.value.description, this.form.value.overview || null, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
     } else {
-      this.projectsService.addProject(this.form.value.name, this.form.value.status, this.form.value.thumbnail, this.thumbnail || null, this.form.value.description, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
+      this.projectsService.addProject(this.form.value.name, this.form.value.status, this.form.value.thumbnail, this.thumbnail || null, this.form.value.description, this.form.value.overview || null, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
     }
     this.form.reset()
   }
