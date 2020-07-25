@@ -26,12 +26,13 @@ export class ProjectsService {
   getProject(seq: number) {
     return this.http.get<Project>(`${apiProjects}/${seq}`)
   }
-  addProject(name: string, status: string, thumbnail: File | null, thumbnailName: string | null, description: string, technologies: string[], url: string, homepage: string | null, keywords: string[]): void {
+  addProject(name: string, status: string, thumbnail: File | null, thumbnailName: string | null, description: string, overview: string | null, technologies: string[], url: string, homepage: string | null, keywords: string[]): void {
     const data = new FormData()
     data.append('name', name)
     data.append('status', status)
     if (thumbnail) data.append('thumbnail', thumbnail, thumbnailName)
     data.append('description', description)
+    if (overview) data.append('overview', overview)
     data.append('technologies', JSON.stringify(technologies))
     data.append('url', url)
     if (homepage) data.append('homepage', homepage)
@@ -43,7 +44,7 @@ export class ProjectsService {
       this.router.navigate(['/album', res.project.seq])
     })
   }
-  editProject(_id: string, seq: number, name: string, status: string, thumbnail: File | string | null, thumbnailName: string | null, description: string, technologies: string[], url: string, homepage: string | null, keywords: string[]): void {
+  editProject(_id: string, seq: number, name: string, status: string, thumbnail: File | string | null, thumbnailName: string | null, description: string, overview: string | null, technologies: string[], url: string, homepage: string | null, keywords: string[]): void {
     const data = new FormData()
     data.append('_id', _id)
     data.append('seq', seq + '')
@@ -55,6 +56,7 @@ export class ProjectsService {
       data.append('thumbnailPath', thumbnail)
     }
     data.append('description', description)
+    if (overview) data.append('overview', overview)
     data.append('technologies', JSON.stringify(technologies))
     data.append('url', url)
     if (homepage) data.append('homepage', homepage)

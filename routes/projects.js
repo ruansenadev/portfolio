@@ -62,6 +62,7 @@ router.post('/', Auth, function (req, res, next) {
       keywords: JSON.parse(fields.keywords)
     })
     if (files.thumbnail) project.thumbnailPath = `${req.protocol}://${req.get('host')}/images/album/${dateUpload}-${files.thumbnail.name}`;
+    if (fields.overview) project.overview = fields.overview;
     if (fields.homepage) project.homepage = fields.homepage;
     Counter.findByIdAndUpdate(counterId, { $inc: { seq: 1 } }, { new: true })
       .then((counter) => {
@@ -103,6 +104,7 @@ router.put('/:id', Auth, function (req, res, next) {
     })
     if (files.thumbnail) project.thumbnailPath = `${req.protocol}://${req.get('host')}/images/album/${dateUpload}-${files.thumbnail.name}`;
     if (fields.thumbnailPath) project.thumbnailPath = fields.thumbnailPath;
+    if (fields.overview) project.overview = fields.overview;
     if (fields.homepage) project.homepage = fields.homepage;
     Project.updateOne({ _id: req.params.id }, project, (err, result) => {
       if (err) { return next(err) }

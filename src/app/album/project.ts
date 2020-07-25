@@ -4,7 +4,7 @@ export interface Project {
   name: string;
   status: string;
   description: string;
-  markdown: string;
+  overview: string | null;
   thumbnailPath: string | null;
   technologies: string[];
   url: string;
