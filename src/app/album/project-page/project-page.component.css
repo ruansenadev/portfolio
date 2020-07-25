@@ -1,0 +1,43 @@
+.article {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
+  align-items: flex-end;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.project {
+  width: 50rem;
+  margin-bottom: 1rem;
+}
+mat-card {
+  margin-bottom: 1rem;
+}
+mat-card-content {
+  padding: 1rem 0;
+  margin-bottom: 0.5rem;
+}
+.thumbnail, .tab-name {
+  display: none;
+}
+.tab-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+  padding: 1rem 0;
+  word-break: break-all;
+}
+mat-card-footer {
+  padding: 0.5rem 1rem;
+}
+@media (min-width: 36rem) {
+  .thumbnail {
+    display: block;
+    margin: auto;
+  }
+  .tab-name {
+    display: inline-block;
+    margin-left: .25rem;
+  }
+}

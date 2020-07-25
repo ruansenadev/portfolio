@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from "@angular/forms";
 
+import { MarkdownModule } from "ngx-markdown";
 import { AlbumRoutingModule } from "./album-routing.module";
+import { MatTabsModule } from "@angular/material/tabs";
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -19,19 +21,23 @@ import { ClipboardModule } from "@angular/cdk/clipboard";
 import { ProjectFormComponent } from './project-form/project-form.component';
 import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
 import { ProjectCardsListComponent } from './project-cards-list/project-cards-list.component';
+import { ProjectPageComponent } from './project-page/project-page.component';
 
 @NgModule({
   declarations: [
     ProjectFormComponent,
     ProjectDialogComponent,
-    ProjectCardsListComponent
+    ProjectCardsListComponent,
+    ProjectPageComponent
   ],
   imports: [
     CommonModule,
+    MarkdownModule.forChild(),
     ClipboardModule,
     ReactiveFormsModule,
     AlbumRoutingModule,
     MatCardModule,
+    MatTabsModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
