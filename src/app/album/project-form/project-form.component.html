@@ -4,7 +4,7 @@
     <form [formGroup]="form" (submit)="onSend()">
       <mat-form-field hintLabel="Nome do projeto" appearance="standard">
         <mat-label>Projeto</mat-label>
-        <input matInput formControlName="name" required>
+        <input matInput formControlName="name" required (change)="onIntroChange()">
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Status</mat-label>
@@ -34,9 +34,15 @@
           </mat-action-row>
         </mat-expansion-panel>
       </mat-accordion>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="fill">
         <mat-label>Descrição</mat-label>
-        <textarea matInput cdkTextareaAutosize rows="3" formControlName="description" required></textarea>
+        <textarea matInput cdkTextareaAutosize rows="3" formControlName="description" required maxlength="330" (change)="onIntroChange()"></textarea>
+        <mat-hint>Um parágrafo sobre o projeto</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline" hintLabel="Adicione conteúdos, recursos, referências... (Descrição é mantida)">
+        <mat-label>Visão geral</mat-label>
+        <textarea matInput cdkTextareaAutosize formControlName="overview" rows="6" (keydown)="onOverviewInput($event)" (change)="onOverviewChange()"></textarea>
+        <mat-hint align="end"><a href="https://commonmark.org/help" target="_blank">Markdown reference</a></mat-hint>
       </mat-form-field>
       <mat-form-field>
         <mat-chip-list #technologiesList>
@@ -47,12 +53,12 @@
           <input matInput formControlName="technologies" placeholder="Add tecnologia..." [matChipInputFor]="technologiesList" [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="addChip($event, 'technologies')">
         </mat-chip-list>
       </mat-form-field>
-      <mat-form-field appearance="standard">
+      <mat-form-field appearance="outline">
         <mat-label>URL</mat-label>
         <input matInput type="url" formControlName="url" required>
         <mat-hint>Source externa</mat-hint>
       </mat-form-field>
-      <mat-form-field appearance="standard" hintLabel="Site">
+      <mat-form-field appearance="outline" hintLabel="Site">
         <mat-label>Página inicial</mat-label>
         <input matInput type="url" formControlName="homepage">
       </mat-form-field>
