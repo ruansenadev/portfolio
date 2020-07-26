@@ -31,6 +31,9 @@ mat-card-content {
 mat-card-footer {
   padding: 0.5rem 1rem;
 }
+.status-icon {
+  margin-right: .25rem;
+}
 @media (min-width: 36rem) {
   .thumbnail {
     display: block;
