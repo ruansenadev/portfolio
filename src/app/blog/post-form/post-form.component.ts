@@ -89,7 +89,7 @@ export class PostFormComponent implements OnInit {
     if (this.form.invalid) { return }
     this.isLoading = true
     if (this.postSlug) {
-      this.postsService.editPost(this.post._id, this.form.value.title, this.post.date, this.form.value.thumbnail || this.post.thumbnailPath, this.thumbnail, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
+      this.postsService.editPost(this.post._id, this.form.value.title, this.postSlug, this.post.date, this.form.value.thumbnail || this.post.thumbnailPath, this.thumbnail, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
     } else {
       this.postsService.addPost(this.form.value.title, this.form.value.thumbnail, this.thumbnail, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
     }

@@ -6,6 +6,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { PostsService } from "../posts.service";
 import { AuthService } from "../../auth/auth.service";
 import { Post } from "../post";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MessageComponent } from "../../messages/message/message.component";
 
 @Component({
   selector: 'blog-post-list',
@@ -13,7 +15,7 @@ import { Post } from "../post";
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  constructor(private postsService: PostsService, private dialog: MatDialog, private authService: AuthService) { }
+  constructor(private postsService: PostsService, private dialog: MatDialog, private authService: AuthService, private messageBar: MatSnackBar) { }
   posts: Post[] = []
   private postsListener: Subscription;
   isAuth: boolean = false;
@@ -38,7 +40,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     }).afterClosed().subscribe((confirm) => {
       if(confirm) {
         this.postsService.delPost(post._id).subscribe((res) => {
-          console.log(res.message)
+          this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
           this.postsService.populatePosts(this.left, this.items)
         })
       }
