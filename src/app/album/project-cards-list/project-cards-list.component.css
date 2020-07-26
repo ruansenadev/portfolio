@@ -11,6 +11,9 @@ mat-card-actions {
   display: flex;
   justify-content: space-around;
 }
+mat-card-subtitle {
+  margin-bottom: 0;
+}
 .options {
   display: flex;
   align-items: center;
@@ -45,4 +48,7 @@ mat-form-field {
 .description {
   font-size: 1rem;
   font-weight: 500;
+}
+.status-icon {
+  margin-right: .25rem;
 }

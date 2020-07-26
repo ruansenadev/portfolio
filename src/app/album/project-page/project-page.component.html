@@ -3,8 +3,15 @@
     <mat-card-header>
       <mat-card-title>
         {{ project.name }}
-        <span class="mat-body">{{ project.status }}</span>
       </mat-card-title>
+      <mat-card-subtitle>
+        <mat-chip-list>
+          <mat-chip [color]="statusColors[project.status]" selected>
+            <mat-icon class="status-icon">{{ statusIcons[project.status] }}</mat-icon>
+            {{ project.status }}
+          </mat-chip>
+        </mat-chip-list>
+      </mat-card-subtitle>
       <img *ngIf="project.thumbnailPath" mat-card-md-image [src]="project.thumbnailPath" class="thumbnail">
     </mat-card-header>
     <mat-card-content>

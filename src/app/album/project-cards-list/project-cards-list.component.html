@@ -7,17 +7,21 @@
           <mat-card-title-group>
             <mat-card-title>{{ project.name }}</mat-card-title>
             <mat-card-subtitle>
-              <mat-icon [inline]="true">{{ statusIcons[project.status] }}</mat-icon>
-              {{ project.status }}
+              <mat-chip-list>
+                <mat-chip [color]="statusColors[project.status]" selected>
+                  <mat-icon class="status-icon">{{ statusIcons[project.status] }}</mat-icon>
+                  {{ project.status }}
+                </mat-chip>
+              </mat-chip-list>
             </mat-card-subtitle>
           </mat-card-title-group>
         </mat-card-header>
       </a>
-      <mat-divider *ngIf="project.thumbnailPath" [inset]="true"></mat-divider>
+      <mat-divider class="inset"></mat-divider>
       <img *ngIf="project.thumbnailPath" mat-card-image [src]="project.thumbnailPath" [alt]="project.name">
       <mat-card-content>
         <mat-chip-list>
-          <mat-chip *ngFor="let item of project.technologies" color="primary">{{ item }}</mat-chip>
+          <mat-chip *ngFor="let item of project.technologies" color="primary" selected>{{ item }}</mat-chip>
         </mat-chip-list>
         <mat-divider class="inset"></mat-divider>
         <p [class]="project.thumbnailPath?'mat-body-2':'description'">
