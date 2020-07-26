@@ -3,6 +3,8 @@ import { HttpClient } from "@angular/common/http";
 import { Subject } from "rxjs";
 import { Router } from "@angular/router";
 import { Project } from "./project";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MessageComponent } from "../messages/message/message.component";
 import { environment } from "../../environments/environment";
 const apiProjects = environment.host + '/projects'
 
@@ -10,7 +12,7 @@ const apiProjects = environment.host + '/projects'
   providedIn: 'root'
 })
 export class ProjectsService {
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private messageBar: MatSnackBar) { }
   private projects: Project[] = []
   private stream = new Subject<Project[]>()
 
@@ -40,7 +42,7 @@ export class ProjectsService {
     this.http.post<{ message: string, project: Project }>(apiProjects, data).subscribe((res) => {
       this.projects.push(res.project)
       this.stream.next([...this.projects])
-      console.log(res.message)
+      this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Projeto', redirect: `album/${res.project.seq}` } })
       this.router.navigate(['/album', res.project.seq])
     })
   }
@@ -62,7 +64,7 @@ export class ProjectsService {
     if (homepage) data.append('homepage', homepage)
     data.append('keywords', JSON.stringify(keywords))
     this.http.put<{ message: string }>(`${apiProjects}/${_id}`, data).subscribe((res) => {
-      console.log(res)
+      this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Projeto', redirect: `album/${seq}` } })
       this.router.navigate(['/album'])
     })
   }

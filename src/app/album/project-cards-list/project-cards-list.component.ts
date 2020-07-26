@@ -5,6 +5,8 @@ import { ProjectDialogComponent } from "../project-dialog/project-dialog.compone
 import { AuthService } from "../../auth/auth.service";
 import { ProjectsService } from "../projects.service";
 import { Project } from "../project";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MessageComponent } from "../../messages/message/message.component";
 
 @Component({
   selector: 'app-project-cards-list',
@@ -12,7 +14,7 @@ import { Project } from "../project";
   styleUrls: ['./project-cards-list.component.css']
 })
 export class ProjectCardsListComponent implements OnInit, OnDestroy {
-  constructor(private projectsService: ProjectsService, private dialog: MatDialog, private authService: AuthService) { }
+  constructor(private projectsService: ProjectsService, private dialog: MatDialog, private authService: AuthService, private messageBar: MatSnackBar) { }
   projects: Project[]
   isAuth: boolean
   private projectsListen: Subscription
@@ -43,7 +45,7 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
     }).afterClosed().subscribe((confirm) => {
       if (confirm) {
         this.projectsService.delProject(project._id).subscribe((res) => {
-          console.log(res.message)
+          this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
           this.projectsService.populateProjects()
         })
       }

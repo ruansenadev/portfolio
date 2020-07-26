@@ -1,2 +1,7 @@
-<span>{{ data.message }}</span>
-<button *ngIf="data.action" mat-button (click)="messageBar.dismissWithAction()">{{ data.action }}</button>
+<div class="bar">
+  <span *ngIf="data.message">{{ data.message }}</span>
+  <button *ngIf="data.action" mat-button (click)="messageBar.dismissWithAction()">
+    {{ data.action | uppercase }}
+    <mat-icon *ngIf="data.actionIcon">{{ data.actionIcon || 'arrow_forward' }}</mat-icon>
+  </button>
+</div>
