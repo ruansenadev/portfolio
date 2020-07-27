@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from "@angular/material/snack-bar";
 
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatIconModule } from "@angular/material/icon";
 import { MatToolbarModule } from "@angular/material/toolbar";
@@ -25,7 +26,7 @@ import { ErrorInterceptor } from './messages/error.interceptor';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './auth/login/login.component';
-import { CarouselComponent } from './blog/carousel/carousel.component';
+import { BlogCarouselComponent } from './blog/blog-carousel/blog-carousel.component';
 import { AlbumCarouselComponent } from './album/album-carousel/album-carousel.component';
 import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
@@ -33,6 +34,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { FooterComponent } from './footer/footer.component';
 import { MessageComponent } from './messages/message/message.component';
 import { WorkComponent } from './work/work.component';
+import { SheetComponent } from './share/sheet/sheet.component';
 
 @NgModule({
   declarations: [
@@ -40,13 +42,14 @@ import { WorkComponent } from './work/work.component';
     HeaderComponent,
     LoginComponent,
     HomeComponent,
-    CarouselComponent,
+    BlogCarouselComponent,
     AlbumCarouselComponent,
     ContactComponent,
     ProfileComponent,
     FooterComponent,
     MessageComponent,
-    WorkComponent
+    WorkComponent,
+    SheetComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +58,7 @@ import { WorkComponent } from './work/work.component';
     AppRoutingModule,
     HttpClientModule,
     MatSnackBarModule,
+    MatBottomSheetModule,
     MarkdownModule.forRoot(),
     MatFormFieldModule,
     MatProgressBarModule,
