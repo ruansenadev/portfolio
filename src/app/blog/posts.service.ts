@@ -6,7 +6,7 @@ import { Post } from "./post";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MessageComponent } from "../messages/message/message.component";
 import { environment } from "../../environments/environment";
-const apiPosts = environment.host + '/posts'
+const apiPosts = environment.server + '/posts'
 
 @Injectable({
   providedIn: 'root'
