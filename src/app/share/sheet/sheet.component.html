@@ -1,0 +1,5 @@
+<mat-nav-list>
+  <a mat-list-item *ngFor="let link of data | keyvalue" [href]="link.value" target="_blank" (click)="share.dismiss()">
+    <span matLine>{{ link.key }}</span>
+  </a>
+</mat-nav-list>
