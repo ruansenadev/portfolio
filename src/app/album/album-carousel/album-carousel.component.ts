@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Project } from "../project";
 import { ProjectsService } from "../projects.service";
+import { ShareService } from "../../share/share.service";
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -9,7 +10,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./album-carousel.component.css']
 })
 export class AlbumCarouselComponent implements OnInit, OnDestroy {
-  constructor(private projectsService: ProjectsService) { }
+  constructor(private projectsService: ProjectsService, private shareService: ShareService) { }
   projects: Project[] = []
   private projectsListen: Subscription
   statusIcons: { [keys: string]: string } = {
@@ -21,6 +22,9 @@ export class AlbumCarouselComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.projectsService.populateProjects()
     this.projectsListen = this.projectsService.getStream().subscribe((projects) => this.projects = projects)
+  }
+  showShareables(seq: number): void {
+    this.shareService.openSheet('/album/'+seq)
   }
   ngOnDestroy(): void {
     this.projectsListen.unsubscribe()

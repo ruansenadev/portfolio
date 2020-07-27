@@ -14,7 +14,10 @@
       {{ post.description || post.labels }}
     </mat-card-content>
     <mat-card-footer>
-      <a mat-mini-fab [routerLink]="['blog', post.slug]">
+      <button mat-mini-fab (click)="showShareables(post.slug)">
+        <mat-icon>share</mat-icon>
+      </button>
+      <a mat-mini-fab color="primary" [routerLink]="['blog', post.slug]">
         <mat-icon>read_more</mat-icon>
       </a>
     </mat-card-footer>
