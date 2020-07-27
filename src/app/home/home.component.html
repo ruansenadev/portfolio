@@ -1,0 +1,45 @@
+<main>
+  <section id="Profile">
+    <app-profile></app-profile>
+  </section>
+  <section id="Album" class="mat-elevation-z3">
+    <mat-card class="section-heading mat-elevation-z">
+      <h3 class="section-title">
+        <a mat-flat-button color="accent" [routerLink]="['/album']" class="heading-btn">
+          Projetos
+          <mat-icon>dynamic_feed</mat-icon>
+        </a>
+      </h3>
+    </mat-card>
+    <album-carousel></album-carousel>
+  </section>
+  <section id="Workflow">
+    <mat-card class="section-heading mat-elevation-z">
+      <h3 class="section-title">
+        Como trabalho
+      </h3>
+      <p matLine>Processo de desenvolvimento e criação</p>
+    </mat-card>
+    <app-work></app-work>
+  </section>
+  <section id="Blog" class="mat-elevation-z3">
+    <mat-card class="section-heading mat-elevation-z">
+      <h3 class="section-title">
+        <a mat-flat-button color="accent" [routerLink]="['/album']" class="heading-btn">
+          Blog
+          <mat-icon>list_alt</mat-icon>
+        </a>
+      </h3>
+    </mat-card>
+    <blog-carousel></blog-carousel>
+  </section>
+  <section id="Contact">
+    <mat-card class="section-heading mat-elevation-z">
+      <h3 class="section-title">
+        Vamos conversar
+      </h3>
+      <p matLine>Para trabalhar, desenvolver ou networking</p>
+    </mat-card>
+    <app-contact></app-contact>
+  </section>
+</main>

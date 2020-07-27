@@ -1,6 +1,6 @@
 <div *ngIf="account" class="container">
   <div class="personal">
-    <mat-card>
+    <mat-card class="mat-elevation-z">
       <mat-card-header>
         <mat-icon mat-card-avatar>person</mat-icon>
         <mat-card-title>
@@ -10,20 +10,7 @@
           {{ account.nickname }}
         </mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image [src]="account.photo" [alt]="account.name">
-      <mat-card-content>
-        <mat-list dense>
-          <mat-list-item>
-            <mat-icon matListIcon>cake</mat-icon>
-            {{ account.birthdate | date }}
-          </mat-list-item>
-          <mat-list-item *ngFor="let media of account.social | keyvalue">
-            <mat-icon matListIcon>people</mat-icon>
-            <h4 matLine>{{ media.key }}</h4>
-            <p matLine>{{ media.value }}</p>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
+      <img mat-card-image class="photo" [src]="account.photo" [alt]="account.name">
     </mat-card>
   </div>
   <div class="professional">
