@@ -13,7 +13,7 @@ export class ShareService {
   social = {
     'WhatsApp': 'https://wa.me/?text=',
     'Facebook': 'https://www.facebook.com/sharer/sharer.php?u=',
-    'E-mail': 'mailto:info@example.com?&subject=&body='
+    'E-mail': 'mailto:foo@bar.baz?&subject=&body='
   }
   mapLinks(uri: string): { [key: string]: string } {
     return Object.entries(this.social).reduce((links, media) => {

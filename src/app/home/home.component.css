@@ -1,0 +1,17 @@
+main {
+  padding-top: 1rem;
+}
+.section-heading {
+  padding: 2rem 2rem 0;
+  text-align: center;
+}
+.section-title {
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+.heading-btn {
+  font-size: 1.5rem;
+}
+#Workflow, #Contact {
+  padding: 3rem 1rem;
+}
