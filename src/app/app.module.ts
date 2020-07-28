@@ -29,8 +29,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { BlogCarouselComponent } from './blog/blog-carousel/blog-carousel.component';
 import { AlbumCarouselComponent } from './album/album-carousel/album-carousel.component';
 import { HomeComponent } from './home/home.component';
-import { ContactComponent } from './contact/contact.component';
-import { ProfileComponent } from './profile/profile.component';
+import { HomeContactComponent } from './home/home-contact/home-contact.component';
+import { HomeHeroComponent } from './home/home-hero/home-hero.component';
 import { FooterComponent } from './footer/footer.component';
 import { MessageComponent } from './messages/message/message.component';
 import { WorkComponent } from './work/work.component';
@@ -42,10 +42,10 @@ import { SheetComponent } from './share/sheet/sheet.component';
     HeaderComponent,
     LoginComponent,
     HomeComponent,
+    HomeHeroComponent,
     BlogCarouselComponent,
     AlbumCarouselComponent,
-    ContactComponent,
-    ProfileComponent,
+    HomeContactComponent,
     FooterComponent,
     MessageComponent,
     WorkComponent,
