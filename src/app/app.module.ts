@@ -35,6 +35,9 @@ import { FooterComponent } from './footer/footer.component';
 import { MessageComponent } from './messages/message/message.component';
 import { WorkComponent } from './work/work.component';
 import { SheetComponent } from './share/sheet/sheet.component';
+import { NavComponent } from './nav/nav.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,8 @@ import { SheetComponent } from './share/sheet/sheet.component';
     FooterComponent,
     MessageComponent,
     WorkComponent,
-    SheetComponent
+    SheetComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +72,9 @@ import { SheetComponent } from './share/sheet/sheet.component';
     MatButtonModule,
     MatInputModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    LayoutModule,
+    MatSidenavModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
