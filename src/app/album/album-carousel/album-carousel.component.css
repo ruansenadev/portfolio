@@ -1,6 +1,7 @@
 .projects-carousel {
   display: flex;
   flex-flow: row nowrap;
+  align-items: stretch;
   padding: 2rem 1rem;
   margin-left: -.5rem;
   margin-right: .5rem;
@@ -19,10 +20,18 @@
 mat-card {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
+}
+mat-card-title {
+  word-break: break-all;
+}
+mat-card-subtitle {
+  white-space: nowrap;
 }
 mat-card-footer {
   display: flex;
+  width: 100%;
   justify-content: space-around;
   margin: unset;
 }

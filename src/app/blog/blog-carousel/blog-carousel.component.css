@@ -21,6 +21,12 @@ mat-card {
   display: flex;
   flex-direction: column;
 }
+mat-card-title {
+  word-break: break-all;
+}
+mat-card-subtitle {
+  white-space: nowrap;
+}
 mat-card-footer {
   display: flex;
   justify-content: space-around;

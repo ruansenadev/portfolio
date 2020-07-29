@@ -47,7 +47,7 @@ import { ProjectPageComponent } from './project-page/project-page.component';
     MatProgressBarModule,
     MatIconModule,
     MatDialogModule,
-    MatDividerModule
+    MatDividerModule,
   ]
 })
 export class AlbumModule { }

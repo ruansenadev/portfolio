@@ -1,14 +1,7 @@
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-flow: row wrap;
-}
-.personal, .professional {
-  margin: .5rem;
-}
-.professional {
-  flex: 1;
+.hero {
+  padding: 3rem 1.5rem;
+  margin: 1rem .5rem 3rem;
+  border-radius: unset;
 }
 .photo {
   border-radius: 50%;
