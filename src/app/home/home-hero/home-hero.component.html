@@ -1,35 +1,17 @@
-<div *ngIf="account" class="container">
-  <div class="personal">
-    <mat-card class="mat-elevation-z">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>person</mat-icon>
-        <mat-card-title>
-          {{ account.fullName }}
-        </mat-card-title>
-        <mat-card-subtitle *ngIf="account.nickname">
-          {{ account.nickname }}
-        </mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image class="photo" [src]="account.photo" [alt]="account.name">
-    </mat-card>
-  </div>
-  <div class="professional">
-    <mat-card>
-      <mat-card-header>
-        <mat-icon mat-card-avatar>code</mat-icon>
-        <mat-card-title>
-          {{ account.profession }}
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{ account.biodata }}</p>
-        <mat-list>
-          <mat-list-item *ngFor="let skill of account.skills | keyvalue">
-            <h4 matLine>{{ skill.key }}</h4>
-            <p matLine>{{ transformValue(skill.value) }}</p>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-  </div>
-</div>
+<mat-card *ngIf="account" class="mat-elevation-z hero">
+  <mat-card-header>
+    <mat-icon mat-card-avatar>code</mat-icon>
+    <mat-card-title>
+      {{ account.profession }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ account.biodata }}</p>
+    <mat-list>
+      <mat-list-item *ngFor="let skill of account.skills | keyvalue">
+        <h4 matLine>{{ skill.key }}</h4>
+        <p matLine>{{ transformValue(skill.value) }}</p>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

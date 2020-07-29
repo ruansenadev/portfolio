@@ -38,6 +38,7 @@ import { SheetComponent } from './share/sheet/sheet.component';
 import { DispatcherComponent } from './dispatcher/dispatcher.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatBadgeModule } from "@angular/material/badge";
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatDividerModule,
     MatListModule,
     LayoutModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatBadgeModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

@@ -19,6 +19,12 @@ export class AlbumCarouselComponent implements OnInit, OnDestroy {
     'Encerrado': 'highlight_off',
     'Finalizado': 'check_circle'
   }
+  statusColors: { [key: string]: string } = {
+    'Protótipagem': '',
+    'Desenvolvimento': 'accent',
+    'Encerrado': 'warn',
+    'Finalizado': 'primary',
+  }
   ngOnInit(): void {
     this.projectsService.populateProjects()
     this.projectsListen = this.projectsService.getStream().subscribe((projects) => this.projects = projects)
