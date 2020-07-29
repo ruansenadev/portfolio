@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { AuthService } from "./auth/auth.service";
 
 @Component({
@@ -8,7 +8,6 @@ import { AuthService } from "./auth/auth.service";
 })
 export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}
-  title = 'portfolio';
   ngOnInit(): void {
     this.authService.authBack()
   }

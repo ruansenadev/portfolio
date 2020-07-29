@@ -35,7 +35,7 @@ import { FooterComponent } from './footer/footer.component';
 import { MessageComponent } from './messages/message/message.component';
 import { WorkComponent } from './work/work.component';
 import { SheetComponent } from './share/sheet/sheet.component';
-import { NavComponent } from './nav/nav.component';
+import { DispatcherComponent } from './dispatcher/dispatcher.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
@@ -53,7 +53,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MessageComponent,
     WorkComponent,
     SheetComponent,
-    NavComponent
+    DispatcherComponent
   ],
   imports: [
     BrowserModule,
