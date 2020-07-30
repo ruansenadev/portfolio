@@ -12,6 +12,9 @@
   top: 0;
   z-index: 1;
 }
+.spacer {
+  flex: 1;
+}
 .nav-icon {
   margin-right: .5rem;
 }
@@ -21,6 +24,20 @@
   right: 0;
   bottom: 0;
   text-align: center;
+}
+.profile-admin {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.profile-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: .25rem;
+  background-size: cover;
+  object-fit: cover;
 }
 .profile-name {
   justify-content: center;
