@@ -24,7 +24,6 @@ import { AuthInterceptor } from "./auth/auth.interceptor";
 import { ErrorInterceptor } from './messages/error.interceptor';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './auth/login/login.component';
 import { BlogCarouselComponent } from './blog/blog-carousel/blog-carousel.component';
 import { AlbumCarouselComponent } from './album/album-carousel/album-carousel.component';
@@ -43,7 +42,6 @@ import { MatBadgeModule } from "@angular/material/badge";
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     LoginComponent,
     HomeComponent,
     HomeHeroComponent,

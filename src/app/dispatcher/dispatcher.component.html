@@ -1,19 +1,17 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'push' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'push' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar *ngIf="(isHandset$ | async) === false">ruansenadev</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="/">
+      <a mat-list-item routerLink="/" (click)="onNav('nav')">
         <mat-icon class="nav-icon">home</mat-icon>
         Início
       </a>
-      <a mat-list-item [routerLink]="['/album']" routerLinkActive="mat-primary" >
+      <a mat-list-item [routerLink]="['/album']" (click)="onNav('nav')">
         <mat-icon class="nav-icon">dynamic_feed</mat-icon>
         Projetos
       </a>
-      <a mat-list-item [routerLink]="['/blog']" routerLinkActive="mat-accent" >
+      <a mat-list-item [routerLink]="['/blog']" (click)="onNav('nav')">
         <mat-icon class="nav-icon">list_alt</mat-icon>
         Blog
       </a>
@@ -29,17 +27,38 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar *ngIf="isHandset$ | async" color="primary">
-      <button
-        type="button"
-        aria-label="Alternar menu lateral"
-        mat-icon-button
-        (click)="drawer.toggle()">
+    <mat-toolbar *ngIf="isHandset$ | async" class="top-nav" color="primary">
+      <button type="button" class="nav-icon" aria-label="Alternar menu lateral" mat-icon-button (click)="onToggle('nav')">
         <mat-icon aria-label="Menu lateral ícone">menu</mat-icon>
       </button>
       <span>ruansenadev</span>
+      <span class="spacer"></span>
+      <button *ngIf="isAuth" type="button" aria-label="Alternar menu admin" mat-icon-button
+        (click)="onToggle('navAdmin')">
+        <mat-icon aria-label="Menu admin ícone">admin_panel_settings</mat-icon>
+      </button>
+
     </mat-toolbar>
 
     <router-outlet></router-outlet>
   </mat-sidenav-content>
+
+  <mat-sidenav #_drawer *ngIf="isAuth" class="sidenav" fixedInViewport position="end"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'push' : 'side'"
+    [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>
+      <div *ngIf="account" class="profile-admin">
+        <div class="profile-avatar" [ngStyle]="{'background-image': 'url('+account.photo+')'}"></div>
+        {{ account.nickname || account.fullName }}
+      </div>
+    </mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/admin" (click)="onNav('navAdmin')">
+        <mat-icon class="nav-icon">dashboard</mat-icon>
+        Painel
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="onLogout($event)" class="nav-item">Sair</a>
+    </mat-nav-list>
+  </mat-sidenav>
 </mat-sidenav-container>
