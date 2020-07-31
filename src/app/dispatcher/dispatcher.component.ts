@@ -6,6 +6,7 @@ import { AdminService } from "../admin/admin.service";
 import { Admin } from "../admin/admin";
 import { AuthService } from "../auth/auth.service";
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatToolbar } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-dispatcher',
@@ -14,6 +15,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class DispatcherComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver, private adminService: AdminService, private authService: AuthService) { }
+  @ViewChild('topNav') topNav: MatToolbar
   @ViewChild('drawer') nav: MatSidenav
   @ViewChild('_drawer') navAdmin: MatSidenav
   account: Admin
@@ -33,21 +35,17 @@ export class DispatcherComponent implements OnInit {
     (this[nav] as MatSidenav).toggle()
   }
   onNav(nav: string): void {
-    this.isHandset$.subscribe((matches) => {
-      if (matches) {
-        (this[nav] as MatSidenav).close()
-      }
-    })
+    if (this.topNav) {
+      (this[nav] as MatSidenav).close()
+    }
   }
   onLogout(e: Event): void {
     e.preventDefault()
-    this.isHandset$.subscribe((matches) => {
-      if (matches) {
-        this.navAdmin.close()
-        this.navAdmin._closedStream.subscribe(() => this.authService.logout())
-      } else {
-        this.authService.logout()
-      }
-    })
+    if (this.topNav) {
+      this.navAdmin.close()
+      this.navAdmin._closedStream.subscribe(() => this.authService.logout())
+    } else {
+      this.authService.logout()
+    }
   }
 }
