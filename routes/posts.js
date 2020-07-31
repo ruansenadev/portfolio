@@ -15,7 +15,7 @@ const postFormOptions = {
 }
 const allowedTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"]
 
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
   const items = +req.query.items
   const left = +req.query.left
   Post.countDocuments()
@@ -25,23 +25,22 @@ router.get('/', function (req, res, next) {
         .limit(items)
         .lean({ virtuals: true })
         .sort('-date')
-        .exec((err, posts) => {
-          if (err) { return next(err) }
+        .then((posts) => {
           res.json({ posts, max: count })
         })
     })
-    .catch(next)
+    .catch(() => { return res.status(502).json({ message: 'Falha ao buscar posts' }) })
 })
-router.get('/:slug', function (req, res, next) {
+router.get('/:slug', function (req, res) {
   Post.findOne({ slug: req.params.slug })
     .lean({ virtuals: true })
     .exec((err, post) => {
-      if (err) { return next(err) }
-      if (!post) { return res.status(404).json({ message: 'Post não existe.' }) }
+      if (err) { return res.status(502).json({ message: 'Falha ao buscar' }) }
+      if (!post) { return res.status(404).json({ message: 'Post não existe' }) }
       res.json(post)
     })
 })
-router.post('/', Auth, function (req, res, next) {
+router.post('/', Auth, function (req, res) {
   const form = new IncomingForm(postFormOptions)
   const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
   form.on("fileBegin", function (filename, file) {
@@ -53,13 +52,13 @@ router.post('/', Auth, function (req, res, next) {
       // check mimetype
       if (!allowedTypes.includes(part.mime)) {
         req.destroy()
-        return res.status(406).json({ message: 'Mime-type inválido.' })
+        return res.status(415).json({ message: 'Mime-type inválido' })
       }
     }
     form.handlePart(part)
   }
   form.parse(req, function (err, fields, files) {
-    if (err) { return next(err) }
+    if (err) { return res.status(400).json({ message: 'Formulário inválido' }) }
     let post = new Post({
       title: fields.title,
       date: new Date(fields.date),
@@ -70,14 +69,14 @@ router.post('/', Auth, function (req, res, next) {
     if (fields.icon) post.icon = fields.icon;
     if (fields.description) post.description = fields.description;
     post.save((err, postSaved) => {
-      if (err) { return next(err) }
+      if (err) { return res.status(502).json({ message: 'Falha ao salvar' }) }
       Post.countDocuments().then((count) => {
-        res.json({ message: 'Post adicionado!', post: postSaved, max: count })
-      }).catch(next)
+        res.status(200).json({ message: 'Post adicionado!', post: postSaved, max: count })
+      }).catch(() => { return res.status(502).json({ message: 'Falha ao atualizar' }) })
     })
   })
 })
-router.put('/:id', Auth, function (req, res, next) {
+router.put('/:id', Auth, function (req, res) {
   const form = new IncomingForm(postFormOptions)
   const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
   form.on("fileBegin", function (filename, file) {
@@ -85,12 +84,12 @@ router.put('/:id', Auth, function (req, res, next) {
   })
   form.onPart = (part) => {
     if (part.mime) {
-      if (!allowedTypes.includes(part.mime)) { return res.status(406).json({ message: 'Mime-type inválido.' }) }
+      if (!allowedTypes.includes(part.mime)) { return res.status(415).json({ message: 'Mime-type inválido' }) }
     }
     form.handlePart(part)
   }
   form.parse(req, function (err, fields, files) {
-    if (err) { return next(err) }
+    if (err) { return res.status(400).json({ message: 'Formulário inválido' }) }
     let post = new Post({
       _id: fields._id,
       title: fields.title,
@@ -104,16 +103,15 @@ router.put('/:id', Auth, function (req, res, next) {
     if (fields.thumbnailPath) post.thumbnailPath = fields.thumbnailPath;
     if (fields.description) post.description = fields.description;
     Post.updateOne({ _id: req.params.id }, post, (err, result) => {
-      if (err) { return next(err) }
-      if (!result.n) { return res.status(400).json({ message: 'Falha ao atualizar.' }) }
-      res.json({ message: 'Post atualizado!' })
+      if (err || !result.n) { return res.status(502).json({ message: 'Falha ao atualizar' }) }
+      res.status(200).json({ message: 'Post atualizado!' })
     })
   })
 })
 router.delete('/:id', Auth, function (req, res) {
   Post.deleteOne({ _id: req.params.id }, (err) => {
-    if (err) { return res.status(400).json({ message: 'Falha ao deletar.' }) }
-    res.json({ message: 'Post deletado.' })
+    if (err) { return res.status(502).json({ message: 'Falha ao deletar' }) }
+    res.status(200).json({ message: 'Post deletado.' })
   })
 })
 
