@@ -27,7 +27,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar *ngIf="isHandset$ | async" class="top-nav" color="primary">
+    <mat-toolbar *ngIf="isHandset$ | async" class="top-nav" color="primary" #topNav>
       <button type="button" class="nav-icon" aria-label="Alternar menu lateral" mat-icon-button (click)="onToggle('nav')">
         <mat-icon aria-label="Menu lateral ícone">menu</mat-icon>
       </button>
