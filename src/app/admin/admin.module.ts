@@ -10,9 +10,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileFormComponent } from './profile-form/profile-form.component';
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [DashboardComponent, ProfileFormComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -21,7 +26,11 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    LayoutModule
+    LayoutModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    ReactiveFormsModule
   ]
 })
 export class AdminModule { }
