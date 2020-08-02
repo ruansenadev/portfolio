@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
-
 import { AdminRoutingModule } from "./admin-routing.module";
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +12,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
+
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
 
 @NgModule({
@@ -30,7 +32,9 @@ import { ProfileFormComponent } from './profile-form/profile-form.component';
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatNativeDateModule,
+    MatDatepickerModule
   ]
 })
 export class AdminModule { }

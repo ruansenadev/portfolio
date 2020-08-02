@@ -1,27 +1,49 @@
-.full-width {
-  width: 100%;
+mat-form-field {
+  display: block;
 }
-
-.shipping-card {
+.profile-form {
   min-width: 120px;
   margin: 20px auto;
 }
-
-.mat-radio-button {
-  display: block;
-  margin: 5px 0;
-}
-
 .row {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
 }
-
 .col {
   flex: 1;
   margin-right: 20px;
 }
-
 .col:last-child {
   margin-right: 0;
+}
+input[type="file"] {
+  opacity: 0;
+}
+.photo-field {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+.photo-wrapper {
+  height: 12rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.photo-wrapper img {
+  max-height: 100%;
+  width: auto;
+}
+.photoMenu-btn {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+}
+.photo-btn {
+  position: absolute;
+  bottom: .5rem;
+  right: 3rem;
+}
+mat-card-actions {
+  text-align: center;
 }

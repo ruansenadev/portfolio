@@ -5,17 +5,22 @@ moment.tz.setDefault('America/Bahia').locale('pt-br')
 const Schema = mongoose.Schema
 
 const adminSchema = new Schema({
+  // pro
   name: { type: String, required: true },
   last_name: { type: String, required: true },
   birthdate: { type: Date, required: true },
   address: {
     city: { type: String },
-    state: { type: String },
-    country: { type: String }
+    state: { type: Map, of: String },
   },
+  // account
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  // del
+
+  // per
   photo: { type: String, required: true },
+  // pro
   nickname: { type: String },
   logo: { type: String },
   profession: { type: String, required: true },
@@ -32,11 +37,9 @@ adminSchema.virtual('location')
   .get(function () {
     let output = null
     if (this.address.city) {
-      output = this.address.city + (this.address.state ? `, ${this.address.state}` : '') + (this.address.country ? ` - ${this.address.country}` : '')
+      output = this.address.city + (this.address.state ? `, ${this.address.state}` : '')
     } else if (this.address.state) {
-      output = this.address.state + (this.address.country ? ` - ${this.address.country}` : '')
-    } else if (this.address.country) {
-      output = this.address.country
+      output = this.address.state
     }
     return output
   })
