@@ -2,7 +2,7 @@ export interface Admin {
   name: string;
   last_name: string;
   birthdate: Date;
-  address: { city: string | null, state: string | null, country: string | null};
+  address: { city: string | null, state: { [key: string]: string } | null };
   photo: string;
   profession: string;
   biodata: string;
