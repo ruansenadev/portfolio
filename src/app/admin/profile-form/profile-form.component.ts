@@ -95,6 +95,8 @@ export class ProfileFormComponent implements OnChanges {
     }
   }
   onSubmit() {
-    alert(`Thanks!\n${this.profileForm.value.birthdate}\n${this.profileForm.value.state}`);
+    if (this.profileForm.invalid) { return }
+    this.adminService.editProfile(this.account._id, this.profileForm.value.name, this.profileForm.value.lastName, this.profileForm.value.birthdate, this.profileForm.value.city, this.profileForm.value.state)
+    this.profileForm.reset()
   }
 }

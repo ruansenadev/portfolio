@@ -110,7 +110,7 @@ router.put('/:id', Auth, function (req, res) {
           })
         } else {
           admin = new Admin({
-            _id: fields._id,
+            _id: req.params.id,
             name: fields.name || admin.name,
             last_name: fields.last_name || admin.last_name,
             birthdate: fields.birthdate ? new Date(fields.birthdate) : admin.birthdate,
@@ -119,7 +119,7 @@ router.put('/:id', Auth, function (req, res) {
             photo: admin.photo,
             biodata: fields.biodata || admin.biodata,
             profession: fields.profession || admin.profession,
-            logo: files.logo ? `${req.protocol}://${req.get('host')}/images/${files.logo.name}` : admin.logo,
+            logo: admin.logo,
             skills: fields.skills ? JSON.parse(fields.skills) : admin.skills,
             social: fields.social ? JSON.parse(fields.social) : admin.social
           })
