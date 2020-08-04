@@ -18,6 +18,7 @@ mat-form-field {
 }
 input[type="file"] {
   opacity: 0;
+  max-width: 16rem;
 }
 .photo-field {
   position: relative;
@@ -26,7 +27,11 @@ input[type="file"] {
   width: 100%;
 }
 .photo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 12rem;
+  width: 12rem;
   border-radius: 50%;
   overflow: hidden;
 }
@@ -42,7 +47,7 @@ input[type="file"] {
 .photo-btn {
   position: absolute;
   bottom: .5rem;
-  right: 3rem;
+  right: 1.5rem;
 }
 mat-card-actions {
   text-align: center;

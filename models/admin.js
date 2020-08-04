@@ -11,7 +11,7 @@ const adminSchema = new Schema({
   birthdate: { type: Date, required: true },
   address: {
     city: { type: String },
-    state: { type: Map, of: String },
+    state: { type: String }
   },
   // account
   email: { type: String, required: true, unique: true },

@@ -19,6 +19,7 @@ export class DispatcherComponent implements OnInit {
   @ViewChild('drawer') nav: MatSidenav
   @ViewChild('_drawer') navAdmin: MatSidenav
   account: Admin
+  accountListener: Subscription
   isAuth: boolean
   authListener: Subscription
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -27,7 +28,8 @@ export class DispatcherComponent implements OnInit {
       shareReplay()
     );
   ngOnInit(): void {
-    this.adminService.getAdmin().subscribe((account) => this.account = account)
+    this.adminService.fetchAdmin()
+    this.accountListener = this.adminService.getAdmin().subscribe((account) => this.account = account)
     this.isAuth = this.authService.getStatus()
     this.authListener = this.authService.getListener().subscribe((status) => this.isAuth = status)
   }

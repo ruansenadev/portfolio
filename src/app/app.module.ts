@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MarkdownModule } from "ngx-markdown";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from "@angular/material/snack-bar";
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
@@ -79,7 +80,8 @@ import { MatBadgeModule } from "@angular/material/badge";
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 4000 } }
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 4000 } },
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],
   bootstrap: [AppComponent]
 })
