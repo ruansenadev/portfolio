@@ -22,7 +22,7 @@ router.get('/', function (req, res) {
       if (err) { return res.status(502).json({ message: 'Falha ao buscar conta' }) }
       if (!admin) { return res.status(500).json({ message: 'Crie a conta de administrador' }) }
       if (req.query.gravatar) {
-        const gravatar = `https://www.gravatar.com/avatar/${md5(admin.email.toLowerCase())}?s=200&d=retro`
+        const gravatar = `https://www.gravatar.com/avatar/${md5(admin.email.toLowerCase())}?s=200&d=identicon`
         return res.json(gravatar)
       }
       delete admin.email;
@@ -85,51 +85,54 @@ router.put('/:id', Auth, function (req, res) {
     form.handlePart(part)
   }
   Admin.findById(req.params.id)
-    .lean()
-    .exec((err, account) => {
-      if (err | !account) { return res.status(502).json({ message: 'Falha ao encontrar conta' }) }
+    .exec((err, admin) => {
+      if (err | !admin) { return res.status(502).json({ message: 'Falha ao encontrar conta' }) }
       form.parse(req, function (err, fields, files) {
         if (err) { return res.status(400).json({ message: 'Formulário inválido' }) }
-        let admin = {}
-        Object.assign(admin, account)
         if (files.photo) {
-          admin = new Admin(admin)
           admin.photo = `${req.protocol}://${req.get('host')}/images/${files.photo.name}`
           admin.updateOne(admin, (err, result) => {
             if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
-            res.status(200).json({ message: 'Foto atualizada!' })
+            return res.status(200).json({ message: 'Foto atualizada!' })
+          })
+        } else if (fields.photo) {
+          admin.photo = fields.photo
+          admin.updateOne(admin, (err, result) => {
+            if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
+            return res.status(200).json({ message: 'Foto atualizada!' })
           })
         } else if (files.logo) {
           admin = new Admin(admin)
           admin.logo = `${req.protocol}://${req.get('host')}/images/${files.logo.name}`
           admin.updateOne(admin, (err, result) => {
             if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
-            res.status(200).json({ message: 'Foto atualizada!' })
+            return res.status(200).json({ message: 'Logotipo atualizado' })
+          })
+        } else {
+          admin = new Admin({
+            _id: fields._id,
+            name: fields.name || admin.name,
+            last_name: fields.last_name || admin.last_name,
+            birthdate: fields.birthdate ? new Date(fields.birthdate) : admin.birthdate,
+            email: fields.email || admin.email,
+            password: fields.password ? bcrypt.hashSync(fields.password, 10) : admin.password,
+            photo: admin.photo,
+            biodata: fields.biodata || admin.biodata,
+            profession: fields.profession || admin.profession,
+            logo: files.logo ? `${req.protocol}://${req.get('host')}/images/${files.logo.name}` : admin.logo,
+            skills: fields.skills ? JSON.parse(fields.skills) : admin.skills,
+            social: fields.social ? JSON.parse(fields.social) : admin.social
+          })
+          if (fields.city || fields.state) {
+            if (fields.city) admin.address.city = fields.city
+            if (fields.state) admin.address.state = fields.state
+            admin.markModified('address')
+          }
+          admin.updateOne(admin, (err, result) => {
+            if (err || !result.n) { return res.status(502).json({ message: 'Falha ao atualizar' }) }
+            res.status(200).json({ message: 'Dados atualizados!' })
           })
         }
-        admin = new Admin({
-          _id: fields._id,
-          name: fields.name || admin.name,
-          last_name: fields.last_name || admin.last_name,
-          birthdate: fields.birthdate ? new Date(fields.birthdate) : admin.birthdate,
-          email: fields.email || admin.email,
-          password: fields.password ? bcrypt.hashSync(fields.password, 10) : admin.password,
-          photo: admin.photo,
-          biodata: fields.biodata || admin.biodata,
-          profession: fields.profession || admin.profession,
-          logo: files.logo ? `${req.protocol}://${req.get('host')}/images/${files.logo.name}` : admin.logo,
-          skills: fields.skills ? JSON.parse(fields.skills) : admin.skills,
-          social: fields.social ? JSON.parse(fields.social) : admin.social
-        })
-        if (fields.city || fields.state) {
-          if (fields.city) admin.address.city = fields.city
-          if (fields.state) admin.address.state = fields.state
-          admin.markModified('address')
-        }
-        admin.updateOne(admin, (err, result) => {
-          if (err || !result.n) { return res.status(502).json({ message: 'Falha ao atualizar' }) }
-          res.status(200).json({ message: 'Dados atualizados!' })
-        })
       })
     })
 })

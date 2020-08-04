@@ -22,9 +22,14 @@ export class AdminService {
     return this.admin$
   }
   getGravatar() {
-    return this.http.get<string>(apiAdmin+'?gravatar=true')
+    return this.http.get<string>(apiAdmin + '?gravatar=true')
   }
-  sendPhoto(): void {
-
+  savePhoto(_id: string, photo: File | string, photoName: string | null): void {
+    const data = new FormData()
+    photoName ? data.append('photo', photo, photoName) : data.append('photo', photo)
+    this.http.put<{ message: string }>(`${apiAdmin}/${_id}`, data).subscribe((res) => {
+      this.fetchAdmin()
+      this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
+    })
   }
 }

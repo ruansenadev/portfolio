@@ -61,6 +61,7 @@ export class ProfileFormComponent implements OnChanges {
         state: this.account.address.state || null
       })
       this.photo = this.account.photo
+      this.upload = null
     }
   }
   onPick(e: Event): void {
@@ -81,12 +82,17 @@ export class ProfileFormComponent implements OnChanges {
   }
   onGetImage(): void {
     this.adminService.getGravatar().subscribe((gravatar) => {
+      this.profileForm.patchValue({ photo: gravatar })
       this.upload = gravatar
       this.photoName = ''
     })
   }
-  onSendImage(): void {
-    alert(`Image: ${this.photoName}`)
+  onSaveImage(): void {
+    if (this.photoName) {
+      this.adminService.savePhoto(this.account._id, this.profileForm.value.photo, this.photoName)
+    } else {
+      this.adminService.savePhoto(this.account._id, this.profileForm.value.photo, null)
+    }
   }
   onSubmit() {
     alert(`Thanks!\n${this.profileForm.value.birthdate}\n${this.profileForm.value.state}`);
