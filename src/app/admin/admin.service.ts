@@ -32,4 +32,16 @@ export class AdminService {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
     })
   }
+  editProfile(_id: string, name: string, last_name: string, birthdate: Date, city: string | null, state: string | null) {
+    const data = new FormData()
+    data.append('name', name)
+    data.append('last_name', last_name)
+    data.append('birthdate', new Date(birthdate).toISOString())
+    if (city) data.append('city', city)
+    if (city) data.append('state', state)
+    this.http.put<{ message: string }>(`${apiAdmin}/${_id}`, data).subscribe((res) => {
+      this.fetchAdmin()
+      this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
+    })
+  }
 }
