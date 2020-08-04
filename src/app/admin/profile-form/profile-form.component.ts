@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChange, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Admin } from "../admin";
 import { AdminService } from "../admin.service";
@@ -10,14 +10,16 @@ import { AdminService } from "../admin.service";
 })
 export class ProfileFormComponent implements OnChanges {
   constructor(private fb: FormBuilder, private adminService: AdminService) { }
-  @Input('admin') account: Admin
+  @Input() account: Admin
+  @Input() read: boolean
+  @Output() done = new EventEmitter<boolean>()
   profileForm = this.fb.group({
-    photo: null,
-    name: [null, Validators.required],
-    lastName: [null, Validators.required],
-    birthdate: [null, Validators.required],
-    city: null,
-    state: null
+    photo: { value: null, disabled: this.read },
+    name: [{ value: null, disabled: this.read }, Validators.required],
+    lastName: [{ value: null, disabled: this.read }, Validators.required],
+    birthdate: [{ value: null, disabled: this.read }, Validators.required],
+    city: { value: null, disabled: this.read },
+    state: { value: null, disabled: this.read }
   });
   photo: string
   photoName: string = ''
@@ -50,18 +52,23 @@ export class ProfileFormComponent implements OnChanges {
     'São Paulo',
     'Sergipe',
     'Tocantins'];
-  ngOnChanges(): void {
-    if (this.account) {
-      this.profileForm.setValue({
-        photo: null,
-        name: this.account.name,
-        lastName: this.account.last_name,
-        birthdate: new Date(this.account.birthdate),
-        city: this.account.address.city || null,
-        state: this.account.address.state || null
-      })
-      this.photo = this.account.photo
-      this.upload = null
+  ngOnChanges(changes: { [key: string]: SimpleChange }) {
+    if (changes['account']) {
+      if (this.account) {
+        this.profileForm.setValue({
+          photo: null,
+          name: this.account.name,
+          lastName: this.account.last_name,
+          birthdate: new Date(this.account.birthdate),
+          city: this.account.address.city || null,
+          state: this.account.address.state || null
+        })
+        this.photo = this.account.photo
+        this.upload = null
+      }
+    }
+    if (changes['read']) {
+      this.read ? this.profileForm.disable() : this.profileForm.enable()
     }
   }
   onPick(e: Event): void {
@@ -82,6 +89,9 @@ export class ProfileFormComponent implements OnChanges {
   }
   onGetImage(): void {
     this.adminService.getGravatar().subscribe((gravatar) => {
+      if (gravatar === this.account.photo) {
+        return
+      }
       this.profileForm.patchValue({ photo: gravatar })
       this.upload = gravatar
       this.photoName = ''
@@ -95,8 +105,12 @@ export class ProfileFormComponent implements OnChanges {
     }
   }
   onSubmit() {
-    if (this.profileForm.invalid) { return }
+    if (this.profileForm.invalid) {
+      this.done.emit(false)
+      return
+    }
     this.adminService.editProfile(this.account._id, this.profileForm.value.name, this.profileForm.value.lastName, this.profileForm.value.birthdate, this.profileForm.value.city, this.profileForm.value.state)
-    this.profileForm.reset()
+    this.profileForm.disable()
+    this.done.emit(true)
   }
 }

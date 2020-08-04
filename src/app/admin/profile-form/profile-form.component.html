@@ -1,76 +1,66 @@
-<form [formGroup]="profileForm" novalidate (ngSubmit)="onSubmit()">
-  <mat-card class="profile-form">
-    <mat-card-header>
-      <mat-card-title>Perfil</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="row">
-        <div class="col">
-          <div class="photo-field">
-            <div class="photo-wrapper">
-              <img [src]="upload || photo" [alt]="photoName">
-            </div>
-            <button mat-icon-button type="button" class="photoMenu-btn" [matMenuTriggerFor]="photoMenu"
-              aria-label="Toggle menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #photoMenu="matMenu" xPosition="before">
-              <button mat-menu-item type="button" color="primary" (click)="photoInput.click()">
-                <mat-icon>cloud_upload</mat-icon>
-                Upload
-              </button>
-              <button *ngIf="upload" mat-menu-item (click)="onRevertImage()">
-                <mat-icon>autorenew</mat-icon>
-                <span>Remover</span>
-              </button>
-              <button *ngIf="!upload" mat-menu-item (click)="onGetImage()">
-                <mat-icon>cloud_circle</mat-icon>
-                Gravatar
-              </button>
-            </mat-menu>
-            <button mat-mini-fab *ngIf="upload" class="photo-btn" type="button" color="accent" (click)="onSaveImage()">
-              <mat-icon>{{ photoName ? 'send' : 'save'}}</mat-icon>
-            </button>
-          </div>
-          <input type="file" #photoInput accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false"
-            (change)="onPick($event)">
+<form class="profile-form" [formGroup]="profileForm" novalidate (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col">
+      <div class="photo-field">
+        <div class="photo-wrapper">
+          <img [src]="upload || photo" [alt]="photoName">
         </div>
-        <div class="col">
-          <mat-form-field appearance="fill">
-            <mat-label>Nome</mat-label>
-            <input matInput formControlName="name">
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Último nome</mat-label>
-            <input matInput formControlName="lastName">
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Nascimento</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="birthdate">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
+        <button *ngIf="!read" mat-icon-button type="button" class="photoMenu-btn" [matMenuTriggerFor]="photoMenu"
+          aria-label="Toggle menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #photoMenu="matMenu" xPosition="before">
+          <button mat-menu-item type="button" color="primary" (click)="photoInput.click()">
+            <mat-icon>cloud_upload</mat-icon>
+            Upload
+          </button>
+          <button *ngIf="upload" mat-menu-item (click)="onRevertImage()">
+            <mat-icon>autorenew</mat-icon>
+            <span>Remover</span>
+          </button>
+          <button *ngIf="!upload" mat-menu-item (click)="onGetImage()">
+            <mat-icon>cloud_circle</mat-icon>
+            Gravatar
+          </button>
+        </mat-menu>
+        <button mat-mini-fab *ngIf="upload" class="photo-btn" type="button" color="accent" (click)="onSaveImage()">
+          <mat-icon>{{ photoName ? 'send' : 'save'}}</mat-icon>
+        </button>
       </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field>
-            <input matInput placeholder="Cidade" formControlName="city">
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field>
-            <mat-select placeholder="Estado" formControlName="state">
-              <mat-option *ngFor="let state of states" [value]="state">
-                {{ state }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Salvar</button>
-    </mat-card-actions>
-  </mat-card>
+      <input type="file" #photoInput accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false" (change)="onPick($event)">
+    </div>
+    <div class="col">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Último nome</mat-label>
+        <input matInput formControlName="lastName">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Nascimento</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="birthdate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <mat-form-field>
+        <input matInput placeholder="Cidade" formControlName="city">
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field>
+        <mat-select placeholder="Estado" formControlName="state">
+          <mat-option *ngFor="let state of states" [value]="state">
+            {{ state }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <button *ngIf="!read" mat-raised-button color="primary" type="submit">Salvar</button>
 </form>

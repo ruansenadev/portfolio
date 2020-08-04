@@ -8,6 +8,9 @@
   left: 15px;
   right: 15px;
   bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .more-button {
