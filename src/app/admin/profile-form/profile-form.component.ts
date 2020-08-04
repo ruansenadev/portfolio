@@ -1,69 +1,94 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Admin } from "../admin";
+import { AdminService } from "../admin.service";
 
 @Component({
   selector: 'admin-profile-form',
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.css']
 })
-export class ProfileFormComponent {
-  constructor(private fb: FormBuilder) {}
-
+export class ProfileFormComponent implements OnChanges {
+  constructor(private fb: FormBuilder, private adminService: AdminService) { }
+  @Input('admin') account: Admin
   profileForm = this.fb.group({
     photo: null,
-    firstName: [null, Validators.required],
+    name: [null, Validators.required],
     lastName: [null, Validators.required],
     birthdate: [null, Validators.required],
     city: null,
     state: null
   });
-  states = [
-    {name: 'Acre', abbreviation: 'AC'},
-    {name: 'Alagoas', abbreviation: 'AL'},
-    {name: 'Amapá', abbreviation: 'AP'},
-    {name: 'Amazonas', abbreviation: 'AM'},
-    {name: 'Bahia', abbreviation: 'BA'},
-    {name: 'Ceará', abbreviation: 'CE'},
-    {name: 'Distrito Federal', abbreviation: 'DF'},
-    {name: 'Espírito Santo', abbreviation: 'ES'},
-    {name: 'Goiás', abbreviation: 'GO'},
-    {name: 'Maranhão', abbreviation: 'MA'},
-    {name: 'Mato Grosso', abbreviation: 'MT'},
-    {name: 'Mato Grosso Sul', abbreviation: 'MS'},
-    {name: 'Minas Gerais', abbreviation: 'MG'},
-    {name: 'Pará', abbreviation: 'PA'},
-    {name: 'Paraíba', abbreviation: 'PB'},
-    {name: 'Paraná', abbreviation: 'PR'},
-    {name: 'Pernambuco', abbreviation: 'PE'},
-    {name: 'Piauí', abbreviation: 'PI'},
-    {name: 'Rio de Janeiro', abbreviation: 'RJ'},
-    {name: 'Rio Grande do Norte', abbreviation: 'RN'},
-    {name: 'Rio Grande do Sul', abbreviation: 'RS'},
-    {name: 'Rondônia', abbreviation: 'RO'},
-    {name: 'Roraima', abbreviation: 'RR'},
-    {name: 'Santa Catarina', abbreviation: 'SC'},
-    {name: 'São Paulo', abbreviation: 'SP'},
-    {name: 'Sergipe', abbreviation: 'SE'},
-    {name: 'Tocantins', abbreviation: 'TO'}
-  ];
-  photoName: string = ''
   photo: string
+  photoName: string = ''
   upload: string
+  states = [
+    'Acre',
+    'Alagoas',
+    'Amapá',
+    'Amazonas',
+    'Bahia',
+    'Ceará',
+    'Distrito Federal',
+    'Espírito Santo',
+    'Goiás',
+    'Maranhão',
+    'Mato Grosso',
+    'Mato Grosso do Sul',
+    'Minas Gerais',
+    'Pará',
+    'Paraíba',
+    'Paraná',
+    'Pernambuco',
+    'Piauí',
+    'Rio de Janeiro',
+    'Rio Grande do Norte',
+    'Rio Grande do Sul',
+    'Rondônia',
+    'Roraima',
+    'Santa Catarina',
+    'São Paulo',
+    'Sergipe',
+    'Tocantins'];
+  ngOnChanges(): void {
+    if (this.account) {
+      this.profileForm.setValue({
+        photo: null,
+        name: this.account.name,
+        lastName: this.account.last_name,
+        birthdate: new Date(this.account.birthdate),
+        city: this.account.address.city || null,
+        state: this.account.address.state || null
+      })
+      this.photo = this.account.photo
+    }
+  }
   onPick(e: Event): void {
     const imageBlob = (e.target as HTMLInputElement).files[0]
     this.profileForm.patchValue({ photo: imageBlob })
     const reader = new FileReader()
     reader.onloadend = () => {
       let extIndex = imageBlob.name.lastIndexOf('.')
-      this.photoName = imageBlob.name.slice(0, (extIndex<30?extIndex:30))+imageBlob.name.slice(extIndex)
+      this.photoName = imageBlob.name.slice(0, (extIndex < 30 ? extIndex : 30)) + imageBlob.name.slice(extIndex)
       this.upload = reader.result as string
     }
     reader.readAsDataURL(imageBlob)
   }
+  onRevertImage(): void {
+    this.profileForm.patchValue({ photo: null })
+    this.upload = null
+    this.photoName = ''
+  }
+  onGetImage(): void {
+    this.adminService.getGravatar().subscribe((gravatar) => {
+      this.upload = gravatar
+      this.photoName = ''
+    })
+  }
   onSendImage(): void {
-
+    alert(`Image: ${this.photoName}`)
   }
   onSubmit() {
-    alert(`Thanks! ${this.profileForm.get('birthdate').value}`);
+    alert(`Thanks!\n${this.profileForm.value.birthdate}\n${this.profileForm.value.state}`);
   }
 }

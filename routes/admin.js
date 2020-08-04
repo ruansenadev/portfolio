@@ -21,6 +21,10 @@ router.get('/', function (req, res) {
     .exec((err, admin) => {
       if (err) { return res.status(502).json({ message: 'Falha ao buscar conta' }) }
       if (!admin) { return res.status(500).json({ message: 'Crie a conta de administrador' }) }
+      if (req.query.gravatar) {
+        const gravatar = `https://www.gravatar.com/avatar/${md5(admin.email.toLowerCase())}?s=200&d=retro`
+        return res.json(gravatar)
+      }
       delete admin.email;
       delete admin.password;
       res.json(admin)
@@ -46,18 +50,15 @@ router.post('/', Auth, function (req, res) {
       name: fields.name,
       last_name: fields.last_name,
       birthdate: new Date(fields.birthdate),
+      address: {},
       email: fields.email,
       password: bcrypt.hashSync(fields.password, 10),
       photo: fields.photo ? `${req.protocol}://${req.get('host')}/images/${files.photo.name}` : `https://www.gravatar.com/avatar/${md5(fields.email.toLowerCase())}?s=200&d=identicon`,
       profession: fields.profession,
       biodata: fields.biodata
     })
-    for (let field of ['city', 'state', 'country']) {
-      if (fields[field]) {
-        if (!admin.address) admin.address = {}
-        admin.address[field] = fields[field]
-      }
-    }
+    if (fields.city) admin.address.city = fields.city
+    if (fields.state) admin.address.state = fields.state
     if (files.logo) admin.logo = `${req.protocol}://${req.get('host')}/images/${files.logo.name}`
     if (fields.nickname) admin.nickname = fields.nickname
     if (fields.skills) admin.skills = JSON.parse(fields.skills)
@@ -120,12 +121,10 @@ router.put('/:id', Auth, function (req, res) {
           skills: fields.skills ? JSON.parse(fields.skills) : admin.skills,
           social: fields.social ? JSON.parse(fields.social) : admin.social
         })
-        for (let field of ['city', 'state', 'country']) {
-          if (fields[field]) {
-            if (!admin.address) admin.address = {}
-            admin.address[field] = fields[field]
-            admin.markModified('address')
-          }
+        if (fields.city || fields.state) {
+          if (fields.city) admin.address.city = fields.city
+          if (fields.state) admin.address.state = fields.state
+          admin.markModified('address')
         }
         admin.updateOne(admin, (err, result) => {
           if (err || !result.n) { return res.status(502).json({ message: 'Falha ao atualizar' }) }

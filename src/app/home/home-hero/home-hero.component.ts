@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from "../../admin/admin.service";
 import { Admin } from "../../admin/admin";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'home-hero',
@@ -10,9 +11,10 @@ import { Admin } from "../../admin/admin";
 export class HomeHeroComponent implements OnInit {
   constructor(private adminService: AdminService) { }
   account: Admin
+  accountListener: Subscription
 
   ngOnInit(): void {
-    this.adminService.getAdmin().subscribe((admin) => this.account = admin)
+    this.accountListener = this.adminService.getAdmin().subscribe((account) => this.account = account)
   }
 
   transformValue(value: any): string {

@@ -15,21 +15,34 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #photoMenu="matMenu" xPosition="before">
-              <button mat-menu-item type="button" color="primary" (click)="photoInput.click()">Upload</button>
-              <button *ngIf="upload" mat-menu-item>Remover</button>
-              <button mat-menu-item>Gravatar</button>
+              <button mat-menu-item type="button" color="primary" (click)="photoInput.click()">
+                <mat-icon>cloud_upload</mat-icon>
+                Upload
+              </button>
+              <button *ngIf="upload" mat-menu-item (click)="onRevertImage()">
+                <mat-icon>autorenew</mat-icon>
+                <span>Remover</span>
+              </button>
+              <button *ngIf="!upload" mat-menu-item (click)="onGetImage()">
+                <mat-icon>cloud_circle</mat-icon>
+                Gravatar
+              </button>
             </mat-menu>
-            <button mat-stroked-button *ngIf="upload" class="photo-btn" type="button" color="primary" (click)="onSendImage()">Enviar</button>
+            <button mat-mini-fab *ngIf="upload" class="photo-btn" type="button" color="accent" (click)="onSendImage()">
+              <mat-icon>{{ photoName ? 'send' : 'save'}}</mat-icon>
+            </button>
           </div>
           <input type="file" #photoInput accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false"
             (change)="onPick($event)">
         </div>
         <div class="col">
           <mat-form-field appearance="fill">
-            <input matInput placeholder="Nome" formControlName="firstName">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="name">
           </mat-form-field>
           <mat-form-field appearance="fill">
-            <input matInput placeholder="Último nome" formControlName="lastName">
+            <mat-label>Último nome</mat-label>
+            <input matInput formControlName="lastName">
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label>Nascimento</mat-label>
@@ -48,8 +61,8 @@
         <div class="col">
           <mat-form-field>
             <mat-select placeholder="Estado" formControlName="state">
-              <mat-option *ngFor="let state of states" [value]="state.abbreviation">
-                {{ state.name }}
+              <mat-option *ngFor="let state of states" [value]="state">
+                {{ state }}
               </mat-option>
             </mat-select>
           </mat-form-field>
