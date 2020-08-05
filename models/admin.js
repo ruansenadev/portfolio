@@ -5,7 +5,6 @@ moment.tz.setDefault('America/Bahia').locale('pt-br')
 const Schema = mongoose.Schema
 
 const adminSchema = new Schema({
-  // pro
   name: { type: String, required: true },
   last_name: { type: String, required: true },
   birthdate: { type: Date, required: true },
@@ -13,14 +12,10 @@ const adminSchema = new Schema({
     city: { type: String },
     state: { type: String }
   },
-  // account
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  // del
-
-  // per
   photo: { type: String, required: true },
-  // pro
+
   nickname: { type: String },
   logo: { type: String },
   profession: { type: String, required: true },

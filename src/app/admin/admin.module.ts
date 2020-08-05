@@ -17,9 +17,14 @@ import { MatNativeDateModule } from "@angular/material/core";
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
+import { AccountFormComponent } from './account-form/account-form.component';
 
 @NgModule({
-  declarations: [DashboardComponent, ProfileFormComponent],
+  declarations: [
+    DashboardComponent,
+    ProfileFormComponent,
+    AccountFormComponent
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,

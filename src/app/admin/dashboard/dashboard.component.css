@@ -1,7 +1,6 @@
 .grid-container {
   margin: 1rem;
 }
-
 .dashboard-card {
   position: absolute;
   top: 15px;
@@ -10,15 +9,16 @@
   bottom: 15px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: flex-start;
 }
-
 .more-button {
   position: absolute;
   top: 5px;
   right: 10px;
 }
-
 .dashboard-card-content {
   text-align: center;
+}
+mat-card-header {
+  margin-bottom: 1rem;
 }
