@@ -1,7 +1,7 @@
 <div class="grid-container">
   <h1 class="mat-h1">Dashboard</h1>
   <mat-grid-list cols="2">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
+    <mat-grid-tile *ngFor="let card of (cards | async)" [colspan]="card.cols" [rowspan]="card.rows">
       <div [ngSwitch]="card.order">
         <div *ngSwitchCase="1">
           <mat-card class="dashboard-card">
@@ -12,12 +12,30 @@
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu" xPosition="before">
-                  <button mat-menu-item (click)="profileRead = !profileRead">{{profileRead ? 'Editar' : 'Cancelar'}}</button>
+                  <button mat-menu-item (click)="reading[card.title] = !reading[card.title]">{{reading[card.title] ? 'Editar' : 'Cancelar'}}</button>
                 </mat-menu>
               </mat-card-title>
             </mat-card-header>
             <mat-card-content class="dashboard-card-content">
-              <admin-profile-form [account]="account" [read]="profileRead" (done)="profileRead = $event"></admin-profile-form>
+              <admin-profile-form [account]="account" [read]="reading[card.title]" (done)="reading[card.title] = $event"></admin-profile-form>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div *ngSwitchCase="3">
+          <mat-card class="dashboard-card">
+            <mat-card-header>
+              <mat-card-title>
+                {{card.title}}
+                <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu" xPosition="before">
+                  <button mat-menu-item (click)="reading[card.title] = !reading[card.title]">{{reading[card.title] ? 'Editar' : 'Cancelar'}}</button>
+                </mat-menu>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="dashboard-card-content">
+              <admin-account-form [account]="account" [read]="reading[card.title]"></admin-account-form>
             </mat-card-content>
           </mat-card>
         </div>

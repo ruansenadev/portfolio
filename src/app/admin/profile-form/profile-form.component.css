@@ -1,10 +1,6 @@
 mat-form-field {
   display: block;
 }
-.profile-form {
-  min-width: 120px;
-  margin: 20px auto;
-}
 .row {
   display: flex;
   flex-flow: row wrap;

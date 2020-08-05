@@ -67,9 +67,7 @@ export class ProfileFormComponent implements OnChanges {
         this.upload = null
       }
     }
-    if (changes['read']) {
-      this.read ? this.profileForm.disable() : this.profileForm.enable()
-    }
+    if (changes['read']) this.read ? this.profileForm.disable() : this.profileForm.enable()
   }
   onPick(e: Event): void {
     const imageBlob = (e.target as HTMLInputElement).files[0]

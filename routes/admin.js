@@ -25,7 +25,6 @@ router.get('/', function (req, res) {
         const gravatar = `https://www.gravatar.com/avatar/${md5(admin.email.toLowerCase())}?s=200&d=identicon`
         return res.json(gravatar)
       }
-      delete admin.email;
       delete admin.password;
       res.json(admin)
     })
@@ -108,14 +107,26 @@ router.put('/:id', Auth, function (req, res) {
             if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
             return res.status(200).json({ message: 'Logotipo atualizado' })
           })
+        } else if (fields.email || fields.password_new) {
+          if (bcrypt.compareSync(fields.password, admin.password)) {
+            admin = new Admin(admin)
+            admin.email = fields.email
+            if (fields.password_new) admin.password = bcrypt.hashSync(fields.password_new, 10)
+            admin.updateOne(admin, (err, result) => {
+              if (err || !result.n) { return res.status(502).json({ message: 'Falha ao atualizar' }) }
+              return res.status(200).json({ message: 'Credenciais atualizadas' })
+            })
+          } else {
+            return res.status(401).json({ message: 'Senha incorreta' })
+          }
         } else {
           admin = new Admin({
             _id: req.params.id,
             name: fields.name || admin.name,
             last_name: fields.last_name || admin.last_name,
             birthdate: fields.birthdate ? new Date(fields.birthdate) : admin.birthdate,
-            email: fields.email || admin.email,
-            password: fields.password ? bcrypt.hashSync(fields.password, 10) : admin.password,
+            email: admin.email,
+            password: admin.password,
             photo: admin.photo,
             biodata: fields.biodata || admin.biodata,
             profession: fields.profession || admin.profession,

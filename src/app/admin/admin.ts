@@ -1,6 +1,7 @@
 export interface Admin {
   _id: string;
   name: string;
+  email: string;
   last_name: string;
   birthdate: Date;
   address: { city: string | null, state: string | null };
