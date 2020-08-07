@@ -2,10 +2,10 @@
   <div class="row">
     <div class="col">
       <div class="photo-field">
-        <div class="photo-wrapper">
+        <div class="photo-wrapper" [class]="noFocus">
           <img [src]="upload || photo" [alt]="photoName">
         </div>
-        <button *ngIf="!read" mat-icon-button type="button" class="photoMenu-btn" [matMenuTriggerFor]="photoMenu"
+        <button *ngIf="!read" mat-mini-fab type="button" class="photoMenu-btn" [matMenuTriggerFor]="photoMenu"
           aria-label="Toggle menu">
           <mat-icon>more_vert</mat-icon>
         </button>
@@ -23,7 +23,7 @@
             Gravatar
           </button>
         </mat-menu>
-        <button mat-mini-fab *ngIf="upload" class="photo-btn" type="button" color="accent" (click)="onSaveImage()">
+        <button mat-mini-fab *ngIf="!read && upload" class="photo-btn" type="button" color="accent" (click)="onSaveImage()">
           <mat-icon>{{ photoName ? 'send' : 'save'}}</mat-icon>
         </button>
       </div>

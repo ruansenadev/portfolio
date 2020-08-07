@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   @Output() account: Admin
   @Output() reading: { [key: string]: boolean } = {
     'Perfil': true,
+    'Profissional': true,
     'Conta': true
   }
   /** Based on the screen size, switch from standard to one column per row */
@@ -22,7 +23,7 @@ export class DashboardComponent implements OnInit {
       if (matches) {
         return [
           { title: 'Perfil', order: '1', cols: 1, rows: 2 },
-          { title: '2', order: '2', cols: 2, rows: 2 },
+          { title: 'Profissional', order: '2', cols: 2, rows: 3 },
           { title: 'Conta', order: '3', cols: 1, rows: 1 },
           { title: '4', order: '4', cols: 1, rows: 1 }
         ];
@@ -30,7 +31,7 @@ export class DashboardComponent implements OnInit {
 
       return [
         { title: 'Perfil', order: '1', cols: 2, rows: 1 },
-        { title: '2', order: '2', cols: 2, rows: 1 },
+        { title: 'Profissional', order: '2', cols: 2, rows: 2 },
         { title: 'Conta', order: '3', cols: 1, rows: 1 },
         { title: '4', order: '4', cols: 1, rows: 1 }
       ];

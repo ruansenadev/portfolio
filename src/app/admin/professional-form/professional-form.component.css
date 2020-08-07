@@ -4,10 +4,14 @@ mat-form-field {
 .row {
   display: flex;
   flex-flow: row wrap;
+  align-items: center;
 }
 .col {
   flex: 1;
   margin-right: 20px;
+}
+.col-fill {
+  padding-left: 1rem;
 }
 .col:last-child {
   margin-right: 0;
@@ -16,38 +20,49 @@ input[type="file"] {
   opacity: 0;
   max-width: 16rem;
 }
-.photo-field {
+.logo-field {
   position: relative;
   display: flex;
   justify-content: center;
   width: 100%;
 }
-.photo-wrapper {
+.logo-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 12rem;
-  width: 12rem;
-  border-radius: 50%;
+  height: 9rem;
+  width: 100%;
   overflow: hidden;
 }
 .no-focus {
   opacity: 0.2;
 }
-.photo-wrapper img {
+.logo-wrapper img {
   max-height: 100%;
   width: auto;
 }
-.photoMenu-btn {
+.logoMenu-btn {
   position: absolute;
   top: .5rem;
   right: .5rem;
 }
-.photo-btn {
+.logo-btn {
   position: absolute;
   bottom: .5rem;
   right: 1.5rem;
 }
 mat-card-actions {
   text-align: center;
+}
+.divider {
+  margin: auto .5rem;
+}
+.btn-icon {
+  margin-right: .5rem;
+}
+.row-center {
+  justify-content: center;
+}
+.label-title {
+  margin: .5rem 0;
 }

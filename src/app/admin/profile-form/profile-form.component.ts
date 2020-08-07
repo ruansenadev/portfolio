@@ -24,6 +24,7 @@ export class ProfileFormComponent implements OnChanges {
   photo: string
   photoName: string = ''
   upload: string
+  noFocus: string = 'no-focus'
   states = [
     'Acre',
     'Alagoas',
@@ -67,7 +68,15 @@ export class ProfileFormComponent implements OnChanges {
         this.upload = null
       }
     }
-    if (changes['read']) this.read ? this.profileForm.disable() : this.profileForm.enable()
+    if (changes['read']) {
+      if (this.read) {
+        this.profileForm.disable()
+        this.noFocus = 'no-focus'
+      } else {
+        this.noFocus = ''
+        this.profileForm.enable()
+      }
+    }
   }
   onPick(e: Event): void {
     const imageBlob = (e.target as HTMLInputElement).files[0]

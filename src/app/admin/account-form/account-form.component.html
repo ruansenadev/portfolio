@@ -7,7 +7,7 @@
     <mat-label>Senha atual</mat-label>
     <input matInput type="password" formControlName="password">
   </mat-form-field>
-  <button *ngIf="!read && !passwordChange" mat-stroked-button type="button" class="btn-opt" (click)="passwordChange = true">
+  <button *ngIf="!passwordChange" [disabled]="read" mat-stroked-button type="button" class="btn-opt" (click)="passwordChange = true">
     <mat-icon>vpn_key</mat-icon>
     Alterar senha
   </button>
