@@ -28,8 +28,8 @@ export class ProfessionalFormComponent implements OnChanges {
   get social() {
     return this.professionalForm.get('social') as FormArray
   }
-  addEntry(group: string) {
-    (this[group] as FormArray).push(this.fb.control(null))
+  addEntry(group: string, value: string = null) {
+    (this[group] as FormArray).push(this.fb.control(value))
   }
   rmEntry(group: string, list: string, index: number) {
     (this[group] as FormArray).removeAt(index)
@@ -54,7 +54,9 @@ export class ProfessionalFormComponent implements OnChanges {
   chips: { [key: number]: string[] } = {
     0: ["'Intermediário'"]
   }
-  urls: { [key: number]: string } = {}
+  urls: { [key: number]: string } = {
+    0: 'http://www.example.com/'
+  }
   logo: string = 'https://www.stevensegallery.com/360/170'
   logoName: string = ''
   upload: string
@@ -65,11 +67,27 @@ export class ProfessionalFormComponent implements OnChanges {
         this.professionalForm.patchValue({
           profession: this.account.profession,
           nickname: this.account.nickname || null,
-          biodata: this.account.biodata
+          biodata: this.account.biodata,
         })
         if (this.account.logo) {
           this.logo = this.account.logo
           this.upload = null
+        }
+        if (Object.keys(this.account.skills).length) {
+          let i = 0
+          for (let prop in this.account.skills) {
+            this.addEntry('skills', prop)
+            this.chips[i] = Array.isArray(this.account.skills[prop]) ? this.account.skills[prop] : [this.account.skills[prop]]
+            i++
+          }
+        }
+        if (Object.keys(this.account.social).length) {
+          let i = 0
+          for (let prop in this.account.social) {
+            this.addEntry('social', prop)
+            this.urls[i] = this.account.social[prop]
+            i++
+          }
         }
       }
     }
@@ -107,7 +125,7 @@ export class ProfessionalFormComponent implements OnChanges {
     }
   }
   mapList(list: string[], dic: { [key: number]: string | string[] }): { [key: string]: any } {
-    if (list.length !== Object.keys(dic).length) { return }
+    if (list.length !== Object.keys(dic).length) { return null }
     return list.reduce((dicMapped, label, i) => {
       dicMapped[label] = Array.isArray(dic[i]) ? (dic[i].length > 1 ? dic[i] : dic[i][0]) : dic[i]
       return dicMapped
@@ -118,10 +136,10 @@ export class ProfessionalFormComponent implements OnChanges {
       this.done.emit(false)
       return
     }
-    let skillsList: { [key: string]: string[] }
-    if (this.skills.value.some(e => !!e)) skillsList = this.mapList(this.skills.value, this.chips)
-    let socialList: { [key: string]: string }
-    if (this.social.value.some(e => !!e)) socialList = this.mapList(this.social.value, this.urls)
-    console.log(skillsList, socialList)
+    this.adminService.editProfessional(this.account._id, this.professionalForm.value.profession, this.professionalForm.value.nickname, this.professionalForm.value.biodata,
+      this.skills.value.some(e => !!e) ? this.mapList(this.skills.value, this.chips) : null,
+      this.social.value.some(e => !!e) ? this.mapList(this.social.value, this.urls) : null
+    )
+    this.done.emit(true)
   }
 }

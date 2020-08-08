@@ -24,16 +24,16 @@ export class DashboardComponent implements OnInit {
         return [
           { title: 'Perfil', order: '1', cols: 1, rows: 2 },
           { title: 'Profissional', order: '2', cols: 2, rows: 3 },
-          { title: 'Conta', order: '3', cols: 1, rows: 1 },
-          { title: '4', order: '4', cols: 1, rows: 1 }
+          { title: 'Conta', order: '3', cols: 1, rows: 1 }
+          // { title: '4', order: '4', cols: 1, rows: 1 }
         ];
       }
 
       return [
         { title: 'Perfil', order: '1', cols: 2, rows: 1 },
         { title: 'Profissional', order: '2', cols: 2, rows: 2 },
-        { title: 'Conta', order: '3', cols: 1, rows: 1 },
-        { title: '4', order: '4', cols: 1, rows: 1 }
+        { title: 'Conta', order: '3', cols: 1, rows: 1 }
+        // { title: '4', order: '4', cols: 1, rows: 1 }
       ];
     })
   );
