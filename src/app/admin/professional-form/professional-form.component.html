@@ -96,7 +96,7 @@
         <div class="col col-fill">
           <mat-form-field appearance="standard">
             <mat-label>URL</mat-label>
-            <input matInput type="url" (change)="addUrl(i, $event)">
+            <input matInput type="url" [value]="urls[i] || ''" (change)="addUrl(i, $event)">
           </mat-form-field>
         </div>
       </div>

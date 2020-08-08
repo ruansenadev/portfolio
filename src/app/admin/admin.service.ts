@@ -55,4 +55,25 @@ export class AdminService {
       this.authService.logout()
     })
   }
+  saveLogo(_id: string, logo: File | string, logoName: string | null): void {
+    const data = new FormData()
+    logoName ? data.append('logo', logo, logoName) : data.append('logo', logo)
+    this.http.put<{ message: string }>(`${apiAdmin}/${_id}`, data).subscribe((res) => {
+      this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
+      this.fetchAdmin()
+    })
+  }
+  editProfessional(_id: string, profession: string, nickname: string | null, biodata: string, skills: {[key: string]: any} | null, social: {[key: string]: string} | null) {
+    const data = new FormData()
+    data.append('_id', _id)
+    data.append('profession', profession)
+    if (nickname) data.append('nickname', nickname)
+    data.append('biodata', biodata)
+    if (skills) data.append('skills', JSON.stringify(skills))
+    if (social) data.append('social', JSON.stringify(social))
+    this.http.put<{ message: string }>(`${apiAdmin}/${_id}`, data).subscribe((res) => {
+      this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
+      this.fetchAdmin()
+    })
+  }
 }
