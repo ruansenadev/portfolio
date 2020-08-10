@@ -39,6 +39,7 @@ import { DispatcherComponent } from './dispatcher/dispatcher.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from "@angular/material/badge";
+import { CarouselComponent } from './carousel/carousel.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { MatBadgeModule } from "@angular/material/badge";
     MessageComponent,
     WorkComponent,
     SheetComponent,
-    DispatcherComponent
+    DispatcherComponent,
+    CarouselComponent
   ],
   imports: [
     BrowserModule,
