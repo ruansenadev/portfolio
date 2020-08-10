@@ -1,0 +1,43 @@
+.carousel-container {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  background-color: transparent;
+  padding: 1rem 2rem;
+}
+.carousel-btn {
+  position: absolute;
+  bottom: 50%;
+  transform: translateY(50%);
+  display: flex;
+  justify-content: center;
+}
+.btn-back {
+  left: .5rem;
+}
+.btn-next {
+  right: .5rem;
+}
+.carousel-box {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  justify-content: space-between;
+  overflow: hidden;
+}
+.carousel-item {
+  flex: 1;
+  width: 16rem;
+  min-width: 12rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0 .75rem;
+}
+.item-actions {
+  display: flex;
+  justify-content: space-evenly;
+}

@@ -1,1 +1,28 @@
-<p>carousel works!</p>
+<div class="carousel-container">
+  <div class="carousel-heading">
+    <h3>Carousel</h3>
+  </div>
+  <div class="carousel-box">
+    <mat-card *ngFor="let item of items" class="carousel-item mat-elevation-z">
+      <mat-card-header>
+        <mat-card-title>{{ item.title }}</mat-card-title>
+      </mat-card-header>
+      <img *ngIf="item.img" [src]="item.img" [alt]="item.no">
+      <mat-card-content *ngIf="!item.img">{{ item.desc }}</mat-card-content>
+      <mat-card-actions class="item-actions">
+        <button mat-icon-button>
+          <mat-icon>share</mat-icon>
+        </button>
+        <button mat-mini-fab class="mat-elevation-z">
+          <mat-icon>read_more</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <button mat-mini-fab class="carousel-btn btn-back mat-elevation-z1">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <button mat-mini-fab class="carousel-btn btn-next mat-elevation-z1">
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
+</div>
