@@ -1,19 +1,19 @@
 <div class="carousel-container">
-  <div class="carousel-heading">
-    <h3>Carousel</h3>
+  <div class="mat-title">
+    {{ title }}
   </div>
   <div class="carousel-box">
     <mat-card *ngFor="let item of items" class="carousel-item mat-elevation-z">
       <mat-card-header>
         <mat-card-title>{{ item.title }}</mat-card-title>
       </mat-card-header>
-      <img *ngIf="item.img" [src]="item.img" [alt]="item.no">
+      <img *ngIf="item.img" [src]="item.img" [alt]="item.type">
       <mat-card-content *ngIf="!item.img">{{ item.desc }}</mat-card-content>
       <mat-card-actions class="item-actions">
         <button mat-icon-button>
           <mat-icon>share</mat-icon>
         </button>
-        <button mat-mini-fab class="mat-elevation-z">
+        <button mat-mini-fab class="mat-elevation-z" color="primary">
           <mat-icon>read_more</mat-icon>
         </button>
       </mat-card-actions>

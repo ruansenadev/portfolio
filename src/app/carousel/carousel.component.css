@@ -35,7 +35,13 @@
   justify-content: space-between;
   padding-left: 0;
   padding-right: 0;
-  margin: 0 .75rem;
+  margin: 0 1rem;
+}
+.carousel-item:first-child {
+  margin-left: 0;
+}
+.carousel-item:last-child {
+  margin-right: 0;
 }
 .item-actions {
   display: flex;
