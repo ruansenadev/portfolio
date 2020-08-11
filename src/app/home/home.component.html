@@ -3,7 +3,7 @@
     <home-hero></home-hero>
   </section>
   <section id="Album" class="mat-elevation-z2">
-    <app-carousel [title]="'Projetos'" [items]="projects"></app-carousel>
+    <app-carousel [title]="'Projetos'" [items]="projects | carousel : 'project'"></app-carousel>
   </section>
   <section id="Workflow">
     <mat-card class="section-heading mat-elevation-z">
@@ -15,14 +15,7 @@
     <app-work></app-work>
   </section>
   <section id="Blog" class="mat-elevation-z2">
-    <mat-card class="section-heading mat-elevation-z">
-      <h3 class="section-title">
-        <a mat-stroked-button [disableRipple]="true" color="primary" [routerLink]="['/album']" class="heading-btn">
-          Blog
-        </a>
-      </h3>
-    </mat-card>
-    <blog-carousel></blog-carousel>
+    <app-carousel [title]="'Blog'" [items]="posts | carousel : 'post'"></app-carousel>
   </section>
   <section id="Contact">
     <mat-card class="section-heading mat-elevation-z">

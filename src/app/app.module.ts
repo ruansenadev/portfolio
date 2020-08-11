@@ -41,6 +41,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from "@angular/material/badge";
 import { CarouselComponent } from './carousel/carousel.component';
 
+import { CarouselPipe } from './carousel/carousel.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +57,8 @@ import { CarouselComponent } from './carousel/carousel.component';
     WorkComponent,
     SheetComponent,
     DispatcherComponent,
-    CarouselComponent
+    CarouselComponent,
+    CarouselPipe
   ],
   imports: [
     BrowserModule,
