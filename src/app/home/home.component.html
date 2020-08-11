@@ -2,15 +2,8 @@
   <section id="Profile">
     <home-hero></home-hero>
   </section>
-  <section id="Album" class="mat-elevation-z3">
-    <mat-card class="section-heading mat-elevation-z">
-      <h3 class="section-title">
-        <a mat-stroked-button [disableRipple]="true" color="primary" [routerLink]="['/album']" class="heading-btn">
-          Projetos
-        </a>
-      </h3>
-    </mat-card>
-    <album-carousel></album-carousel>
+  <section id="Album" class="mat-elevation-z2">
+    <app-carousel [title]="'Projetos'" [items]="projects"></app-carousel>
   </section>
   <section id="Workflow">
     <mat-card class="section-heading mat-elevation-z">
@@ -21,7 +14,7 @@
     </mat-card>
     <app-work></app-work>
   </section>
-  <section id="Blog" class="mat-elevation-z3">
+  <section id="Blog" class="mat-elevation-z2">
     <mat-card class="section-heading mat-elevation-z">
       <h3 class="section-title">
         <a mat-stroked-button [disableRipple]="true" color="primary" [routerLink]="['/album']" class="heading-btn">
