@@ -7,8 +7,8 @@
       <mat-card-header>
         <mat-card-title>{{ item.title }}</mat-card-title>
       </mat-card-header>
-      <img *ngIf="item.img" [src]="item.img" [alt]="item.type">
-      <mat-card-content *ngIf="!item.img">{{ item.desc }}</mat-card-content>
+      <img *ngIf="item.img" [src]="item.img">
+      <mat-card-content *ngIf="!item.img" class="item-text">{{ item.desc }}</mat-card-content>
       <mat-card-actions class="item-actions">
         <button mat-icon-button (click)="onShare(item.uri)">
           <mat-icon>share</mat-icon>
