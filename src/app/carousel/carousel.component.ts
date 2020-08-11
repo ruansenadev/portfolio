@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ShareService } from "../share/share.service";
 
 export interface Item {
   title: string;
@@ -14,7 +15,7 @@ export interface Item {
   styleUrls: ['./carousel.component.css']
 })
 export class CarouselComponent {
-  constructor() { }
+  constructor(private shareService: ShareService) { }
   @Input() title: string = ''
   @Input() items: Item[] = []
   cards: Item[] = [
@@ -23,4 +24,7 @@ export class CarouselComponent {
     {title: 'Item 3', type: 'batata', img: 'https://www.stevensegallery.com/420/280', desc: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis nemo vitae laudantium, exercitationem ullam provident sapiente sit repellendus consequatur veniam, cumque tempora, architecto tempore! Esse, deserunt? Voluptatum vel id quos!', uri: '/'},
     {title: 'Item 4', type: 'batata', img: 'https://www.stevensegallery.com/300/210', desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit illum neque suscipit animi nesciunt blanditiis, incidunt ad nostrum perspiciatis. Ex autem velit nostrum quibusdam unde quas obcaecati sapiente quidem voluptate!', uri: '/'},
   ]
+  onShare(uri: string) {
+    this.shareService.openSheet(uri)
+  }
 }

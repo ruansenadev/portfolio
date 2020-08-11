@@ -10,7 +10,7 @@
       <img *ngIf="item.img" [src]="item.img" [alt]="item.type">
       <mat-card-content *ngIf="!item.img">{{ item.desc }}</mat-card-content>
       <mat-card-actions class="item-actions">
-        <button mat-icon-button>
+        <button mat-icon-button (click)="onShare(item.uri)">
           <mat-icon>share</mat-icon>
         </button>
         <button mat-mini-fab class="mat-elevation-z" color="primary">
