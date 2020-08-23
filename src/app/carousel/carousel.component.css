@@ -1,11 +1,21 @@
-.carousel-container {
+.container {
   box-sizing: border-box;
   position: relative;
   width: 100%;
   background-color: transparent;
   padding: 1rem 2rem;
 }
-.carousel-btn {
+.box {
+  box-sizing: inherit;
+  width: 100%;
+  padding: 0 1.25rem;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  justify-content: space-between;
+  overflow: hidden;
+}
+/* .btn {
   position: absolute;
   bottom: 50%;
   transform: translateY(50%);
@@ -17,36 +27,29 @@
 }
 .btn-next {
   right: .5rem;
-}
-.carousel-box {
-  box-sizing: inherit;
-  width: 100%;
-  padding: 0 1.25rem;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: stretch;
-  justify-content: space-between;
-  overflow: hidden;
-}
-.carousel-item {
+} */
+.item {
   flex: 1;
   width: 16rem;
   min-width: 12rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-left: 0;
-  padding-right: 0;
   margin: 0 .75rem;
+  user-select: none;
 }
-.carousel-item:first-child {
+.item:first-child {
   margin-left: 0;
 }
-.carousel-item:last-child {
+.item:last-child {
   margin-right: 0;
 }
-.item-text {
-  padding: 0 1rem;
+.item-title {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+.item-img {
+  -webkit-user-drag: none;
 }
 .item-actions {
   display: flex;
