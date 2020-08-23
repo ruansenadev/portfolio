@@ -2,8 +2,8 @@
   <div class="mat-title">
     {{ title }}
   </div>
-  <div class="box" #box (mousedown)="onPress($event)" (mousemove)="onMove($event)" (mouseup)="onRelease($event)"
-    (mouseleave)="onRelease($event)">
+  <div class="box" #box (pointerdown)="onPress($event)" (pointermove)="onMove($event)"
+    (pointerup)="onRelease($event)">
     <mat-card *ngFor="let item of items" class="item mat-elevation-z">
       <mat-card-header>
         <mat-card-title class="item-title">{{ item.title }}</mat-card-title>
