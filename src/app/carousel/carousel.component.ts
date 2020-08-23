@@ -33,20 +33,20 @@ export class CarouselComponent implements OnChanges {
       }
     }
   }
-  onPress(e: MouseEvent): void {
+  onPress(e: PointerEvent | MouseEvent): void {
     this.pressPosition = e.pageX
     this.isMoving = true
     const state = (this.box.nativeElement as HTMLDivElement).style.getPropertyValue('transform')
     this.transformState = +state.slice(state.indexOf('(') + 1, state.indexOf('px'))
   }
-  onMove(e: MouseEvent): void {
+  onMove(e: PointerEvent | MouseEvent): void {
     if (this.isMoving) {
       const currentPosition = e.pageX
       const diff = currentPosition - this.pressPosition
       this.box.nativeElement.style.transform = `translateX(${this.transformState + diff}px)`
     }
   }
-  onRelease(e: MouseEvent): void {
+  onRelease(e: PointerEvent | MouseEvent): void {
     this.isMoving = false
   }
 }

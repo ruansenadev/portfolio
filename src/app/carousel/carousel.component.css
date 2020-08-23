@@ -4,6 +4,7 @@
   width: 100%;
   background-color: transparent;
   padding: 1rem 2rem;
+  overflow: hidden;
 }
 .box {
   box-sizing: inherit;
@@ -13,7 +14,7 @@
   flex-flow: row nowrap;
   align-items: stretch;
   justify-content: space-between;
-  overflow: hidden;
+  touch-action: none;
 }
 /* .btn {
   position: absolute;
