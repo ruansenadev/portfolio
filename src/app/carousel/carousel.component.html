@@ -1,14 +1,15 @@
-<div class="carousel-container">
+<div class="container">
   <div class="mat-title">
     {{ title }}
   </div>
-  <div class="carousel-box">
-    <mat-card *ngFor="let item of items" class="carousel-item mat-elevation-z">
+  <div class="box" #box (mousedown)="onPress($event)" (mousemove)="onMove($event)" (mouseup)="onRelease($event)"
+    (mouseleave)="onRelease($event)">
+    <mat-card *ngFor="let item of items" class="item mat-elevation-z">
       <mat-card-header>
-        <mat-card-title>{{ item.title }}</mat-card-title>
+        <mat-card-title class="item-title">{{ item.title }}</mat-card-title>
       </mat-card-header>
-      <img *ngIf="item.img" [src]="item.img">
-      <mat-card-content *ngIf="!item.img" class="item-text">{{ item.desc }}</mat-card-content>
+      <img *ngIf="item.img" [src]="item.img" class="item-img" draggable="false">
+      <mat-card-content *ngIf="!item.img">{{ item.desc }}</mat-card-content>
       <mat-card-actions class="item-actions">
         <button mat-icon-button (click)="onShare(item.uri)">
           <mat-icon>share</mat-icon>
@@ -19,10 +20,10 @@
       </mat-card-actions>
     </mat-card>
   </div>
-  <button mat-mini-fab class="carousel-btn btn-back mat-elevation-z1">
+  <!-- <button mat-mini-fab (click)="moveLeft($event)" class="carousel-btn btn-back mat-elevation-z1" disabled>
     <mat-icon>arrow_back</mat-icon>
   </button>
-  <button mat-mini-fab class="carousel-btn btn-next mat-elevation-z1">
+  <button mat-mini-fab (click)="moveRight($event)" class="carousel-btn btn-next mat-elevation-z1">
     <mat-icon>arrow_forward</mat-icon>
-  </button>
+  </button> -->
 </div>
