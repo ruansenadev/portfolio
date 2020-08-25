@@ -13,7 +13,7 @@ const adminSchema = new Schema({
     state: { type: String }
   },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true, minlength: 8 },
   photo: { type: String, required: true },
   logo: { type: String },
   profession: { type: String, required: true },
