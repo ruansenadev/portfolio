@@ -4,6 +4,7 @@ const Admin = require('../models/admin')
 const md5 = require('md5')
 const bcrypt = require('bcryptjs')
 const path = require('path')
+const { param, validationResult } = require('express-validator')
 const router = express.Router()
 
 const { IncomingForm } = require('formidable')
@@ -147,11 +148,17 @@ router.put('/:id', Auth, function (req, res) {
       })
     })
 })
-router.delete('/:id', Auth, function (req, res) {
-  Admin.deleteOne({ _id: req.params.id }, (err) => {
-    if (err) { return res.status(502).json({ message: 'Falha ao deletar' }) }
-    res.status(200).json({ message: 'Conta deletada.' })
-  })
-})
+router.delete('/:id', Auth, [
+  param('id').isMongoId(),
+  function (req, res) {
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: 'ID inválido' })
+    }
+    Admin.deleteOne({ _id: req.params.id }, (err) => {
+      if (err) { return res.status(502).json({ message: 'Falha ao deletar' }) }
+      res.status(200).json({ message: 'Conta deletada.' })
+    })
+  }
+])
 
 module.exports = router
