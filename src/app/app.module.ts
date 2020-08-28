@@ -26,8 +26,6 @@ import { ErrorInterceptor } from './messages/error.interceptor';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
-import { BlogCarouselComponent } from './blog/blog-carousel/blog-carousel.component';
-import { AlbumCarouselComponent } from './album/album-carousel/album-carousel.component';
 import { HomeComponent } from './home/home.component';
 import { HomeContactComponent } from './home/home-contact/home-contact.component';
 import { HomeHeroComponent } from './home/home-hero/home-hero.component';
@@ -49,8 +47,6 @@ import { CarouselPipe } from './carousel/carousel.pipe';
     LoginComponent,
     HomeComponent,
     HomeHeroComponent,
-    BlogCarouselComponent,
-    AlbumCarouselComponent,
     HomeContactComponent,
     FooterComponent,
     MessageComponent,

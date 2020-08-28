@@ -53,5 +53,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.postsListener.unsubscribe()
+    this.authListener.unsubscribe()
   }
 }
