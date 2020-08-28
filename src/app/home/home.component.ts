@@ -18,9 +18,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private projectsService: ProjectsService, private postsService: PostsService) { }
 
   ngOnInit(): void {
-    this.projectsService.populateProjects()
-    this.projectsListener = this.projectsService.getStream().subscribe((projects) => this.projects = projects)
-    this.postsService.populatePosts()
+    this.projectsService.populateProjects(0, 5)
+    this.projectsListener = this.projectsService.getStream().subscribe((res) => this.projects = res.projects)
+    this.postsService.populatePosts(0, 5)
     this.postsListener = this.postsService.getStream().subscribe((sub) => this.posts = sub.posts)
   }
   ngOnDestroy(): void {
