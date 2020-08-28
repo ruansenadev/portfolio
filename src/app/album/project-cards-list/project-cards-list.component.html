@@ -63,5 +63,11 @@
         </div>
       </mat-card-actions>
     </mat-card>
+    <div *ngIf="hasMore" class="expand">
+      <button *ngIf="!isFetching" mat-mini-fab color="accent" (click)="onLoadMore()">
+        <mat-icon>expand_more</mat-icon>
+      </button>
+      <mat-spinner *ngIf="isFetching" [diameter]="40"></mat-spinner>
+    </div>
   </div>
 </main>
