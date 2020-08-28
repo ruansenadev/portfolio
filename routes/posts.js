@@ -23,13 +23,11 @@ router.get('/', [
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: 'Paginação incorreta' })
     }
-    const items = req.query.items
-    const left = req.query.left
     Post.countDocuments()
       .then((count) => {
         Post.find({})
-          .skip(left * items)
-          .limit(items)
+          .skip(req.query.left * req.query.items)
+          .limit(req.query.items)
           .lean({ virtuals: true })
           .sort('-date')
           .then((posts) => {

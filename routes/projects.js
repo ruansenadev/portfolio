@@ -3,7 +3,7 @@ const Counter = require('../models/counter')
 const Project = require('../models/project')
 const Auth = require('../middlewares/auth')
 const path = require('path')
-const { param, validationResult } = require('express-validator')
+const { query, param, validationResult } = require('express-validator')
 const moment = require('moment-timezone')
 moment.tz.setDefault('America/Bahia').locale('pt-br')
 const router = express.Router()
@@ -19,15 +19,29 @@ const projectFormOptions = {
 }
 const allowedTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"]
 
-router.get('/', function (req, res) {
-  Project.find({})
-    .lean()
-    .sort('-seq')
-    .exec((err, projects) => {
-      if (err) { return res.status(502).json({ message: 'Falha ao buscar projetos' }) }
-      res.json(projects)
-    })
-})
+router.get('/', [
+  query(['left', 'items']).isAlphanumeric().toInt(),
+  function (req, res) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: 'Falha ao requisitar projetos' })
+    }
+    Project.find()
+      .lean()
+      .sort('-seq')
+      .skip(req.query.left * req.query.items)
+      .limit(req.query.items + 1)
+      .exec((err, projects) => {
+        if (err) { return res.status(502).json({ message: 'Falha ao buscar projetos' }) }
+        let hasMore = false
+        if (projects.length > req.query.items) {
+          projects.pop()
+          hasMore = true
+        }
+        res.json({ projects, hasMore })
+      })
+  }
+])
 router.get('/:seq', [
   param('seq').isAlphanumeric().toInt(),
   function (req, res) {
