@@ -15,8 +15,12 @@ import { MessageComponent } from "../../messages/message/message.component";
 })
 export class ProjectCardsListComponent implements OnInit, OnDestroy {
   constructor(private projectsService: ProjectsService, private dialog: MatDialog, private authService: AuthService, private messageBar: MatSnackBar) { }
-  projects: Project[]
+  projects: Project[] = []
   isAuth: boolean
+  left: number = 0;
+  items: number = 3;
+  hasMore: boolean = true
+  isFetching: boolean = true
   private projectsListen: Subscription
   statusIcons: { [key: string]: string } = {
     'Protótipagem': 'construction',
@@ -28,14 +32,21 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
     'Protótipagem': '',
     'Desenvolvimento': 'accent',
     'Encerrado': 'warn',
-    'Finalizado': 'primary',
+    'Finalizado': 'primary'
   }
   ngOnInit(): void {
-    this.projectsService.populateProjects()
-    this.projectsListen = this.projectsService.getStream().subscribe((projects) => {
-      this.projects = projects
+    this.projectsService.populateProjects(this.left, this.items)
+    this.projectsListen = this.projectsService.getStream().subscribe((res) => {
+      this.isFetching = false
+      this.projects = this.projects.concat(res.projects)
+      this.left++
+      this.hasMore = res.hasMore
     })
     this.isAuth = this.authService.getStatus()
+  }
+  onLoadMore() {
+    this.isFetching = true
+    this.projectsService.populateProjects(this.left, this.items)
   }
   delProject(project: Project): void {
     const last = this.projects[0].seq == project.seq

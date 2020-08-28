@@ -14,12 +14,13 @@ const apiProjects = environment.server + '/projects'
 export class ProjectsService {
   constructor(private http: HttpClient, private router: Router, private messageBar: MatSnackBar) { }
   private projects: Project[] = []
-  private stream = new Subject<Project[]>()
+  private stream = new Subject<{ projects: Project[], hasMore: boolean }>()
 
-  populateProjects(): void {
-    this.http.get<Project[]>(apiProjects).subscribe((res) => {
-      this.projects = res
-      this.stream.next([...this.projects])
+  populateProjects(left: number = 0, items: number = 3): void {
+    const query = `?left=${left}&items=${items}`
+    this.http.get<{ projects: Project[], hasMore: boolean }>(apiProjects + query).subscribe((res) => {
+      this.projects = res.projects
+      this.stream.next({ projects: [...this.projects], hasMore: res.hasMore })
     })
   }
   getStream() {
@@ -40,8 +41,6 @@ export class ProjectsService {
     if (homepage) data.append('homepage', homepage)
     data.append('keywords', JSON.stringify(keywords))
     this.http.post<{ message: string, project: Project }>(apiProjects, data).subscribe((res) => {
-      this.projects.push(res.project)
-      this.stream.next([...this.projects])
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Projeto', redirect: `album/${res.project.seq}` } })
       this.router.navigate(['/album', res.project.seq])
     })

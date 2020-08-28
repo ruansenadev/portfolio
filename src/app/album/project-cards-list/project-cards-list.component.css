@@ -52,3 +52,9 @@ mat-form-field {
 .status-icon {
   margin-right: .25rem;
 }
+.expand {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1rem 2rem;
+}

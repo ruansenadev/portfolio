@@ -13,10 +13,12 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatIconModule } from "@angular/material/icon";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { ClipboardModule } from "@angular/cdk/clipboard";
+import { CdkScrollableModule, ScrollingModule } from "@angular/cdk/scrolling";
 
 import { ProjectFormComponent } from './project-form/project-form.component';
 import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
@@ -34,6 +36,8 @@ import { ProjectPageComponent } from './project-page/project-page.component';
     CommonModule,
     MarkdownModule.forChild(),
     ClipboardModule,
+    CdkScrollableModule,
+    ScrollingModule,
     ReactiveFormsModule,
     AlbumRoutingModule,
     MatCardModule,
@@ -48,6 +52,7 @@ import { ProjectPageComponent } from './project-page/project-page.component';
     MatIconModule,
     MatDialogModule,
     MatDividerModule,
+    MatProgressSpinnerModule
   ]
 })
 export class AlbumModule { }
