@@ -1,5 +1,16 @@
 <main>
-  <div class="flex-container">
+  <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list">
+    <li *ngFor="let project of projects" class="mdc-image-list__item">
+      <img *ngIf="project.thumbnailPath" class="mdc-image-list__image" [src]="project.thumbnailPath">
+      <p *ngIf="!project.thumbnailPath" class="mat-body-2 mdc-image-list__image">
+        {{ project.description }}
+      </p>
+      <div class="mdc-image-list__supporting">
+        <span class="mdc-image-list__label">{{ project.name }}</span>
+      </div>
+    </li>
+  </ul>
+  <!-- <div class="flex-container">
     <mat-card *ngFor="let project of projects" class="mat-elevation-z5">
       <a [routerLink]="[project.seq]" class="project-link">
         <mat-card-header>
@@ -63,5 +74,5 @@
         </div>
       </mat-card-actions>
     </mat-card>
-  </div>
+  </div> -->
 </main>
