@@ -1,1 +1,12 @@
 @use '@material/image-list/mdc-image-list';
+@use "@material/image-list";
+
+.my-masonry-image-list {
+  @include image-list.masonry-columns(2);
+  max-width: 51rem;
+}
+@media (min-width: 37.5rem) {
+  .my-masonry-image-list {
+    @include image-list.masonry-columns(3);
+  }
+}

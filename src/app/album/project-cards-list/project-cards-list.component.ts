@@ -11,7 +11,9 @@ import { MessageComponent } from "../../messages/message/message.component";
 @Component({
   selector: 'app-project-cards-list',
   templateUrl: './project-cards-list.component.html',
-  styleUrls: ['./project-cards-list.component.css', './project-cards-list.component.scss']
+  styleUrls: [
+    // './project-cards-list.component.css',
+     './project-cards-list.component.scss']
 })
 export class ProjectCardsListComponent implements OnInit, OnDestroy {
   constructor(private projectsService: ProjectsService, private dialog: MatDialog, private authService: AuthService, private messageBar: MatSnackBar) { }
