@@ -1,54 +1,12 @@
-.flex-container {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  align-items: flex-start;
+.container {
   margin: 0 auto;
   padding: 1rem;
   max-width: 60rem;
 }
-mat-card-actions {
-  display: flex;
-  justify-content: space-around;
+.beam {
+  max-width: 30rem;
+  margin: 0 auto 1rem;
 }
-mat-card-subtitle {
-  margin-bottom: 0;
-}
-.options {
-  display: flex;
-  align-items: center;
-}
-.options button {
-  margin: 0 .5rem;
-}
-mat-card {
-  max-width: 26rem;
-  margin-bottom: 2rem;
-}
-.project-link {
-  text-decoration: none;
-  color: inherit;
-}
-img {
-  display: block;
-  max-width: 18rem;
-  margin: .5rem auto;
-}
-mat-divider.inset {
-  position: unset;
-  margin: 1rem 0;
-}
-mat-form-field {
-  display: block;
-}
-.prefix {
-  margin-right: .25rem;
-  user-select: none;
-}
-.description {
-  font-size: 1rem;
-  font-weight: 500;
-}
-.status-icon {
+.chip-icon {
   margin-right: .25rem;
 }

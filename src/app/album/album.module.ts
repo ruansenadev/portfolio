@@ -17,6 +17,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { ClipboardModule } from "@angular/cdk/clipboard";
+import { MatBadgeModule } from "@angular/material/badge";
 
 import { ProjectFormComponent } from './project-form/project-form.component';
 import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
@@ -48,6 +49,7 @@ import { ProjectPageComponent } from './project-page/project-page.component';
     MatIconModule,
     MatDialogModule,
     MatDividerModule,
+    MatBadgeModule
   ]
 })
 export class AlbumModule { }
