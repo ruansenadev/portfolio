@@ -4,7 +4,7 @@
       <mat-card-title>Blog</mat-card-title>
       <mat-card-subtitle>Página {{left+1}}</mat-card-subtitle>
     </mat-card-title-group>
-    <a *ngIf="isAuth" class="top-btn" mat-fab color="accent" [routerLink]="['new']">
+    <a *ngIf="isAuth" mat-mini-fab [routerLink]="['new']">
       <mat-icon>post_add</mat-icon>
     </a>
   </mat-card-header>
@@ -17,14 +17,21 @@
           <p *ngIf="post.description" matLine>{{post.description}}</p>
           <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
         </a>
-        <mat-toolbar *ngIf="isAuth">
-          <a mat-mini-fab color="primary" class="btn-action" [routerLink]="['edit', post.slug]">
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button mat-icon-button type="button" class="btn-action" color="warn" (click)="delPost(post)">
-            <mat-icon>delete_forever</mat-icon>
+        <div *ngIf="isAuth">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+            <mat-icon>more_vert</mat-icon>
           </button>
-        </mat-toolbar>
+          <mat-menu #menu="matMenu" xPosition="before">
+            <a mat-menu-item [routerLink]="['edit', post.slug]">
+              <mat-icon>edit</mat-icon>
+              <span>Editar</span>
+            </a>
+            <button mat-menu-item (click)="delPost(post)">
+              <mat-icon>delete_forever</mat-icon>
+              <span>Apagar</span>
+            </button>
+          </mat-menu>
+        </div>
       </div>
     </mat-nav-list>
   </mat-card-content>

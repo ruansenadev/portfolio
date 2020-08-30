@@ -3,12 +3,11 @@
 }
 mat-card-header {
   text-align: center;
-}
-.top-btn {
-  margin-left: auto;
+  justify-content: space-between;
 }
 .post-item {
   display: flex;
+  align-items: center;
 }
 mat-toolbar {
   width: auto;
