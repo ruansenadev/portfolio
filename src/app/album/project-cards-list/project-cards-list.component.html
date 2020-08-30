@@ -1,73 +1,46 @@
-<main>
-  <div class="flex-container">
-    <mat-card *ngFor="let project of projects" class="mat-elevation-z5">
-      <a [routerLink]="[project.seq]" class="project-link">
-        <mat-card-header>
-          <span mat-card-avatar>{{ project.seq }}</span>
-          <mat-card-title-group>
-            <mat-card-title>{{ project.name }}</mat-card-title>
-            <mat-card-subtitle>
-              <mat-chip-list>
-                <mat-chip [color]="statusColors[project.status]" selected>
-                  <mat-icon class="status-icon">{{ statusIcons[project.status] }}</mat-icon>
-                  {{ project.status }}
-                </mat-chip>
-              </mat-chip-list>
-            </mat-card-subtitle>
-          </mat-card-title-group>
-        </mat-card-header>
+<main class="container">
+  <mat-card class="beam mat-elevation-z2">Projetos</mat-card>
+  <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list">
+    <li *ngFor="let project of projects" class="mdc-image-list__item mat-card mat-elevation-z3">
+      <div class="mdc-image-list__header">
+        <mat-chip-list>
+          <mat-chip *ngFor="let item of project.technologies">{{ item }}</mat-chip>
+        </mat-chip-list>
+      </div>
+      <img *ngIf="project.thumbnailPath" class="mdc-image-list__image" [src]="project.thumbnailPath">
+      <p *ngIf="!project.thumbnailPath" class="mat-body-2 list__text">
+        {{ project.description }}
+      </p>
+      <mat-divider [inset]="true"></mat-divider>
+      <a [routerLink]="[project.seq]" class="mdc-image-list__supporting" [matBadge]="project.seq"
+        matBadgePosition="before" matBadgeSize="large">
+        <div class="mdc-image-list__label">{{ project.name }}</div>
+        <mat-chip-list class="mdc-image-list__chip">
+          <mat-chip [color]="statusColors[project.status]" selected>
+            <mat-icon class="chip-icon">{{ statusIcons[project.status] }}</mat-icon>
+            {{ project.status }}
+          </mat-chip>
+        </mat-chip-list>
       </a>
-      <mat-divider class="inset"></mat-divider>
-      <img *ngIf="project.thumbnailPath" mat-card-image [src]="project.thumbnailPath" [alt]="project.name">
-      <mat-card-content>
-        <mat-chip-list>
-          <mat-chip *ngFor="let item of project.technologies" color="primary" selected>{{ item }}</mat-chip>
-        </mat-chip-list>
-        <mat-divider class="inset"></mat-divider>
-        <p [class]="project.thumbnailPath?'mat-body-2':'description'">
-          {{ project.description }}
-        </p>
-        <mat-form-field>
-          <input matInput type="url" readonly [value]="project.url">
-          <span class="prefix" matPrefix>
-            <mat-icon>link</mat-icon>
-          </span>
-          <button matSuffix mat-button [cdkCopyToClipboard]="project.url">
-            <mat-icon>content_copy</mat-icon>
-          </button>
-        </mat-form-field>
-        <mat-form-field *ngIf="project.homepage">
-          <input matInput type="url" readonly [value]="project.homepage">
-          <span class="prefix" matPrefix>
-            <mat-icon>home</mat-icon>
-          </span>
-          <button matSuffix mat-button [cdkCopyToClipboard]="project.homepage">
-            <mat-icon>content_copy</mat-icon>
-          </button>
-        </mat-form-field>
-        <mat-chip-list>
-          <mat-chip *ngFor="let word of project.keywords">{{ word }}</mat-chip>
-        </mat-chip-list>
-      </mat-card-content>
-      <mat-card-actions>
-        <a mat-mini-fab color="primary" [routerLink]="[project.seq]">
-          <mat-icon>read_more</mat-icon>
-        </a>
-        <div *ngIf="isAuth" class="options">
-          <a mat-mini-fab [routerLink]="['edit', project.seq]">
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button mat-mini-fab color="warn" (click)="delProject(project)">
-            <mat-icon>delete_forever</mat-icon>
-          </button>
-        </div>
-      </mat-card-actions>
-    </mat-card>
-    <div *ngIf="hasMore" class="expand">
-      <button *ngIf="!isFetching" mat-mini-fab color="accent" (click)="onLoadMore()">
-        <mat-icon>expand_more</mat-icon>
-      </button>
-      <mat-spinner *ngIf="isFetching" [diameter]="40"></mat-spinner>
-    </div>
+    </li>
+  </ul>
+  <div *ngIf="hasMore" class="expand">
+    <button *ngIf="!isFetching" mat-mini-fab color="accent" (click)="onLoadMore()">
+      <mat-icon>expand_more</mat-icon>
+    </button>
+    <mat-spinner *ngIf="isFetching" [diameter]="40"></mat-spinner>
   </div>
+  <!-- <mat-card-actions>
+    <a mat-mini-fab color="primary" [routerLink]="[project.seq]">
+      <mat-icon>read_more</mat-icon>
+    </a>
+    <div *ngIf="isAuth" class="options">
+      <a mat-mini-fab [routerLink]="['edit', project.seq]">
+        <mat-icon>edit</mat-icon>
+      </a>
+      <button mat-mini-fab color="warn" (click)="delProject(project)">
+        <mat-icon>delete_forever</mat-icon>
+      </button>
+    </div>
+  </mat-card-actions> -->
 </main>
