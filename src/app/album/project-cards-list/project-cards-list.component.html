@@ -1,11 +1,31 @@
 <main class="container">
-  <mat-card class="beam mat-elevation-z2">Projetos</mat-card>
+  <mat-card class="beam mat-elevation-z2">
+    <span>Projetos</span>
+    <a *ngIf="isAuth" mat-mini-fab routerLink="new">
+      <mat-icon>add</mat-icon>
+    </a>
+  </mat-card>
   <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list">
     <li *ngFor="let project of projects" class="mdc-image-list__item mat-card mat-elevation-z3">
       <div class="mdc-image-list__header">
         <mat-chip-list>
           <mat-chip *ngFor="let item of project.technologies">{{ item }}</mat-chip>
         </mat-chip-list>
+        <div *ngIf="isAuth">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" xPosition="before">
+            <a mat-menu-item [routerLink]="['edit', project.seq]">
+              <mat-icon>edit</mat-icon>
+              <span>Editar</span>
+            </a>
+            <button mat-menu-item (click)="delProject(project)">
+              <mat-icon>delete_forever</mat-icon>
+              <span>Apagar</span>
+            </button>
+          </mat-menu>
+        </div>
       </div>
       <img *ngIf="project.thumbnailPath" class="mdc-image-list__image" [src]="project.thumbnailPath">
       <p *ngIf="!project.thumbnailPath" class="mat-body-2 list__text">
@@ -30,17 +50,4 @@
     </button>
     <mat-spinner *ngIf="isFetching" [diameter]="40"></mat-spinner>
   </div>
-  <!-- <mat-card-actions>
-    <a mat-mini-fab color="primary" [routerLink]="[project.seq]">
-      <mat-icon>read_more</mat-icon>
-    </a>
-    <div *ngIf="isAuth" class="options">
-      <a mat-mini-fab [routerLink]="['edit', project.seq]">
-        <mat-icon>edit</mat-icon>
-      </a>
-      <button mat-mini-fab color="warn" (click)="delProject(project)">
-        <mat-icon>delete_forever</mat-icon>
-      </button>
-    </div>
-  </mat-card-actions> -->
 </main>

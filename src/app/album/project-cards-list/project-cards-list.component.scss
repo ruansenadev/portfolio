@@ -17,7 +17,9 @@
   }
 }
 .mdc-image-list__header {
-  display: block;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
   margin-bottom: .5rem;
 }
 .mdc-image-list__supporting {
@@ -40,6 +42,9 @@
   max-width: 60rem;
 }
 .beam {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   max-width: 30rem;
   margin: 0 auto 1rem;
 }

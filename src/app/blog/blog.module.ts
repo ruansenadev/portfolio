@@ -19,6 +19,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatMenuModule } from "@angular/material/menu";
 
 import { PostFormComponent } from './post-form/post-form.component';
 import { FeedComponent } from './feed/feed.component';
@@ -41,6 +42,7 @@ import { PostPageComponent } from './post-page/post-page.component';
     MatChipsModule,
     BlogRoutingModule,
     MatPaginatorModule,
+    MatMenuModule,
     MatListModule,
     MatDialogModule,
     MatDividerModule,
