@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { Post } from "./post";
+import { Archives } from "./blog-archives/blog-archives.component";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MessageComponent } from "../messages/message/message.component";
 import { environment } from "../../environments/environment";
@@ -15,13 +16,15 @@ export class PostsService {
   constructor(private http: HttpClient, private router: Router, private messageBar: MatSnackBar) { }
   private posts: Post[] = []
   private stream = new Subject<{ posts: Post[], max: number }>()
-
   populatePosts(left: number = 0, items: number = 5): void {
     const query = `?left=${left}&items=${items}`
     this.http.get<{ posts: Post[], max: number }>(apiPosts + query).subscribe((res) => {
       this.posts = res.posts
       this.stream.next({ posts: [...this.posts], max: res.max })
     })
+  }
+  getArchives() {
+    return this.http.get<Archives>(`${apiPosts}/archives`)
   }
   getStream() {
     return this.stream.asObservable()

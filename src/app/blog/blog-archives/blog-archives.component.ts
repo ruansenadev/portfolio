@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostsService } from "../posts.service";
+
 export interface Archives {
   [key: number]: [
     {
@@ -8,7 +9,6 @@ export interface Archives {
     }
   ]
 }
-
 @Component({
   selector: 'blog-archives',
   templateUrl: './blog-archives.component.html',
@@ -16,6 +16,8 @@ export interface Archives {
 })
 export class BlogArchivesComponent implements OnInit {
   constructor(private postsService: PostsService) { }
+  archives: Archives
   ngOnInit(): void {
+    this.postsService.getArchives().subscribe(archives => console.log(archives))
   }
 }
