@@ -15,7 +15,6 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatExpansionModule } from "@angular/material/expansion";
@@ -47,7 +46,6 @@ import { PostPageComponent } from './post-page/post-page.component';
     MatDialogModule,
     MatDividerModule,
     MatIconModule,
-    MatToolbarModule,
     MatCardModule,
     MatFormFieldModule,
     MatProgressBarModule,
