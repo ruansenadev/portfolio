@@ -6,6 +6,7 @@ const { query, param, validationResult } = require('express-validator')
 const moment = require('moment-timezone')
 moment.tz.setDefault('America/Bahia').locale('pt-br')
 const router = express.Router()
+const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
 const { IncomingForm } = require('formidable')
 const postFormOptions = {
@@ -35,6 +36,27 @@ router.get('/', [
           })
       })
       .catch(() => { return res.status(502).json({ message: 'Falha ao buscar posts' }) })
+  }
+])
+router.get('/archives', [
+  function (req, res) {
+    Post.aggregate([
+      {
+        $group: {
+          _id: { year: { $year: '$date' }, month: { $month: '$date' } },
+          count: { $sum: 1 }
+        }
+      }
+    ])
+      .exec((err, archives) => {
+        if (err) { return res.status(502).json({ message: 'Falha ao buscar arquivados' }) }
+        archives = archives.reduce((archivesMap, group) => {
+          if (!archivesMap[group._id.year]) archivesMap[group._id.year] = []
+          archivesMap[group._id.year].push({ month: months[group._id.month - 1], count: group.count })
+          return archivesMap
+        }, {})
+        res.json(archives)
+      })
   }
 ])
 router.get('/:slug', [
