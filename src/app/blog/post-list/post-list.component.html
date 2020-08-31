@@ -4,7 +4,7 @@
       <mat-card-title>Blog</mat-card-title>
       <mat-card-subtitle>Página {{left+1}}</mat-card-subtitle>
     </mat-card-title-group>
-    <a *ngIf="isAuth" mat-mini-fab [routerLink]="['new']">
+    <a class="btn--top" *ngIf="isAuth" mat-mini-fab [routerLink]="['new']">
       <mat-icon>post_add</mat-icon>
     </a>
   </mat-card-header>
