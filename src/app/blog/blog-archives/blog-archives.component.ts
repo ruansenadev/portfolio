@@ -1,4 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { PostsService } from "../posts.service";
+export interface Archives {
+  [key: number]: [
+    {
+      month: string,
+      count: number
+    }
+  ]
+}
 
 @Component({
   selector: 'blog-archives',
@@ -6,10 +15,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./blog-archives.component.css']
 })
 export class BlogArchivesComponent implements OnInit {
-
-  constructor() { }
-
+  constructor(private postsService: PostsService) { }
   ngOnInit(): void {
   }
-
 }
