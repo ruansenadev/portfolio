@@ -6,7 +6,6 @@ const { query, param, validationResult } = require('express-validator')
 const moment = require('moment-timezone')
 moment.tz.setDefault('America/Bahia').locale('pt-br')
 const router = express.Router()
-const monthsNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
 const { IncomingForm } = require('formidable')
 const postFormOptions = {
@@ -46,19 +45,37 @@ router.get('/archives', [
           _id: { year: { $year: '$date' }, month: { $month: '$date' } },
           count: { $sum: 1 }
         }
+      },
+      {
+        $group: {
+          _id: { year: '$_id.year' },
+          months: {
+            $push: {
+              month: {
+                $let: {
+                  vars: {
+                    monthsNames: [, 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+                  },
+                  in: {
+                    $arrayElemAt: ['$$monthsNames', '$_id.month']
+                  }
+                }
+              },
+              count: '$count'
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          year: '$_id.year',
+          months: '$months'
+        }
       }
     ])
       .exec((err, archives) => {
-        if (err) { return res.status(502).json({ message: 'Falha ao buscar arquivados' }) }
-        archives = archives.reduce((archivesTree, group) => {
-          let nodeIndex = archivesTree.findIndex(node => node.year == group._id.year)
-          if (nodeIndex > -1) {
-            archivesTree[nodeIndex].months.push({ month: monthsNames[group._id.month - 1], count: group.count })
-          } else {
-            archivesTree.push({ year: group._id.year, months: [{ month: monthsNames[group._id.month - 1], count: group.count }] })
-          }
-          return archivesTree
-        }, [])
+        if (err) { return res.status(502).json({ message: 'Falha ao buscar arquivos' }) }
         res.json(archives)
       })
   }
