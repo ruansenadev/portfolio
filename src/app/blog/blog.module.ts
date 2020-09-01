@@ -25,6 +25,7 @@ import { FeedComponent } from './feed/feed.component';
 import { PostListComponent } from './post-list/post-list.component';
 import { PostDialogComponent } from './post-dialog/post-dialog.component';
 import { PostPageComponent } from './post-page/post-page.component';
+import { BlogArchivesComponent } from './blog-archives/blog-archives.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { PostPageComponent } from './post-page/post-page.component';
     PostListComponent,
     PostFormComponent,
     PostDialogComponent,
-    PostPageComponent
+    PostPageComponent,
+    BlogArchivesComponent
   ],
   imports: [
     CommonModule,
