@@ -24,7 +24,7 @@ export class PostsService {
     })
   }
   getArchives() {
-    return this.http.get<Archives>(`${apiPosts}/archives`)
+    return this.http.get<Archives[]>(`${apiPosts}/archives`)
   }
   getStream() {
     return this.stream.asObservable()

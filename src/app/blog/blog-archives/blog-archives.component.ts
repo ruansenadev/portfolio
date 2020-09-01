@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PostsService } from "../posts.service";
 
 export interface Archives {
-  [key: number]: [
-    {
-      month: string,
-      count: number
-    }
+  year: number
+  months: [
+    { month: string, count: number }
   ]
 }
 @Component({
@@ -16,8 +14,8 @@ export interface Archives {
 })
 export class BlogArchivesComponent implements OnInit {
   constructor(private postsService: PostsService) { }
-  archives: Archives
+  archives: Archives[]
   ngOnInit(): void {
-    this.postsService.getArchives().subscribe(archives => console.log(archives))
+    this.postsService.getArchives().subscribe(archives => this.archives = archives)
   }
 }

@@ -6,7 +6,7 @@ const { query, param, validationResult } = require('express-validator')
 const moment = require('moment-timezone')
 moment.tz.setDefault('America/Bahia').locale('pt-br')
 const router = express.Router()
-const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+const monthsNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
 const { IncomingForm } = require('formidable')
 const postFormOptions = {
@@ -50,11 +50,15 @@ router.get('/archives', [
     ])
       .exec((err, archives) => {
         if (err) { return res.status(502).json({ message: 'Falha ao buscar arquivados' }) }
-        archives = archives.reduce((archivesMap, group) => {
-          if (!archivesMap[group._id.year]) archivesMap[group._id.year] = []
-          archivesMap[group._id.year].push({ month: months[group._id.month - 1], count: group.count })
-          return archivesMap
-        }, {})
+        archives = archives.reduce((archivesTree, group) => {
+          let nodeIndex = archivesTree.findIndex(node => node.year == group._id.year)
+          if (nodeIndex > -1) {
+            archivesTree[nodeIndex].months.push({ month: monthsNames[group._id.month - 1], count: group.count })
+          } else {
+            archivesTree.push({ year: group._id.year, months: [{ month: monthsNames[group._id.month - 1], count: group.count }] })
+          }
+          return archivesTree
+        }, [])
         res.json(archives)
       })
   }
