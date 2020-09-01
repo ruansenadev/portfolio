@@ -12,11 +12,11 @@
           <mat-panel-title>{{ archives.year }}</mat-panel-title>
           <mat-panel-description *ngIf="isYear(archives.year)">Neste ano</mat-panel-description>
         </mat-expansion-panel-header>
-        <mat-nav-list>
+        <mat-list>
           <mat-list-item *ngFor="let archive of archives.months">
-            <a routerLink="./" [matBadge]="archive.count" [matBadgeOverlap]="false" [matBadgePosition]="'before'" [matBadgeColor]="'accent'">{{ archive.month }}</a>
+            <span [matBadge]="archive.count" [matBadgeOverlap]="false" [matBadgePosition]="'before'" [matBadgeColor]="'accent'">{{ archive.month }}</span>
           </mat-list-item>
-        </mat-nav-list>
+        </mat-list>
       </mat-expansion-panel>
     </mat-accordion>
   </mat-card-content>
