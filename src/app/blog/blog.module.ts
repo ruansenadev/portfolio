@@ -19,6 +19,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatMenuModule } from "@angular/material/menu";
+import { MatBadgeModule } from "@angular/material/badge";
 
 import { PostFormComponent } from './post-form/post-form.component';
 import { FeedComponent } from './feed/feed.component';
@@ -53,7 +54,8 @@ import { BlogArchivesComponent } from './blog-archives/blog-archives.component';
     MatProgressBarModule,
     MatButtonModule,
     MatInputModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatBadgeModule
   ],
   providers: [
     { provide: MAT_CHIPS_DEFAULT_OPTIONS, useValue: { separatorKeyCodes: [ENTER, COMMA] } },

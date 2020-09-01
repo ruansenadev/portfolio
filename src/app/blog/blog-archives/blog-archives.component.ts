@@ -13,9 +13,15 @@ export interface Archives {
   styleUrls: ['./blog-archives.component.css']
 })
 export class BlogArchivesComponent implements OnInit {
-  constructor(private postsService: PostsService) { }
-  archives: Archives[]
+  constructor(private postsService: PostsService) {
+    this.d = new Date()
+  }
+  d: Date
+  isYear(year: number): boolean {
+    return this.d.getFullYear() === year
+  }
+  archivesList: Archives[]
   ngOnInit(): void {
-    this.postsService.getArchives().subscribe(archives => this.archives = archives)
+    this.postsService.getArchives().subscribe(res => this.archivesList = res)
   }
 }
