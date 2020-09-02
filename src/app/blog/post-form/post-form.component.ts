@@ -95,4 +95,7 @@ export class PostFormComponent implements OnInit {
     }
     this.form.reset()
   }
+  canDeactivate(): boolean {
+    return confirm(this.post ? `Deixar de editar post ${this.post.title}?` : 'Sair sem salvar post?')
+  }
 }

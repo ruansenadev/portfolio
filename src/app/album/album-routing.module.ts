@@ -6,17 +6,18 @@ import { ProjectResolver } from "./project.resolver";
 import { ProjectFormComponent } from "./project-form/project-form.component";
 import { ProjectCardsListComponent } from './project-cards-list/project-cards-list.component';
 import { ProjectPageComponent } from './project-page/project-page.component';
+import { ProjectDeactivate } from "./project-form/project-deactivate.guard";
 
 const routes: Routes = [
   { path: '', component: ProjectCardsListComponent },
-  { path: 'new', component: ProjectFormComponent, canActivate: [AuthGuard] },
+  { path: 'new', component: ProjectFormComponent, canActivate: [AuthGuard], canDeactivate: [ProjectDeactivate] },
   { path: ':seq', component: ProjectPageComponent, resolve: { project: ProjectResolver } },
-  { path: 'edit/:seq', component: ProjectFormComponent, canActivate: [AuthGuard] }
+  { path: 'edit/:seq', component: ProjectFormComponent, canActivate: [AuthGuard], canDeactivate: [ProjectDeactivate] }
 ]
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard, ProjectResolver]
+  providers: [AuthGuard, ProjectResolver, ProjectDeactivate]
 })
 export class AlbumRoutingModule {}

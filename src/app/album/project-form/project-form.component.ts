@@ -132,5 +132,7 @@ export class ProjectFormComponent implements OnInit {
     }
     this.form.reset()
   }
-
+  canDeactivate(): boolean {
+    return confirm(this.project ? `Deixar de editar projeto ${this.project.name}?` : 'Sair sem salvar projeto?')
+  }
 }
