@@ -10,7 +10,7 @@
     <mat-list>
       <mat-list-item *ngFor="let skill of account.skills | keyvalue">
         <h4 matLine>{{ skill.key }}</h4>
-        <p matLine>{{ transformValue(skill.value) }}</p>
+        <p matLine>{{ skill.value | skill }}</p>
       </mat-list-item>
     </mat-list>
   </mat-card-content>

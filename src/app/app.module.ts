@@ -40,6 +40,7 @@ import { MatBadgeModule } from "@angular/material/badge";
 import { CarouselComponent } from './carousel/carousel.component';
 
 import { CarouselPipe } from './carousel/carousel.pipe';
+import { SkillPipe } from './home/home-hero/skill.pipe';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { CarouselPipe } from './carousel/carousel.pipe';
     SheetComponent,
     DispatcherComponent,
     CarouselComponent,
-    CarouselPipe
+    CarouselPipe,
+    SkillPipe
   ],
   imports: [
     BrowserModule,
