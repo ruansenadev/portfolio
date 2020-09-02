@@ -16,15 +16,4 @@ export class HomeHeroComponent implements OnInit {
   ngOnInit(): void {
     this.accountListener = this.adminService.getAdmin().subscribe((account) => this.account = account)
   }
-
-  transformValue(value: any): string {
-    switch (typeof value) {
-      case 'object':
-        return `[ ${value.join(', ')} ]`
-      case 'string':
-        return `'${value}'`
-      default:
-        return value
-    }
-  }
 }
