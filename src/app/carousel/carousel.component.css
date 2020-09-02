@@ -15,15 +15,22 @@
   justify-content: space-between;
   touch-action: none;
 }
+.item-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 .item {
   flex: 1;
   width: 16rem;
   min-width: 12rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   margin: 0 .75rem;
   user-select: none;
+  -webkit-user-select: none;
 }
 .item:first-child {
   margin-left: 0;
@@ -35,7 +42,8 @@
   word-break: break-all;
   overflow-wrap: break-word;
 }
-.item-img {
+.item-content {
+  margin: auto !important;
   -webkit-user-drag: none;
 }
 .item-actions {
