@@ -11,8 +11,15 @@ export class CarouselPipe implements PipeTransform {
     if (!list || !list.length) { return [] }
     model = model.toLowerCase()
     if (model === 'project') {
+      let statusIcons: { [key: string]: string } = {
+        'Protótipagem': 'construction',
+        'Desenvolvimento': 'build_circle',
+        'Encerrado': 'highlight_off',
+        'Finalizado': 'check_circle'
+      }
       return (list as Project[]).map((value) => {
         return {
+          icon: statusIcons[value.status],
           title: value.name,
           img: value.thumbnailPath,
           desc: value.description,
@@ -22,6 +29,7 @@ export class CarouselPipe implements PipeTransform {
     } else if (model === 'post') {
       return (list as Post[]).map((value) => {
         return {
+          icon: value.icon,
           title: value.title,
           img: value.thumbnailPath,
           desc: value.description,

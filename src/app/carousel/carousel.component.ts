@@ -2,6 +2,7 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { ShareService } from "../share/share.service";
 
 export interface Item {
+  icon: string;
   title: string;
   img: string;
   desc: string;
@@ -25,6 +26,9 @@ export class CarouselComponent {
   @Input() items: Item[] = []
   onShare(uri: string) {
     this.shareService.openSheet(uri)
+  }
+  onDrag(e: DragEvent): void {
+    e.preventDefault()
   }
   updateTransformState(): void {
     const state = (this.box.nativeElement as HTMLDivElement).style.getPropertyValue('transform')
