@@ -1,6 +1,6 @@
 <main>
   <section id="Profile">
-    <home-hero></home-hero>
+    <home-hero [admin]="admin"></home-hero>
   </section>
   <section id="Album" class="mat-elevation-z2">
     <app-carousel [title]="'Projetos'" [items]="projects | carousel : 'project'"></app-carousel>

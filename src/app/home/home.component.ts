@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { Project } from "../album/project";
 import { ProjectsService } from "../album/projects.service";
 import { Post } from "../blog/post";
 import { PostsService } from "../blog/posts.service";
 import { Subscription } from 'rxjs';
+import { Admin } from '../admin/admin';
 
 @Component({
   selector: 'app-home',
@@ -11,13 +13,15 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  admin: Admin
   projects: Project[]
   posts: Post[]
   private projectsListener: Subscription
   private postsListener: Subscription
-  constructor(private projectsService: ProjectsService, private postsService: PostsService) { }
+  constructor(private route: ActivatedRoute, private projectsService: ProjectsService, private postsService: PostsService) { }
 
   ngOnInit(): void {
+    this.admin = this.route.snapshot.data['admin']
     this.projectsService.populateProjects(0, 5)
     this.projectsListener = this.projectsService.getStream().subscribe((res) => this.projects = res.projects)
     this.postsService.populatePosts(0, 5)
