@@ -29,7 +29,7 @@ export class DispatcherComponent implements OnInit {
     );
   ngOnInit(): void {
     this.adminService.fetchAdmin()
-    this.accountListener = this.adminService.getAdmin().subscribe((account) => this.account = account)
+    this.accountListener = this.adminService.getStream().subscribe((account) => this.account = account)
     this.isAuth = this.authService.getStatus()
     this.authListener = this.authService.getListener().subscribe((status) => this.isAuth = status)
   }

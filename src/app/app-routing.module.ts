@@ -5,9 +5,10 @@ import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from "./home/home.component";
 import { AuthGuard } from './auth/auth.guard';
 import { AuthLoadGuard } from './auth/auth-load.guard';
+import { AdminResolver } from "./admin/admin.resolver";
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, resolve: { admin: AdminResolver } },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
   { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canLoad: [AuthLoadGuard] },
   { path: 'blog', loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule) },

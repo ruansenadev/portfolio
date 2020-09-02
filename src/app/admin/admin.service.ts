@@ -14,12 +14,15 @@ const apiAdmin = environment.server + '/admin'
 export class AdminService {
   constructor(private http: HttpClient, private messageBar: MatSnackBar, private authService: AuthService) { }
   admin$ = new Subject<Admin>()
+  getAdmin() {
+    return this.http.get<Admin>(apiAdmin)
+  }
   fetchAdmin(): void {
     this.http.get<Admin>(apiAdmin).subscribe((account) => {
       this.admin$.next(account)
     })
   }
-  getAdmin() {
+  getStream() {
     return this.admin$.asObservable()
   }
   getGravatar() {

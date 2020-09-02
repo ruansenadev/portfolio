@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AdminService } from "../../admin/admin.service";
+import { Component, Input, OnInit } from '@angular/core';
 import { Admin } from "../../admin/admin";
-import { Subscription } from "rxjs";
 
 @Component({
   selector: 'home-hero',
@@ -9,11 +7,9 @@ import { Subscription } from "rxjs";
   styleUrls: ['./home-hero.component.css']
 })
 export class HomeHeroComponent implements OnInit {
-  constructor(private adminService: AdminService) { }
-  account: Admin
-  accountListener: Subscription
+  constructor() { }
+  @Input('admin') account: Admin
 
   ngOnInit(): void {
-    this.accountListener = this.adminService.getAdmin().subscribe((account) => this.account = account)
   }
 }
