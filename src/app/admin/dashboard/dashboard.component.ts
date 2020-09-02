@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
     'Conta': true
   }
   /** Based on the screen size, switch from standard to one column per row */
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+  panels = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
       if (matches) {
         return [
@@ -40,5 +40,11 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.adminService.fetchAdmin()
     this.adminService.admin$.subscribe((account) => this.account = account)
+  }
+  canDeactivate(): boolean {
+    if (Object.values(this.reading).some(panel => !panel)) {
+      return confirm('Deseja realmente sair?')
+    }
+    return true
   }
 }
