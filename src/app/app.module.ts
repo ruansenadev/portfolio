@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from "@angular/material/snack-bar";
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
+import { ContentLoaderModule } from "@ngneat/content-loader";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
@@ -56,7 +57,7 @@ import { SkillPipe } from './home/home-hero/skill.pipe';
     DispatcherComponent,
     CarouselComponent,
     CarouselPipe,
-    SkillPipe
+    SkillPipe,
   ],
   imports: [
     BrowserModule,
@@ -78,7 +79,8 @@ import { SkillPipe } from './home/home-hero/skill.pipe';
     MatListModule,
     LayoutModule,
     MatSidenavModule,
-    MatBadgeModule
+    MatBadgeModule,
+    ContentLoaderModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

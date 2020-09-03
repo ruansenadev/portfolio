@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "~9.1.11",
     "@angular/router": "~9.1.11",
     "@material/image-list": "^7.0.0",
+    "@ngneat/content-loader": "^5.0.0",
     "async": "^3.2.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
