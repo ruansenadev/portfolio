@@ -21,17 +21,20 @@ import { MatDividerModule } from "@angular/material/divider";
 import { ClipboardModule } from "@angular/cdk/clipboard";
 import { CdkScrollableModule, ScrollingModule } from "@angular/cdk/scrolling";
 import { MatBadgeModule } from "@angular/material/badge";
+import { ContentLoaderModule } from "@ngneat/content-loader";
 
 import { ProjectFormComponent } from './project-form/project-form.component';
 import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
 import { ProjectCardsListComponent } from './project-cards-list/project-cards-list.component';
 import { ProjectPageComponent } from './project-page/project-page.component';
+import { ProjectListLoaderComponent } from "./project-cards-list/project-list-loader.component";
 
 @NgModule({
   declarations: [
     ProjectFormComponent,
     ProjectDialogComponent,
     ProjectCardsListComponent,
+    ProjectListLoaderComponent,
     ProjectPageComponent
   ],
   imports: [
@@ -56,7 +59,8 @@ import { ProjectPageComponent } from './project-page/project-page.component';
     MatDialogModule,
     MatDividerModule,
     MatProgressSpinnerModule,
-    MatBadgeModule
+    MatBadgeModule,
+    ContentLoaderModule
   ]
 })
 export class AlbumModule { }

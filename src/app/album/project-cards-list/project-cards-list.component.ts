@@ -21,6 +21,7 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
   items: number = 3;
   hasMore: boolean = true
   isFetching: boolean = true
+  skeleton = Array(this.items)
   private projectsListen: Subscription
   statusIcons: { [key: string]: string } = {
     'Protótipagem': 'construction',
