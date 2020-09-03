@@ -22,8 +22,9 @@ export class PostListComponent implements OnInit, OnDestroy {
   private authListener: Subscription;
   left: number = 0;
   itemsOptions = [5, 10, 15];
-  items: number = 10;
+  items: number = 5;
   length: number;
+  skeleton = Array(this.items)
   ngOnInit(): void {
     this.postsService.populatePosts(this.left, this.items)
     this.postsListener = this.postsService.getStream().subscribe((res) => {

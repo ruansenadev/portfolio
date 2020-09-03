@@ -9,6 +9,9 @@
     </a>
   </mat-card-header>
   <mat-card-content>
+    <ng-container *ngIf="!posts.length">
+      <post-list-loader *ngFor="let item of skeleton"></post-list-loader>
+    </ng-container>
     <mat-nav-list>
       <div class="post-item" *ngFor="let post of posts; last as last">
         <a mat-list-item [routerLink]="[post.slug]">
