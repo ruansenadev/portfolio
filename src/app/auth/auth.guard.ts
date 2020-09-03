@@ -11,10 +11,13 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): true | UrlTree {
-    if (this.authService.getStatus()) {
-      if (state.url === '/login') {
+    if (state.url === '/login') {
+      if (this.authService.getStatus()) {
         return this.router.parseUrl('/admin')
       }
+      return true;
+    }
+    if (this.authService.getStatus()) {
       return true;
     } else {
       this.authService.redirect = state.url
