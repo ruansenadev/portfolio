@@ -2,25 +2,29 @@
   <div class="mat-title">
     {{ title }}
   </div>
-  <div class="box" #box (pointerdown)="onPress($event)" (pointermove)="onMove($event)"
-    (pointerup)="onRelease($event)">
-    <mat-card *ngFor="let item of items" class="item mat-elevation-z1">
-      <mat-card-header>
-        <div mat-card-avatar>
-          <mat-icon>{{ item.icon }}</mat-icon>
-        </div>
-        <mat-card-title class="item-title">{{ item.title }}</mat-card-title>
-      </mat-card-header>
-      <img *ngIf="item.img" [src]="item.img" class="item-content" draggable="false">
-      <mat-card-content *ngIf="!item.img" class="item-content mat-body-2">{{ item.desc }}</mat-card-content>
-      <mat-card-actions class="item-actions">
-        <button mat-icon-button (click)="onShare(item.uri)">
-          <mat-icon>share</mat-icon>
-        </button>
-        <a [routerLink]="item.uri" mat-mini-fab class="mat-elevation-z" color="primary">
-          <mat-icon>read_more</mat-icon>
-        </a>
-      </mat-card-actions>
-    </mat-card>
+  <div class="box" #box (pointerdown)="onPress($event)" (pointermove)="onMove($event)" (pointerup)="onRelease($event)">
+    <ng-container *ngIf="!items.length; else card">
+      <carousel-loader *ngFor="let item of skeleton" class="item mat-elevation-z1"></carousel-loader>
+    </ng-container>
+    <ng-template #card>
+      <mat-card *ngFor="let item of items" class="item mat-elevation-z1">
+        <mat-card-header>
+          <div mat-card-avatar>
+            <mat-icon>{{ item.icon }}</mat-icon>
+          </div>
+          <mat-card-title class="item-title">{{ item.title }}</mat-card-title>
+        </mat-card-header>
+        <img *ngIf="item.img" [src]="item.img" class="item-content" draggable="false">
+        <mat-card-content *ngIf="!item.img" class="item-content mat-body-2">{{ item.desc }}</mat-card-content>
+        <mat-card-actions class="item-actions">
+          <button mat-icon-button (click)="onShare(item.uri)">
+            <mat-icon>share</mat-icon>
+          </button>
+          <a [routerLink]="item.uri" mat-mini-fab class="mat-elevation-z" color="primary">
+            <mat-icon>read_more</mat-icon>
+          </a>
+        </mat-card-actions>
+      </mat-card>
+    </ng-template>
   </div>
 </div>

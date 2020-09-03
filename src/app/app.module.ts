@@ -39,6 +39,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from "@angular/material/badge";
 import { CarouselComponent } from './carousel/carousel.component';
+import { CarouselLoaderComponent } from './carousel/carousel-loader.component';
 
 import { CarouselPipe } from './carousel/carousel.pipe';
 import { SkillPipe } from './home/home-hero/skill.pipe';
@@ -56,6 +57,7 @@ import { SkillPipe } from './home/home-hero/skill.pipe';
     SheetComponent,
     DispatcherComponent,
     CarouselComponent,
+    CarouselLoaderComponent,
     CarouselPipe,
     SkillPipe,
   ],

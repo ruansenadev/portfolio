@@ -17,6 +17,7 @@ export interface Item {
 export class CarouselComponent {
   constructor(private shareService: ShareService) { }
   @ViewChild('box') box: ElementRef
+  skeleton = Array(4)
   private tolerance = 32
   private pressPosition: number = null
   private outBoxSlice: number
