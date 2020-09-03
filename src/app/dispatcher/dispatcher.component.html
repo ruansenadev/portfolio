@@ -28,7 +28,8 @@
 
   <mat-sidenav-content>
     <mat-toolbar *ngIf="isHandset$ | async" class="top-nav" color="primary" #topNav>
-      <button type="button" class="nav-icon" aria-label="Alternar menu lateral" mat-icon-button (click)="onToggle('nav')">
+      <button type="button" class="nav-icon" aria-label="Alternar menu lateral" mat-icon-button
+        (click)="onToggle('nav')">
         <mat-icon aria-label="Menu lateral ícone">menu</mat-icon>
       </button>
       <span>ruansenadev</span>
@@ -39,7 +40,9 @@
       </button>
 
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <div [@routeAnimations]="prepareRoute(outlet)">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
   </mat-sidenav-content>
 
   <mat-sidenav #_drawer *ngIf="isAuth" class="sidenav" fixedInViewport position="end"

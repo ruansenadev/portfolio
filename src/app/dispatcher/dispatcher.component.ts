@@ -7,11 +7,16 @@ import { Admin } from "../admin/admin";
 import { AuthService } from "../auth/auth.service";
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
+import { RouterOutlet } from '@angular/router';
+import { slideInAnimation } from "./dispatcher-animations";
 
 @Component({
   selector: 'app-dispatcher',
   templateUrl: './dispatcher.component.html',
-  styleUrls: ['./dispatcher.component.css']
+  styleUrls: ['./dispatcher.component.css'],
+  animations: [
+    slideInAnimation
+  ]
 })
 export class DispatcherComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver, private adminService: AdminService, private authService: AuthService) { }
@@ -32,6 +37,9 @@ export class DispatcherComponent implements OnInit {
     this.accountListener = this.adminService.getStream().subscribe((account) => this.account = account)
     this.isAuth = this.authService.getStatus()
     this.authListener = this.authService.getListener().subscribe((status) => this.isAuth = status)
+  }
+  prepareRoute(outlet: RouterOutlet) {
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation
   }
   onToggle(nav: string): void {
     (this[nav] as MatSidenav).toggle()
