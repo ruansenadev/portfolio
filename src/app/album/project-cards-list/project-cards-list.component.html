@@ -43,6 +43,9 @@
         </mat-chip-list>
       </a>
     </li>
+    <ng-container *ngIf="isFetching">
+      <project-list-loader *ngFor="let item of skeleton" class="mdc-image-list__item mat-card mat-elevation-z3"></project-list-loader>
+    </ng-container>
   </ul>
   <div *ngIf="hasMore" class="expand">
     <button *ngIf="!isFetching" mat-mini-fab color="accent" (click)="onLoadMore()">
