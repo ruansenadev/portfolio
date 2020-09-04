@@ -18,7 +18,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((res: HttpErrorResponse) => {
         this.messageBar.openFromComponent(MessageComponent, {
-          data: { message: res.error.message },
+          data: { message: res.error.message || res.statusText },
           horizontalPosition: 'left'
         })
         return throwError(res)
