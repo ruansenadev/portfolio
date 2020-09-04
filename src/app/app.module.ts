@@ -40,6 +40,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from "@angular/material/badge";
 import { CarouselComponent } from './carousel/carousel.component';
 import { CarouselLoaderComponent } from './carousel/carousel-loader.component';
+import { VoidComponent } from './void/void.component';
 
 import { CarouselPipe } from './carousel/carousel.pipe';
 import { SkillPipe } from './home/home-hero/skill.pipe';
@@ -58,8 +59,9 @@ import { SkillPipe } from './home/home-hero/skill.pipe';
     DispatcherComponent,
     CarouselComponent,
     CarouselLoaderComponent,
+    VoidComponent,
     CarouselPipe,
-    SkillPipe,
+    SkillPipe
   ],
   imports: [
     BrowserModule,
