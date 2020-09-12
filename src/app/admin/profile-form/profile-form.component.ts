@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, SimpleChange, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChange, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Subscription } from "rxjs";
 import { FormBuilder, Validators } from '@angular/forms';
 import { Admin } from "../admin";
 import { AdminService } from "../admin.service";
@@ -8,7 +9,7 @@ import { AdminService } from "../admin.service";
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.css']
 })
-export class ProfileFormComponent implements OnChanges {
+export class ProfileFormComponent implements OnChanges, OnDestroy {
   constructor(private fb: FormBuilder, private adminService: AdminService) { }
   @Input() account: Admin
   @Input() read: boolean = true
@@ -21,6 +22,7 @@ export class ProfileFormComponent implements OnChanges {
     city: { value: null, disabled: this.read },
     state: { value: null, disabled: this.read }
   });
+  private listener: Subscription
   photo: string
   photoName: string = ''
   upload: string
@@ -71,8 +73,14 @@ export class ProfileFormComponent implements OnChanges {
     if (changes['read']) {
       if (this.read) {
         this.profileForm.disable()
+        if (this.listener) this.listener.unsubscribe()
         this.noFocus = 'no-focus'
       } else {
+        this.listener = this.adminService.getStream().subscribe(null, () => {
+          this.done.emit(false)
+        }, () => {
+          this.done.emit(true)
+        })
         this.noFocus = ''
         this.profileForm.enable()
       }
@@ -113,11 +121,11 @@ export class ProfileFormComponent implements OnChanges {
   }
   onSubmit() {
     if (this.profileForm.invalid) {
-      this.done.emit(false)
       return
     }
     this.adminService.editProfile(this.account._id, this.profileForm.value.name, this.profileForm.value.lastName, this.profileForm.value.birthdate, this.profileForm.value.city, this.profileForm.value.state)
-    this.profileForm.disable()
-    this.done.emit(true)
+  }
+  ngOnDestroy(): void {
+    if (this.listener) this.listener.unsubscribe()
   }
 }

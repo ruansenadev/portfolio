@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, SimpleChange, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChange, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Subscription } from "rxjs";
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Admin } from "../admin";
 import { AdminService } from "../admin.service";
@@ -9,11 +10,12 @@ import { MatChipInputEvent } from '@angular/material/chips';
   templateUrl: './professional-form.component.html',
   styleUrls: ['./professional-form.component.css']
 })
-export class ProfessionalFormComponent implements OnChanges {
+export class ProfessionalFormComponent implements OnChanges, OnDestroy {
   constructor(private fb: FormBuilder, private adminService: AdminService) { }
   @Input() account: Admin
   @Input() read: boolean = true
   @Output() done = new EventEmitter<boolean>()
+  private listener: Subscription
   professionalForm = this.fb.group({
     logo: { value: null, disabled: this.read },
     profession: [{ value: null, disabled: this.read }, Validators.required],
@@ -94,10 +96,16 @@ export class ProfessionalFormComponent implements OnChanges {
     if (changes['read']) {
       if (this.read) {
         this.professionalForm.disable()
+        if (this.listener) this.listener.unsubscribe()
         this.noFocus = 'no-focus'
       } else {
         this.noFocus = ''
         this.professionalForm.enable()
+        this.listener = this.adminService.getStream().subscribe(null, () => {
+          this.done.emit(false)
+        }, () => {
+          this.done.emit(true)
+        })
       }
     }
   }
@@ -133,13 +141,14 @@ export class ProfessionalFormComponent implements OnChanges {
   }
   onSubmit() {
     if (this.professionalForm.invalid) {
-      this.done.emit(false)
       return
     }
     this.adminService.editProfessional(this.account._id, this.professionalForm.value.profession, this.professionalForm.value.nickname, this.professionalForm.value.biodata,
       this.skills.value.some(e => !!e) ? this.mapList(this.skills.value, this.chips) : null,
       this.social.value.some(e => !!e) ? this.mapList(this.social.value, this.urls) : null
     )
-    this.done.emit(true)
+  }
+  ngOnDestroy(): void {
+    if (this.listener) this.listener.unsubscribe()
   }
 }
