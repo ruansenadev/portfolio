@@ -43,6 +43,8 @@ export class ProjectsService {
     this.http.post<{ message: string, project: Project }>(apiProjects, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Projeto', redirect: `album/${res.project.seq}` } })
       this.router.navigate(['/album', res.project.seq])
+    }, () => {
+      this.stream.error(null)
     })
   }
   editProject(_id: string, seq: number, name: string, status: string, thumbnail: File | string | null, thumbnailName: string | null, description: string, overview: string, technologies: string[], url: string, homepage: string | null, keywords: string[]): void {
@@ -65,6 +67,8 @@ export class ProjectsService {
     this.http.put<{ message: string }>(`${apiProjects}/${_id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Projeto', redirect: `album/${seq}` } })
       this.router.navigate(['/album'])
+    }, () => {
+      this.stream.error(null)
     })
   }
   delProject(_id: string) {

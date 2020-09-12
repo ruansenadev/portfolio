@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TAB } from "@angular/cdk/keycodes";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { PostsService } from "../posts.service";
 import { ActivatedRoute } from "@angular/router";
 import { Post } from "../post";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'blog-post-form',
   templateUrl: './post-form.component.html',
   styleUrls: ['./post-form.component.css']
 })
-export class PostFormComponent implements OnInit {
+export class PostFormComponent implements OnInit, OnDestroy {
   constructor(private postsService: PostsService, private route: ActivatedRoute) { }
-  isLoading: boolean;
+  private listener: Subscription
+  isLoading: boolean = true;
   form: FormGroup;
   private postSlug: string;
   private post: Post;
@@ -22,7 +24,6 @@ export class PostFormComponent implements OnInit {
   modified: string;
   labels: string[] = []
   ngOnInit(): void {
-    this.isLoading = true;
     this.postSlug = this.route.snapshot.paramMap.get('slug')
     this.form = new FormGroup({
       title: new FormControl(null, { validators: [Validators.required, Validators.maxLength(120)] }),
@@ -54,6 +55,9 @@ export class PostFormComponent implements OnInit {
     } else {
       this.isLoading = false
     }
+    this.listener = this.postsService.getStream().subscribe(null, () => {
+      this.isLoading = false;
+    })
   }
   checkTab(e: KeyboardEvent): void {
     if (e.keyCode === TAB) {
@@ -93,9 +97,11 @@ export class PostFormComponent implements OnInit {
     } else {
       this.postsService.addPost(this.form.value.title, this.form.value.thumbnail, this.thumbnail, this.form.value.icon, this.form.value.markdown, this.form.value.description, this.labels)
     }
-    this.form.reset()
   }
   canDeactivate(): boolean {
     return confirm(this.post ? `Deixar de editar post ${this.post.title}?` : 'Sair sem salvar post?')
+  }
+  ngOnDestroy(): void {
+    this.listener.unsubscribe()
   }
 }

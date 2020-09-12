@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { LEFT_ARROW, UP_ARROW, DOWN_ARROW, RIGHT_ARROW } from "@angular/cdk/keycodes";
 import { ActivatedRoute } from "@angular/router";
 import { ProjectsService } from "../projects.service";
 import { Project } from '../project';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-project-form',
   templateUrl: './project-form.component.html',
   styleUrls: ['./project-form.component.css']
 })
-export class ProjectFormComponent implements OnInit {
+export class ProjectFormComponent implements OnInit, OnDestroy {
   constructor(private projectsService: ProjectsService, private route: ActivatedRoute) { }
-  isLoading: boolean
+  private listener: Subscription
+  isLoading: boolean = true
   form: FormGroup
   private arrows = [LEFT_ARROW, UP_ARROW, DOWN_ARROW, RIGHT_ARROW]
   private seq: number
@@ -26,7 +28,6 @@ export class ProjectFormComponent implements OnInit {
     keywords: []
   }
   ngOnInit(): void {
-    this.isLoading = true
     this.seq = +this.route.snapshot.paramMap.get('seq')
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -65,7 +66,7 @@ export class ProjectFormComponent implements OnInit {
     } else {
       this.isLoading = false
     }
-    this.isLoading = false;
+    this.listener = this.projectsService.getStream().subscribe(null, () => this.isLoading = false)
   }
   onIntroChange(): void {
     if (this.form.value.overview) {
@@ -130,9 +131,11 @@ export class ProjectFormComponent implements OnInit {
     } else {
       this.projectsService.addProject(this.form.value.name, this.form.value.status, this.form.value.thumbnail, this.thumbnail || null, this.form.value.description, this.form.value.overview || this.introduction, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
     }
-    this.form.reset()
   }
   canDeactivate(): boolean {
     return confirm(this.project ? `Deixar de editar projeto ${this.project.name}?` : 'Sair sem salvar projeto?')
+  }
+  ngOnDestroy(): void {
+    this.listener.unsubscribe()
   }
 }
