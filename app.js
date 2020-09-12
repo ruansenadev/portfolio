@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
+const helmet = require('helmet')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
@@ -18,12 +19,14 @@ const adminRouter = require('./routes/admin')
 
 const app = express()
 
-app.use(logger('dev'))
+if (process.env.NODE_ENV === 'development') app.use(logger('dev'))
+app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.options('*', cors())
 app.use('/api', cors())
 app.use('/api/auth', authRouter)
 app.use('/api/admin', adminRouter)
