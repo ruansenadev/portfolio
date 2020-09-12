@@ -11,7 +11,7 @@ import { AdminService } from "../admin.service";
 export class ProfileFormComponent implements OnChanges {
   constructor(private fb: FormBuilder, private adminService: AdminService) { }
   @Input() account: Admin
-  @Input() read: boolean
+  @Input() read: boolean = true
   @Output() done = new EventEmitter<boolean>()
   profileForm = this.fb.group({
     photo: { value: null, disabled: this.read },

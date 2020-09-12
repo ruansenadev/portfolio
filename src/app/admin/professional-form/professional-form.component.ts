@@ -12,7 +12,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 export class ProfessionalFormComponent implements OnChanges {
   constructor(private fb: FormBuilder, private adminService: AdminService) { }
   @Input() account: Admin
-  @Input() read: boolean
+  @Input() read: boolean = true
   @Output() done = new EventEmitter<boolean>()
   professionalForm = this.fb.group({
     logo: { value: null, disabled: this.read },

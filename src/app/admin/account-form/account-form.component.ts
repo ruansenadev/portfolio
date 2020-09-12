@@ -11,7 +11,7 @@ import { Admin } from '../admin';
 export class AccountFormComponent implements OnChanges {
   constructor(private adminService: AdminService) { }
   passwordChange = false
-  @Input() read: boolean
+  @Input() read: boolean = true
   @Input() account: Admin
   accountForm = new FormGroup({
     email: new FormControl({ value: null, disabled: this.read }, Validators.required),
