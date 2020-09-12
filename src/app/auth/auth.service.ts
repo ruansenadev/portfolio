@@ -36,6 +36,8 @@ export class AuthService {
       this.saveLocal(res.token, new Date(res.expiration).toISOString())
       this.setExpTime(res.expiration - Date.now())
       this.router.navigate([this.redirect])
+    }, () => {
+      this.listener.next(false)
     })
   }
   logout(): void {
