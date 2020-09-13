@@ -89,7 +89,7 @@ router.post('/', Auth, PathDir(undefined, 'images', 'album'), function (req, res
     if (fields.homepage) project.homepage = fields.homepage;
     Counter.findById(counterId)
       .then((projectCount) => {
-        project.seq = counter.seq
+        project.seq = projectCount.seq
         project.save()
           .then((projectSaved) => {
             projectCount.updateOne({ seq: projectCount.seq + 1 })
