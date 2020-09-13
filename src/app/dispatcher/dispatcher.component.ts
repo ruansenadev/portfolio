@@ -9,6 +9,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
 import { RouterOutlet } from '@angular/router';
 import { slideInAnimation } from "./dispatcher-animations";
+import { DispatcherService } from "./dispatcher.service";
 
 @Component({
   selector: 'app-dispatcher',
@@ -19,10 +20,11 @@ import { slideInAnimation } from "./dispatcher-animations";
   ]
 })
 export class DispatcherComponent implements OnInit {
-  constructor(private breakpointObserver: BreakpointObserver, private adminService: AdminService, private authService: AuthService) { }
+  constructor(private breakpointObserver: BreakpointObserver, private adminService: AdminService, private authService: AuthService, private dispatcherService: DispatcherService) { }
   @ViewChild('topNav') topNav: MatToolbar
   @ViewChild('drawer') nav: MatSidenav
   @ViewChild('_drawer') navAdmin: MatSidenav
+  private theme: string
   account: Admin
   accountListener: Subscription
   isAuth: boolean
@@ -33,6 +35,7 @@ export class DispatcherComponent implements OnInit {
       shareReplay()
     );
   ngOnInit(): void {
+    this.theme = this.dispatcherService.getTheme();
     this.adminService.fetchAdmin()
     this.accountListener = this.adminService.getStream().subscribe((account) => this.account = account)
     this.isAuth = this.authService.getStatus()
@@ -57,5 +60,10 @@ export class DispatcherComponent implements OnInit {
     } else {
       this.authService.logout()
     }
+  }
+  onSwitchTheme(e): void {
+    e.preventDefault()
+    this.dispatcherService.switchTheme(this.theme === 'light' ? 'dark' : 'light')
+    this.theme = this.dispatcherService.getTheme()
   }
 }
