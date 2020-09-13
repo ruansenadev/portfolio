@@ -1,6 +1,7 @@
 const express = require('express')
 const Post = require('../models/post')
 const Auth = require('../middlewares/auth')
+const PathDir = require('../middlewares/pathdir')
 const path = require('path')
 const { query, param, validationResult } = require('express-validator')
 const moment = require('moment-timezone')
@@ -9,7 +10,6 @@ const router = express.Router()
 
 const { IncomingForm } = require('formidable')
 const postFormOptions = {
-  uploadDir: path.join(__dirname, '../public', 'images', 'blog'),
   keepExtensions: true,
   maxFileSize: 10 * 1024 * 1024,
   multiples: false
@@ -96,7 +96,8 @@ router.get('/:slug', [
       })
   }
 ])
-router.post('/', Auth, function (req, res) {
+router.post('/', Auth, PathDir(undefined, 'images', 'blog'), function (req, res) {
+  postFormOptions.uploadDir = req.pathDir
   const form = new IncomingForm(postFormOptions)
   const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
   form.on("fileBegin", function (filename, file) {
@@ -132,7 +133,8 @@ router.post('/', Auth, function (req, res) {
     })
   })
 })
-router.put('/:id', Auth, function (req, res) {
+router.put('/:id', Auth, PathDir(undefined, 'images', 'blog'), function (req, res) {
+  postFormOptions.uploadDir = req.pathDir
   const form = new IncomingForm(postFormOptions)
   const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
   form.on("fileBegin", function (filename, file) {

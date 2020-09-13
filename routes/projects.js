@@ -2,6 +2,7 @@ const express = require('express')
 const Counter = require('../models/counter')
 const Project = require('../models/project')
 const Auth = require('../middlewares/auth')
+const PathDir = require('../middlewares/pathdir')
 const path = require('path')
 const { query, param, validationResult } = require('express-validator')
 const moment = require('moment-timezone')
@@ -12,7 +13,6 @@ const counterId = 'Project'
 
 const { IncomingForm } = require('formidable')
 const projectFormOptions = {
-  uploadDir: path.join(__dirname, '../public', 'images', 'album'),
   keepExtensions: true,
   maxFileSize: 20 * 1024 * 1024,
   multiples: false
@@ -58,7 +58,8 @@ router.get('/:seq', [
       })
   }
 ])
-router.post('/', Auth, function (req, res) {
+router.post('/', Auth, PathDir(undefined, 'images', 'album'), function (req, res) {
+  projectFormOptions.uploadDir = req.pathDir
   const form = new IncomingForm(projectFormOptions)
   const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
   form.on("fileBegin", function (filename, file) {
@@ -106,11 +107,13 @@ router.post('/', Auth, function (req, res) {
 })
 router.put('/:id', Auth, [
   param('id').isMongoId(),
+  PathDir(undefined, 'images', 'album'),
   function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: 'ID inválido' })
     }
+    projectFormOptions.uploadDir = req.pathDir
     const form = new IncomingForm(projectFormOptions)
     const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
     form.on("fileBegin", function (filename, file) {

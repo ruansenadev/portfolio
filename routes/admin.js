@@ -1,5 +1,6 @@
 const express = require('express')
 const Auth = require('../middlewares/auth')
+const PathDir = require('../middlewares/pathdir')
 const Admin = require('../models/admin')
 const md5 = require('md5')
 const bcrypt = require('bcryptjs')
@@ -9,7 +10,6 @@ const router = express.Router()
 
 const { IncomingForm } = require('formidable')
 const adminFormOptions = {
-  uploadDir: path.join(__dirname, '../public', 'images'),
   keepExtensions: true,
   maxFileSize: 10 * 1024 * 1024,
   multiples: false
@@ -30,7 +30,8 @@ router.get('/', function (req, res) {
       res.json(admin)
     })
 })
-router.post('/', Auth, function (req, res) {
+router.post('/', Auth, PathDir(undefined, 'images'), function (req, res) {
+  adminFormOptions.uploadDir = req.pathDir
   const form = new IncomingForm(adminFormOptions)
   form.on("fileBegin", function (filename, file) {
     file.path = path.join(form.uploadDir, file.name)
@@ -70,7 +71,8 @@ router.post('/', Auth, function (req, res) {
   })
 })
 
-router.put('/:id', Auth, function (req, res) {
+router.put('/:id', Auth, PathDir(undefined, 'images'), function (req, res) {
+  adminFormOptions.uploadDir = req.pathDir
   const form = new IncomingForm(adminFormOptions)
   form.on("fileBegin", function (filename, file) {
     file.path = path.join(form.uploadDir, file.name)
