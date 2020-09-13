@@ -19,7 +19,7 @@ const adminRouter = require('./routes/admin')
 
 const app = express()
 
-if (process.env.NODE_ENV === 'development') app.use(logger('dev'))
+app.use(logger('dev'))
 app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
