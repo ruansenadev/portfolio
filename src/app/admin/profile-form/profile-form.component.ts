@@ -76,10 +76,10 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
         if (this.listener) this.listener.unsubscribe()
         this.noFocus = 'no-focus'
       } else {
-        this.listener = this.adminService.getStream().subscribe(null, () => {
-          this.done.emit(false)
-        }, () => {
+        this.listener = this.adminService.getStream().subscribe(() => {
           this.done.emit(true)
+        }, () => {
+          this.done.emit(false)
         })
         this.noFocus = ''
         this.profileForm.enable()

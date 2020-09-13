@@ -48,8 +48,6 @@ export class AdminService {
       this.fetchAdmin()
     }, () => {
       this.admin$.error(null)
-    }, () => {
-      this.admin$.complete()
     })
   }
   editAccount(_id: string, email: string, password: string, password_new: string | null): void {
@@ -62,8 +60,6 @@ export class AdminService {
       this.authService.logout()
     }, () => {
       this.admin$.error(null)
-    }, () => {
-      this.admin$.complete()
     })
   }
   saveLogo(_id: string, logo: File | string, logoName: string | null): void {
@@ -87,8 +83,6 @@ export class AdminService {
       this.fetchAdmin()
     }, () => {
       this.admin$.error(null)
-    }, () => {
-      this.admin$.complete()
     })
   }
 }
