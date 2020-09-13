@@ -2,14 +2,14 @@
   "name": "portfolio",
   "version": "0.0.0",
   "scripts": {
-    "startserver": "node ./bin/www",
+    "startserver": "node ./server/bin/www",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "devstart": "DEBUG=portfolio:* nodemon ./bin/www"
+    "devstart": "DEBUG=portfolio:* nodemon ./server/bin/www"
   },
   "private": true,
   "dependencies": {
