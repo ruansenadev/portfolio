@@ -42,7 +42,7 @@ export class ProjectsService {
     data.append('keywords', JSON.stringify(keywords))
     this.http.post<{ message: string, project: Project }>(apiProjects, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Projeto', redirect: `album/${res.project.seq}` } })
-      this.router.navigate(['/album', res.project.seq])
+      this.router.navigate(['/album', res.project.seq], { state: { done: true } })
     }, (e) => {
       this.stream.error(e)
     })
@@ -66,7 +66,7 @@ export class ProjectsService {
     data.append('keywords', JSON.stringify(keywords))
     this.http.put<{ message: string }>(`${apiProjects}/${_id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Projeto', redirect: `album/${seq}` } })
-      this.router.navigate(['/album'])
+      this.router.navigate(['/album'], { state: { done: true } })
     }, (e) => {
       this.stream.error(e)
     })
