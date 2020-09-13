@@ -42,10 +42,10 @@ export class AccountFormComponent implements OnChanges, OnDestroy {
         this.accountForm.disable()
       } else {
         this.accountForm.enable()
-        this.listener = this.adminService.getStream().subscribe(null, () => {
-          this.done.emit(false)
-        }, () => {
+        this.listener = this.adminService.getStream().subscribe(() => {
           this.done.emit(true)
+        }, () => {
+          this.done.emit(false)
         })
       }
     }

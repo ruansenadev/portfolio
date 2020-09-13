@@ -101,10 +101,10 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
       } else {
         this.noFocus = ''
         this.professionalForm.enable()
-        this.listener = this.adminService.getStream().subscribe(null, () => {
-          this.done.emit(false)
-        }, () => {
+        this.listener = this.adminService.getStream().subscribe(() => {
           this.done.emit(true)
+        }, () => {
+          this.done.emit(false)
         })
       }
     }
