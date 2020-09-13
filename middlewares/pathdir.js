@@ -3,7 +3,7 @@ const fs = require('fs')
 
 module.exports = function (root = 'public', ...to) {
     to = to.reduce((curPath, child) => path.join(curPath, child), root)
-    const absolutePath = path.join(__dirname, to)
+    const absolutePath = path.resolve(__dirname, '..', to)
     try {
       fs.accessSync(to)
     } catch (e) {

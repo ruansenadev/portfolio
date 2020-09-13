@@ -46,8 +46,8 @@ export class AdminService {
     this.http.put<{ message: string }>(`${apiAdmin}/${_id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
       this.fetchAdmin()
-    }, () => {
-      this.admin$.error(null)
+    }, (e) => {
+      this.admin$.error(e)
     })
   }
   editAccount(_id: string, email: string, password: string, password_new: string | null): void {
@@ -58,8 +58,8 @@ export class AdminService {
     this.http.put<{ message: string }>(`${apiAdmin}/${_id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
       this.authService.logout()
-    }, () => {
-      this.admin$.error(null)
+    }, (e) => {
+      this.admin$.error(e)
     })
   }
   saveLogo(_id: string, logo: File | string, logoName: string | null): void {
@@ -81,8 +81,8 @@ export class AdminService {
     this.http.put<{ message: string }>(`${apiAdmin}/${_id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
       this.fetchAdmin()
-    }, () => {
-      this.admin$.error(null)
+    }, (e) => {
+      this.admin$.error(e)
     })
   }
 }

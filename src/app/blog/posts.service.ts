@@ -43,8 +43,8 @@ export class PostsService {
       this.posts.push(res.post)
       this.stream.next({ posts: [...this.posts], max: res.max })
       this.router.navigate(['/'])
-    }, () => {
-      this.stream.error(null)
+    }, (e) => {
+      this.stream.error(e)
     })
   }
   getPost(slug: string) {
@@ -68,8 +68,8 @@ export class PostsService {
     this.http.put<{ message: string }>(`${apiPosts}/${_id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Post', redirect: `blog/${slug}` } })
       this.router.navigate(['/'])
-    }, () => {
-      this.stream.error(null)
+    }, (e) => {
+      this.stream.error(e)
     })
   }
   delPost(id: string) {
