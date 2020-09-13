@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
+import { Router, CanDeactivate } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ProjectFormComponent } from "./project-form.component";
 
 @Injectable()
 export class ProjectDeactivate implements CanDeactivate<ProjectFormComponent> {
+  constructor(private router: Router) {}
   canDeactivate(
-    component: ProjectFormComponent,
-    currentRoute: ActivatedRouteSnapshot,
-    currentState: RouterStateSnapshot
+    component: ProjectFormComponent
   ): Observable<boolean>|Promise<boolean>|boolean {
-    return component.canDeactivate()
+    const curNav = this.router.getCurrentNavigation()
+    return curNav.extras && curNav.extras.state && curNav.extras.state.done ? true : component.canDeactivate()
   }
 }

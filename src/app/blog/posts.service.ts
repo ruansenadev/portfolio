@@ -42,7 +42,7 @@ export class PostsService {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Post', redirect: `blog/${res.post.slug}` } })
       this.posts.push(res.post)
       this.stream.next({ posts: [...this.posts], max: res.max })
-      this.router.navigate(['/'])
+      this.router.navigate(['/'], { state : { done: true } })
     }, (e) => {
       this.stream.error(e)
     })
@@ -67,7 +67,7 @@ export class PostsService {
     data.append('labels', JSON.stringify(labels))
     this.http.put<{ message: string }>(`${apiPosts}/${_id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Post', redirect: `blog/${slug}` } })
-      this.router.navigate(['/'])
+      this.router.navigate(['/'], { state : { done: true } })
     }, (e) => {
       this.stream.error(e)
     })
