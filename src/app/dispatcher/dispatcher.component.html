@@ -15,6 +15,10 @@
         <mat-icon class="nav-icon">list_alt</mat-icon>
         Blog
       </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="onSwitchTheme($event)">
+        <mat-icon class="nav-icon">wb_incandescent</mat-icon>
+      </a>
     </mat-nav-list>
     <mat-card *ngIf="account" class="mat-elevation-z profile">
       <mat-card-header class="profile-name">
