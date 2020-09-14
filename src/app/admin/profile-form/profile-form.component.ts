@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, SimpleChange, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { Subscription } from "rxjs";
 import { FormBuilder, Validators } from '@angular/forms';
 import { Admin } from "../admin";
@@ -10,7 +11,7 @@ import { AdminService } from "../admin.service";
   styleUrls: ['./profile-form.component.css']
 })
 export class ProfileFormComponent implements OnChanges, OnDestroy {
-  constructor(private fb: FormBuilder, private adminService: AdminService) { }
+  constructor(private fb: FormBuilder, private adminService: AdminService, private sanitizer: DomSanitizer) { }
   @Input() account: Admin
   @Input() read: boolean = true
   @Output() done = new EventEmitter<boolean>()
@@ -25,7 +26,7 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
   private listener: Subscription
   photo: string
   photoName: string = ''
-  upload: string
+  upload: string | SafeUrl
   noFocus: string = 'no-focus'
   states = [
     'Acre',
@@ -93,7 +94,7 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
     reader.onloadend = () => {
       let extIndex = imageBlob.name.lastIndexOf('.')
       this.photoName = imageBlob.name.slice(0, (extIndex < 30 ? extIndex : 30)) + imageBlob.name.slice(extIndex)
-      this.upload = reader.result as string
+      this.upload = this.sanitizer.bypassSecurityTrustUrl(reader.result as string)
     }
     reader.readAsDataURL(imageBlob)
   }

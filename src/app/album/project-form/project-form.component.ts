@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { LEFT_ARROW, UP_ARROW, DOWN_ARROW, RIGHT_ARROW } from "@angular/cdk/keycodes";
@@ -13,7 +14,7 @@ import { Subscription } from "rxjs";
   styleUrls: ['./project-form.component.css']
 })
 export class ProjectFormComponent implements OnInit, OnDestroy {
-  constructor(private projectsService: ProjectsService, private route: ActivatedRoute) { }
+  constructor(private projectsService: ProjectsService, private route: ActivatedRoute, private sanitizer: DomSanitizer) { }
   private listener: Subscription
   isLoading: boolean = true
   form: FormGroup
@@ -21,7 +22,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   private seq: number
   private project: Project
   thumbnail: string = null
-  preview: string
+  preview: string | SafeUrl
   introduction: string = ''
   chips: { [key: string]: string[] } = {
     technologies: [],
@@ -110,7 +111,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     reader.onloadend = () => {
       let extIndex = imageBlob.name.lastIndexOf('.')
       this.thumbnail = imageBlob.name.slice(0, (extIndex < 30 ? extIndex : 30)) + imageBlob.name.slice(extIndex)
-      this.preview = reader.result as string
+      this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string)
     }
     reader.readAsDataURL(imageBlob)
   }

@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, SimpleChange, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { Subscription } from "rxjs";
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Admin } from "../admin";
@@ -11,7 +12,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
   styleUrls: ['./professional-form.component.css']
 })
 export class ProfessionalFormComponent implements OnChanges, OnDestroy {
-  constructor(private fb: FormBuilder, private adminService: AdminService) { }
+  constructor(private fb: FormBuilder, private adminService: AdminService, private sanitizer: DomSanitizer) { }
   @Input() account: Admin
   @Input() read: boolean = true
   @Output() done = new EventEmitter<boolean>()
@@ -61,7 +62,7 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
   }
   logo: string = 'https://www.stevensegallery.com/360/170'
   logoName: string = ''
-  upload: string
+  upload: string | SafeUrl
   noFocus: string = 'no-focus'
   ngOnChanges(changes: { [key: string]: SimpleChange }) {
     if (changes['account']) {
@@ -116,7 +117,7 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
     reader.onloadend = () => {
       let extIndex = imageBlob.name.lastIndexOf('.')
       this.logoName = imageBlob.name.slice(0, (extIndex < 30 ? extIndex : 30)) + imageBlob.name.slice(extIndex)
-      this.upload = reader.result as string
+      this.upload = this.sanitizer.bypassSecurityTrustUrl(reader.result as string)
     }
     reader.readAsDataURL(imageBlob)
   }

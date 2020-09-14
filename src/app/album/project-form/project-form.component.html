@@ -26,7 +26,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <div *ngIf="preview" class="imagePreview">
-            <img [src]="preview" alt="Cannot preview SVGs">
+            <img [src]="preview">
           </div>
           <input type="file" #thumb accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false" (change)="onPick($event)">
           <mat-action-row>
