@@ -122,7 +122,7 @@ router.post('/', Auth, PathDir(undefined, 'images', 'blog'), function (req, res)
       markdown: fields.markdown,
       labels: JSON.parse(fields.labels)
     })
-    if (files.thumbnail) post.thumbnailPath = `${req.protocol}://${req.get('host')}/images/blog/${dateUpload}-${files.thumbnail.name}`;
+    if (files.thumbnail) post.thumbnailPath = `/images/blog/${dateUpload}-${files.thumbnail.name}`;
     if (fields.icon) post.icon = fields.icon;
     if (fields.description) post.description = fields.description;
     post.save((err, postSaved) => {
@@ -157,7 +157,7 @@ router.put('/:id', Auth, PathDir(undefined, 'images', 'blog'), function (req, re
       modified: new Date(fields.modified),
       labels: JSON.parse(fields.labels)
     })
-    if (files.thumbnail) post.thumbnailPath = `${req.protocol}://${req.get('host')}/images/blog/${dateUpload}-${files.thumbnail.name}`;
+    if (files.thumbnail) post.thumbnailPath = `/images/blog/${dateUpload}-${files.thumbnail.name}`;
     if (fields.thumbnailPath) post.thumbnailPath = fields.thumbnailPath;
     if (fields.description) post.description = fields.description;
     Post.updateOne({ _id: req.params.id }, post, (err, result) => {

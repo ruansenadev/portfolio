@@ -84,7 +84,7 @@ router.post('/', Auth, PathDir(undefined, 'images', 'album'), function (req, res
       url: fields.url,
       keywords: JSON.parse(fields.keywords)
     })
-    if (files.thumbnail) project.thumbnailPath = `${req.protocol}://${req.get('host')}/images/album/${dateUpload}-${files.thumbnail.name}`;
+    if (files.thumbnail) project.thumbnailPath = `/images/album/${dateUpload}-${files.thumbnail.name}`;
     if (fields.overview) project.overview = fields.overview;
     if (fields.homepage) project.homepage = fields.homepage;
     Counter.findById(counterId)
@@ -140,7 +140,7 @@ router.put('/:id', Auth, [
         url: fields.url,
         keywords: JSON.parse(fields.keywords)
       })
-      if (files.thumbnail) project.thumbnailPath = `${req.protocol}://${req.get('host')}/images/album/${dateUpload}-${files.thumbnail.name}`;
+      if (files.thumbnail) project.thumbnailPath = `/images/album/${dateUpload}-${files.thumbnail.name}`;
       if (fields.thumbnailPath) project.thumbnailPath = fields.thumbnailPath;
       if (fields.overview) project.overview = fields.overview;
       if (fields.homepage) project.homepage = fields.homepage;

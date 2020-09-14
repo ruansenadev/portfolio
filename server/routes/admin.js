@@ -54,13 +54,13 @@ router.post('/', Auth, PathDir(undefined, 'images'), function (req, res) {
       address: {},
       email: fields.email,
       password: bcrypt.hashSync(fields.password, 10),
-      photo: fields.photo ? `${req.protocol}://${req.get('host')}/images/${files.photo.name}` : `https://www.gravatar.com/avatar/${md5(fields.email.toLowerCase())}?s=200&d=identicon`,
+      photo: fields.photo ? `/images/${files.photo.name}` : `https://www.gravatar.com/avatar/${md5(fields.email.toLowerCase())}?s=200&d=identicon`,
       profession: fields.profession,
       biodata: fields.biodata
     })
     if (fields.city) admin.address.city = fields.city
     if (fields.state) admin.address.state = fields.state
-    if (files.logo) admin.logo = `${req.protocol}://${req.get('host')}/images/${files.logo.name}`
+    if (files.logo) admin.logo = `/images/${files.logo.name}`
     if (fields.nickname) admin.nickname = fields.nickname
     if (fields.skills) admin.skills = JSON.parse(fields.skills)
     if (fields.social) admin.social = JSON.parse(fields.social)
@@ -92,7 +92,7 @@ router.put('/:id', Auth, PathDir(undefined, 'images'), function (req, res) {
       form.parse(req, function (err, fields, files) {
         if (err) { return res.status(400).json({ message: 'Formulário inválido' }) }
         if (files.photo) {
-          admin.photo = `${req.protocol}://${req.get('host')}/images/${files.photo.name}`
+          admin.photo = `/images/${files.photo.name}`
           admin.updateOne(admin, (err, result) => {
             if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
             return res.status(200).json({ message: 'Foto atualizada!' })
@@ -105,7 +105,7 @@ router.put('/:id', Auth, PathDir(undefined, 'images'), function (req, res) {
           })
         } else if (files.logo) {
           admin = new Admin(admin)
-          admin.logo = `${req.protocol}://${req.get('host')}/images/${files.logo.name}`
+          admin.logo = `/images/${files.logo.name}`
           admin.updateOne(admin, (err, result) => {
             if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
             return res.status(200).json({ message: 'Logotipo atualizado' })
