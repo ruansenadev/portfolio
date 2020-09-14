@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { TAB } from "@angular/cdk/keycodes";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
@@ -13,14 +14,14 @@ import { Subscription } from "rxjs";
   styleUrls: ['./post-form.component.css']
 })
 export class PostFormComponent implements OnInit, OnDestroy {
-  constructor(private postsService: PostsService, private route: ActivatedRoute) { }
+  constructor(private postsService: PostsService, private route: ActivatedRoute, private sanitizer: DomSanitizer) { }
   private listener: Subscription
   isLoading: boolean = true;
   form: FormGroup;
   private postSlug: string;
   private post: Post;
   thumbnail: string = null
-  preview: string;
+  preview: string | SafeUrl;
   modified: string;
   labels: string[] = []
   ngOnInit(): void {
@@ -76,7 +77,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
     reader.onloadend = () => {
       let extIndex = imageBlob.name.lastIndexOf('.')
       this.thumbnail = imageBlob.name.slice(0, (extIndex<30?extIndex:30))+imageBlob.name.slice(extIndex)
-      this.preview = reader.result as string
+      this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string)
     }
     reader.readAsDataURL(imageBlob)
   }
