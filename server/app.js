@@ -31,7 +31,7 @@ app.use(helmet({ contentSecurityPolicy: {
     objectSrc: ["'none'"],
     scriptSrc: ["'self'"],
     scriptSrcAttr: ["'none'"],
-    styleSrc: ["'self'", "https:", "unsafe-inline"],
+    styleSrc: ["'self'", "https:", "'unsafe-inline'"],
     upgradeInsecureRequests: []
 }
 }}))
