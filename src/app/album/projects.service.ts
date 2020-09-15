@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Subject } from "rxjs";
+import { map } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { Project } from "./project";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -18,7 +19,14 @@ export class ProjectsService {
 
   populateProjects(left: number = 0, items: number = 3): void {
     const query = `?left=${left}&items=${items}`
-    this.http.get<{ projects: Project[], hasMore: boolean }>(apiProjects + query).subscribe((res) => {
+    this.http.get<{ projects: Project[], hasMore: boolean }>(apiProjects + query).pipe(map(data => {
+      data.projects = data.projects.map(project => {
+        if (project.thumbnailPath && project.thumbnailPath.startsWith('/images')) project.thumbnailPath = environment.host + project.thumbnailPath
+        return project
+      })
+      return data
+    }))
+    .subscribe((res) => {
       this.projects = res.projects
       this.stream.next({ projects: [...this.projects], hasMore: res.hasMore })
     })
@@ -27,7 +35,10 @@ export class ProjectsService {
     return this.stream.asObservable()
   }
   getProject(seq: number) {
-    return this.http.get<Project>(`${apiProjects}/${seq}`)
+    return this.http.get<Project>(`${apiProjects}/${seq}`).pipe(map(project => {
+      if (project.thumbnailPath && project.thumbnailPath.startsWith('/images')) project.thumbnailPath = environment.host + project.thumbnailPath
+      return project
+    }))
   }
   addProject(name: string, status: string, thumbnail: File | null, thumbnailName: string | null, description: string, overview: string, technologies: string[], url: string, homepage: string | null, keywords: string[]): void {
     const data = new FormData()
