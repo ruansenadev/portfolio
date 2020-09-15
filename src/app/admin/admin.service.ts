@@ -4,7 +4,8 @@ import { Admin } from "./admin";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MessageComponent } from "../messages/message/message.component";
 import { environment } from "../../environments/environment";
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+import { map, tap } from "rxjs/operators";
 import { AuthService } from "../auth/auth.service";
 const apiAdmin = environment.server + '/admin'
 
@@ -14,11 +15,16 @@ const apiAdmin = environment.server + '/admin'
 export class AdminService {
   constructor(private http: HttpClient, private messageBar: MatSnackBar, private authService: AuthService) { }
   admin$ = new Subject<Admin>()
-  getAdmin() {
+  getAdmin(): Observable<Admin> {
     return this.http.get<Admin>(apiAdmin)
+    .pipe(map(account => {
+      if (account.photo.startsWith('/images')) account.photo = environment.host + account.photo
+      if (account.logo) account.logo = environment.host + account.logo
+      return account
+    }))
   }
   fetchAdmin(): void {
-    this.http.get<Admin>(apiAdmin).subscribe((account) => {
+    this.getAdmin().subscribe(account => {
       this.admin$.next(account)
     })
   }

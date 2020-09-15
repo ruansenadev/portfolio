@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
+import { map } from "rxjs/operators";
 import { Post } from "./post";
 import { Archives } from "./blog-archives/blog-archives.component";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -18,7 +19,14 @@ export class PostsService {
   private stream = new Subject<{ posts: Post[], max: number }>()
   populatePosts(left: number = 0, items: number = 5): void {
     const query = `?left=${left}&items=${items}`
-    this.http.get<{ posts: Post[], max: number }>(apiPosts + query).subscribe((res) => {
+    this.http.get<{ posts: Post[], max: number }>(apiPosts + query).pipe(map(data => {
+      data.posts = data.posts.map(post => {
+        if (post.thumbnailPath && post.thumbnailPath.startsWith('/images')) post.thumbnailPath = environment.host + post.thumbnailPath
+        return post
+      })
+      return data
+    }))
+    .subscribe((res) => {
       this.posts = res.posts
       this.stream.next({ posts: [...this.posts], max: res.max })
     })
@@ -48,7 +56,10 @@ export class PostsService {
     })
   }
   getPost(slug: string) {
-    return this.http.get<Post>(`${apiPosts}/${slug}`)
+    return this.http.get<Post>(`${apiPosts}/${slug}`).pipe(map(post => {
+      if (post.thumbnailPath && post.thumbnailPath.startsWith('/images')) post.thumbnailPath = environment.host + post.thumbnailPath
+      return post
+    }))
   }
   editPost(_id: string, title: string, slug: string, date: Date, thumbnail: File | string | null, thumbnailName: string | null, icon: string, markdown: string, description: string | null, labels: string[]): void {
     let data = new FormData();

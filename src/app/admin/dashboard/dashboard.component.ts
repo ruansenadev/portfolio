@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { Admin } from "../admin";
@@ -11,7 +12,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  constructor(private breakpointObserver: BreakpointObserver, private adminService: AdminService) { }
+  constructor(private breakpointObserver: BreakpointObserver, private adminService: AdminService, private route: ActivatedRoute) { }
   private accountListener: Subscription
   @Output() account: Admin
   @Output() reading: { [key: string]: boolean } = {
@@ -37,7 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     })
   );
   ngOnInit(): void {
-    this.adminService.fetchAdmin()
+    this.account = this.route.snapshot.data['account']
     this.accountListener = this.adminService.getStream().subscribe((account) => this.account = account)
   }
   canDeactivate(): boolean {
