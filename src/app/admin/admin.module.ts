@@ -1,21 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { MatChipsModule, MAT_CHIPS_DEFAULT_OPTIONS } from "@angular/material/chips";
 import { ENTER, COMMA } from "@angular/cdk/keycodes";
+
 import { AdminRoutingModule } from "./admin-routing.module";
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { LayoutModule } from '@angular/cdk/layout';
-import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
-import { MatChipsModule, MAT_CHIPS_DEFAULT_OPTIONS } from "@angular/material/chips";
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
@@ -32,16 +30,13 @@ import { ProfessionalFormComponent } from './professional-form/professional-form
   imports: [
     CommonModule,
     AdminRoutingModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
+    MatExpansionModule,
     MatIconModule,
     MatButtonModule,
-    LayoutModule,
+    MatMenuModule,
+    ReactiveFormsModule,
     MatInputModule,
     MatSelectModule,
-    MatRadioModule,
-    ReactiveFormsModule,
     MatNativeDateModule,
     MatDatepickerModule,
     MatChipsModule

@@ -1,7 +1,5 @@
 import { Component, OnInit, Output, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { map } from 'rxjs/operators';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { Admin } from "../admin";
 import { AdminService } from "../admin.service";
 import { Subscription } from 'rxjs';
@@ -12,37 +10,20 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  constructor(private breakpointObserver: BreakpointObserver, private adminService: AdminService, private route: ActivatedRoute) { }
+  constructor(private adminService: AdminService, private route: ActivatedRoute) { }
   private accountListener: Subscription
   @Output() account: Admin
-  @Output() reading: { [key: string]: boolean } = {
-    'Perfil': true,
-    'Profissional': true,
-    'Conta': true
-  }
-  panels = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        return [
-          { title: 'Perfil', order: '1', cols: 1, rows: 2 },
-          { title: 'Profissional', order: '2', cols: 2, rows: 3 },
-          { title: 'Conta', order: '3', cols: 1, rows: 1 }
-        ];
-      }
-
-      return [
-        { title: 'Perfil', order: '1', cols: 2, rows: 1 },
-        { title: 'Profissional', order: '2', cols: 2, rows: 2 },
-        { title: 'Conta', order: '3', cols: 1, rows: 1 }
-      ];
-    })
-  );
+  @Output() panels = [
+    { title: 'Perfil', r: true },
+    { title: 'Profissional', r: true },
+    { title: 'Conta', r: true }
+  ]
   ngOnInit(): void {
     this.account = this.route.snapshot.data['account']
     this.accountListener = this.adminService.getStream().subscribe((account) => this.account = account)
   }
   canDeactivate(): boolean {
-    if (Object.values(this.reading).some(panel => !panel)) {
+    if (Object.values(this.panels).some(p => !p.r)) {
       return confirm('Deseja realmente sair?')
     }
     return true

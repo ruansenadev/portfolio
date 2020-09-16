@@ -1,21 +1,17 @@
-.grid-container {
-  margin: 1rem;
+main {
+  padding: 1rem;
 }
-.dashboard-card {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+section {
+  padding: 1rem;
 }
-.more-button {
-  position: absolute;
-  top: 5px;
-  right: 10px;
+.headers-align .mat-expansion-panel-header-title,
+.headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
 }
-mat-card-header {
-  margin-bottom: 1rem;
+.headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+.headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
 }
