@@ -12,7 +12,7 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: stretch;
-  justify-content: space-between;
+  justify-content: flex-start;
   touch-action: none;
 }
 .item-link {
@@ -24,7 +24,7 @@
 }
 .item {
   flex: 1;
-  width: 16rem;
+  max-width: 16rem;
   min-width: 12rem;
   display: flex;
   flex-direction: column;
