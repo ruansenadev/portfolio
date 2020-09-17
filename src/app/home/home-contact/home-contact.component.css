@@ -14,12 +14,12 @@
   margin: .5rem 1rem;
   width: 20%;
   min-width: 10rem;
-  background-color: #23272a;
+  background-color: rgba(0, 0, 0, .8);
   color: white;
 }
 .social-item:hover {
   bottom: .25rem;
-  background-color: #36393f;
+  background-color: #111;
 }
 .social-text {
   width: 6rem;
