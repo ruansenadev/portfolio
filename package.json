@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node ./server/bin/www",
+    "server": "nodemon ./server/bin/www",
+    "app": "ng serve",
+    "build": "ng build --prod",
     "ng": "ng",
-    "appstart": "ng serve",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "devstart": "DEBUG=portfolio:* nodemon ./server/bin/www"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

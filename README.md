@@ -1,27 +1,27 @@
 # Portfolio
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.9.
+  Web app pessoal e profissional, um perfil online. Com blog, e álbum de projetos para exíbi-los e linka-los externamente.
 
-## Development server
+## Overview
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Desenvolvido em MEAN Stack. App MVC gerenciável pelo client Angular com conta administrador.
+Database conectada a [nuvem](https://www.mongodb.com/cloud), API Restful.
+Estrutura integrada app + client, o Express serve build do Angular, porém facilmente adaptável para solução app e client.
+***
+### Installation
 
-## Code scaffolding
+  `npm install`
+Projeto gerado inicialmente com [Angular CLI](https://github.com/angular/angular-cli) v9.1.9.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Usage
 
-## Build
+Primeiramente configure um arquivo `.env` no root para o servidor, com link para sua db **MONGO_URL**, [gere](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) uma jwt secret 256-bit **TOKEN_SECRET**, e sua senha para gerar conta por script **ACCOUNT_PASS**. Seguidamente modifique o script `createAccount.js` com seus dados (poderá modificar depois no app), e execute-o com `node createAccount.js`, se a database tiver conectada corretamente deverá ver a saída da conta no comando.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Após configurado, Inicie o server `npm run server` (localhost:3000). Então inicie o app com `npm run app` ou `ng serve` e acesse **localhost:4200**. O app atualizará automaticamente ás mudanças nos arquivos.
+***
+### Contribuindo
 
-## Running unit tests
+  PR são bem-vindas, criação de módulos no app ou alterção no server crie um branch, commite e submeta que irei testar e dar merge se for o caso. Me contate se desejar ser um contribuidor ativo.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+#### Licença
+  [AGPLv3](https://choosealicense.com/licenses/agpl-3.0/) Livre para a cópia, contanto que mantenha créditos e a mesma licença.
