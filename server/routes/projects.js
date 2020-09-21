@@ -21,7 +21,7 @@ const projectFormOptions = {
 const allowedTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"]
 
 router.get('/', [
-  query(['left', 'items']).isAlphanumeric().toInt(),
+  query(['behind', 'items']).isAlphanumeric().toInt(),
   function (req, res) {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
@@ -30,7 +30,7 @@ router.get('/', [
     Project.find()
       .lean()
       .sort('-seq')
-      .skip(req.query.left * req.query.items)
+      .skip(req.query.behind)
       .limit(req.query.items + 1)
       .exec((err, projects) => {
         if (err) { return res.status(502).json({ message: 'Falha ao buscar projetos' }) }

@@ -17,8 +17,8 @@ export class ProjectsService {
   private projects: Project[] = []
   private stream = new Subject<{ projects: Project[], hasMore: boolean }>()
 
-  populateProjects(left: number = 0, items: number = 3): void {
-    const query = `?left=${left}&items=${items}`
+  populateProjects(behind: number = 0, items: number = 3): void {
+    const query = `?behind=${behind}&items=${items}`
     this.http.get<{ projects: Project[], hasMore: boolean }>(apiProjects + query).pipe(map(data => {
       data.projects = data.projects.map(project => {
         if (project.thumbnailPath && project.thumbnailPath.startsWith('/images')) project.thumbnailPath = environment.host + project.thumbnailPath

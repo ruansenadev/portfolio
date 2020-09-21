@@ -17,7 +17,7 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
   constructor(private projectsService: ProjectsService, private dialog: MatDialog, private authService: AuthService, private messageBar: MatSnackBar) { }
   projects: Project[] = []
   isAuth: boolean
-  left: number = 0;
+  behind: number = 0;
   items: number = 3;
   hasMore: boolean = true
   isFetching: boolean = true
@@ -36,18 +36,18 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
     'Finalizado': 'primary'
   }
   ngOnInit(): void {
-    this.projectsService.populateProjects(this.left, this.items)
+    this.projectsService.populateProjects(this.behind, this.items)
     this.projectsListen = this.projectsService.getStream().subscribe((res) => {
       this.isFetching = false
       this.projects = this.projects.concat(res.projects)
-      this.left++
+      this.behind += this.items
       this.hasMore = res.hasMore
     })
     this.isAuth = this.authService.getStatus()
   }
   onLoadMore() {
     this.isFetching = true
-    this.projectsService.populateProjects(this.left, this.items)
+    this.projectsService.populateProjects(this.behind, this.items)
   }
   delProject(project: Project): void {
     const last = this.projects[0].seq == project.seq
@@ -58,7 +58,7 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
       if (confirm) {
         this.projectsService.delProject(project._id).subscribe((res) => {
           this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
-          this.projectsService.populateProjects()
+          this.behind -= 1
         })
       }
     })
