@@ -2,7 +2,7 @@
   <div class="mat-title">
     {{ title }}
   </div>
-  <div class="box" #box (pointerdown)="onPress($event)" (pointermove)="onMove($event)" (pointerup)="onRelease($event)">
+  <div class="box" #box (pointerdown)="onPress($event)" (pointermove)="onMove($event)" (pointerup)="onRelease()">
     <ng-container *ngIf="!items.length; else card">
       <carousel-loader *ngFor="let item of skeleton" class="item mat-elevation-z1"></carousel-loader>
     </ng-container>

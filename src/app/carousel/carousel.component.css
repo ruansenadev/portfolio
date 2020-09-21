@@ -13,7 +13,7 @@
   flex-flow: row nowrap;
   align-items: stretch;
   justify-content: flex-start;
-  touch-action: none;
+  touch-action: pan-y;
 }
 .item-link {
   position: absolute;
