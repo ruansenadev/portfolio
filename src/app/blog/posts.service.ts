@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { Subject } from "rxjs";
+import { Subject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Post } from "./post";
 import { Archives } from "./blog-archives/blog-archives.component";
@@ -17,15 +17,18 @@ export class PostsService {
   constructor(private http: HttpClient, private router: Router, private messageBar: MatSnackBar) { }
   private posts: Post[] = []
   private stream = new Subject<{ posts: Post[], max: number }>()
-  populatePosts(left: number = 0, items: number = 5): void {
+  getPosts(left: number = 0, items: number = 5): Observable<{ posts: Post[], max: number }> {
     const query = `?left=${left}&items=${items}`
-    this.http.get<{ posts: Post[], max: number }>(apiPosts + query).pipe(map(data => {
+    return this.http.get<{ posts: Post[], max: number }>(apiPosts + query).pipe(map(data => {
       data.posts = data.posts.map(post => {
         if (post.thumbnailPath && post.thumbnailPath.startsWith('/images')) post.thumbnailPath = environment.host + post.thumbnailPath
         return post
       })
       return data
     }))
+  }
+  populatePosts(left: number = 0, items: number = 5): void {
+    this.getPosts(left, items)
     .subscribe((res) => {
       this.posts = res.posts
       this.stream.next({ posts: [...this.posts], max: res.max })

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { Subject } from "rxjs";
+import { Subject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { Project } from "./project";
@@ -17,15 +17,18 @@ export class ProjectsService {
   private projects: Project[] = []
   private stream = new Subject<{ projects: Project[], hasMore: boolean }>()
 
-  populateProjects(behind: number = 0, items: number = 3): void {
+  getProjects(behind: number = 0, items: number = 3): Observable<{ projects: Project[], hasMore: boolean }> {
     const query = `?behind=${behind}&items=${items}`
-    this.http.get<{ projects: Project[], hasMore: boolean }>(apiProjects + query).pipe(map(data => {
+    return this.http.get<{ projects: Project[], hasMore: boolean }>(apiProjects + query).pipe(map(data => {
       data.projects = data.projects.map(project => {
         if (project.thumbnailPath && project.thumbnailPath.startsWith('/images')) project.thumbnailPath = environment.host + project.thumbnailPath
         return project
       })
       return data
     }))
+  }
+  populateProjects(behind: number = 0, items: number = 3): void {
+    this.getProjects(behind, items)
     .subscribe((res) => {
       this.projects = res.projects
       this.stream.next({ projects: [...this.projects], hasMore: res.hasMore })
