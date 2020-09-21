@@ -58,6 +58,7 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
       if (confirm) {
         this.projectsService.delProject(project._id).subscribe((res) => {
           this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
+          this.projects.splice(this.projects.findIndex(p => p.seq === project.seq), 1)
           this.behind -= 1
         })
       }

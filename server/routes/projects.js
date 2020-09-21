@@ -167,7 +167,7 @@ router.delete('/:id', Auth, [
         Counter.findById(counterId, cb)
       }
     }, (err, results) => {
-      if (err) { return res.status(400).json({ message: 'Falha ao deletar' }) }
+      if (err || !results.projectDeleted) { return res.status(400).json({ message: 'Falha ao deletar' }) }
       if (results.last.seq === results.projectDeleted.seq) {
         Counter.updateOne({ _id: counterId }, { $inc: { seq: -1 } }, (err) => {
           if (err) { return res.status(502).json({ message: `Falha ao atualizar sequência ${results.projectDeleted.seq}` }) }
