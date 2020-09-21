@@ -4,7 +4,6 @@ import { Project } from "../album/project";
 import { ProjectsService } from "../album/projects.service";
 import { Post } from "../blog/post";
 import { PostsService } from "../blog/posts.service";
-import { Subscription } from 'rxjs';
 import { Admin } from '../admin/admin';
 
 @Component({
@@ -12,23 +11,15 @@ import { Admin } from '../admin/admin';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   admin: Admin
   projects: Project[]
   posts: Post[]
-  private projectsListener: Subscription
-  private postsListener: Subscription
   constructor(private route: ActivatedRoute, private projectsService: ProjectsService, private postsService: PostsService) { }
 
   ngOnInit(): void {
     this.admin = this.route.snapshot.data['admin']
-    this.projectsService.populateProjects(0, 5)
-    this.projectsListener = this.projectsService.getStream().subscribe((res) => this.projects = res.projects)
-    this.postsService.populatePosts(0, 5)
-    this.postsListener = this.postsService.getStream().subscribe((sub) => this.posts = sub.posts)
-  }
-  ngOnDestroy(): void {
-    this.postsListener.unsubscribe()
-    this.projectsListener.unsubscribe()
+    this.projectsService.getProjects(0, 5).subscribe((res) => this.projects = res.projects)
+    this.postsService.getPosts(0, 5).subscribe((res) => this.posts = res.posts)
   }
 }
