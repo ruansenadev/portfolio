@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { ShareService } from "../share/share.service";
 
 export interface Item {
@@ -14,9 +14,10 @@ export interface Item {
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css']
 })
-export class CarouselComponent {
+export class CarouselComponent implements AfterViewInit {
   constructor(private shareService: ShareService) { }
-  @ViewChild('box') box: ElementRef
+  @ViewChild('box') boxRef
+  private box: HTMLDivElement
   skeleton = Array(4)
   private tolerance = 32
   private pressPosition: number = null
@@ -25,6 +26,9 @@ export class CarouselComponent {
   private isMoving: boolean = false
   @Input() title: string = ''
   @Input() items: Item[] = []
+  ngAfterViewInit(): void {
+    this.box = this.boxRef.nativeElement
+  }
   onShare(uri: string) {
     this.shareService.openSheet(uri)
   }
@@ -32,12 +36,11 @@ export class CarouselComponent {
     e.preventDefault()
   }
   updateTransformState(): void {
-    const state = (this.box.nativeElement as HTMLDivElement).style.getPropertyValue('transform')
+    const state = this.box.style.getPropertyValue('transform')
     this.transformState = +state.slice(state.indexOf('(') + 1, state.indexOf('px'))
   }
   onPress(e: PointerEvent | MouseEvent): void {
-    const box = (this.box.nativeElement as HTMLDivElement)
-    this.outBoxSlice = box.scrollWidth - box.clientWidth
+    this.outBoxSlice = this.box.scrollWidth - this.box.clientWidth
     this.pressPosition = e.pageX
     this.isMoving = true
     this.updateTransformState()
@@ -49,17 +52,17 @@ export class CarouselComponent {
 
       // case actual position plus difference (less or more) is going to move backward from start or forward from end
       if (X > (0 + this.tolerance) || Math.abs(X) > (this.outBoxSlice + this.tolerance)) { return }
-      this.box.nativeElement.style.transform = `translateX(${X}px)`
+      this.box.style.transform = `translateX(${X}px)`
     }
   }
-  onRelease(e: PointerEvent | MouseEvent): void {
+  onRelease(): void {
     this.isMoving = false
     // restores inner state
     this.updateTransformState()
     if(this.transformState > 0) {
-      this.box.nativeElement.style.transform = `translateX(${0}px)`
+      this.box.style.transform = `translateX(${0}px)`
     } else if (Math.abs(this.transformState) > this.outBoxSlice) {
-      this.box.nativeElement.style.transform = `translateX(${-(this.outBoxSlice)}px)`
+      this.box.style.transform = `translateX(${-(this.outBoxSlice)}px)`
     }
   }
 }
