@@ -1,0 +1,3 @@
+[submodule "app-server"]
+	path = app-server
+	url = https://github.com/ruansenadev/portfolio.git
