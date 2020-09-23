@@ -2,10 +2,8 @@ require('dotenv').config()
 const express = require('express');
 const path = require('path')
 const cookieParser = require('cookie-parser')
-const logger = require('morgan')
 const helmet = require('helmet')
 const mongoose = require('mongoose')
-const cors = require('cors')
 
 mongoose.connect(process.env.MONGO_URL, { useCreateIndex: true, useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
@@ -19,7 +17,6 @@ const adminRouter = require('./routes/admin')
 
 const app = express()
 
-app.use(logger('dev'))
 app.use(helmet({ contentSecurityPolicy: {
     directives: {
     defaultSrc: ["'self'"],
@@ -40,8 +37,6 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.options('*', cors())
-app.use('/api', cors())
 app.use('/api/auth', authRouter)
 app.use('/api/admin', adminRouter)
 app.use('/api/projects', projectsRouter)
