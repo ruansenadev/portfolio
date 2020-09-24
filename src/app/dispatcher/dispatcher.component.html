@@ -64,6 +64,16 @@
         Painel
       </a>
       <mat-divider></mat-divider>
+      <div mat-subheader>Novo</div>
+      <a mat-list-item (click)="onNav('navAdmin')">
+        <mat-icon class="nav-icon">add_circle_outline</mat-icon>
+        Projeto
+      </a>
+      <a mat-list-item (click)="onNav('navAdmin')">
+        <mat-icon class="nav-icon">add_circle_outline</mat-icon>
+        Post
+      </a>
+      <mat-divider></mat-divider>
       <a mat-list-item (click)="onLogout($event)" class="nav-item">Sair</a>
     </mat-nav-list>
   </mat-sidenav>

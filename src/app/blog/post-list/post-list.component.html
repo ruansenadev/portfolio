@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-card-header>
+  <mat-card-header class="blog-heading">
     <mat-card-title-group>
       <mat-card-title>Blog</mat-card-title>
       <mat-card-subtitle>Página {{left+1}}</mat-card-subtitle>
@@ -16,11 +16,12 @@
       <div class="post-item" *ngFor="let post of posts; last as last">
         <a mat-list-item [routerLink]="[post.slug]">
           <mat-icon matListIcon>{{post.icon}}</mat-icon>
-          <h4 matLine>{{post.title}}</h4>
-          <p *ngIf="post.description" matLine>{{post.description}}</p>
+          <h3 class="post-title" matLine>{{post.title}}</h3>
+          <p *ngIf="post.description" class="post-desc" matLine>{{post.description}}</p>
+          <div class="post-date" matLine><mat-icon inline>schedule</mat-icon>{{post.date_formated.relative}}</div>
           <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
         </a>
-        <div *ngIf="isAuth">
+        <div *ngIf="isAuth" class="post-menu">
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Toggle menu">
             <mat-icon>more_vert</mat-icon>
           </button>

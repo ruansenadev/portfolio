@@ -1,5 +1,5 @@
 <div class="container" (dragstart)="onDrag($event)">
-  <div class="mat-title">
+  <div class="carousel-title mat-title">
     {{ title }}
   </div>
   <div class="box" #box (pointerdown)="onPress($event)" (pointermove)="onMove($event)" (pointerup)="onRelease()">
@@ -8,12 +8,12 @@
     </ng-container>
     <ng-template #card>
       <mat-card *ngFor="let item of items" class="item mat-elevation-z1">
-        <mat-card-header>
-          <div mat-card-avatar>
+        <div class="item-header">
+          <div class="item-icon">
             <mat-icon>{{ item.icon }}</mat-icon>
           </div>
-          <mat-card-title class="item-title">{{ item.title }}</mat-card-title>
-        </mat-card-header>
+          <h4 class="item-title mat-title">{{ item.title }}</h4>
+        </div>
         <img *ngIf="item.img" [src]="item.img" class="item-content" draggable="false">
         <mat-card-content *ngIf="!item.img" class="item-content mat-body-2">{{ item.desc }}</mat-card-content>
         <mat-card-actions class="item-actions">
