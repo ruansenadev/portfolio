@@ -20,7 +20,9 @@ const postSchema = new Schema({
 
 postSchema.virtual('reading')
   .get(function () {
-    return readingTime(this.markdown)
+    const read = readingTime(this.markdown)
+    read.text = `~ ${read.text.split(' read')[0]}`
+    return read
   })
 
 postSchema.virtual('date_formated')

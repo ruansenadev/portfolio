@@ -1,13 +1,36 @@
 .btn-action {
   margin: 0 1rem;
 }
-mat-card-header {
+mat-card {
+  padding-left: 0;
+  padding-right: 0;
+}
+.blog-heading {
   text-align: center;
+  padding-right: 1rem;
 }
 .btn--top {
   margin-left: auto;
 }
+.mat-list-item .mat-list-item-content {
+  padding-left: 0;
+}
 .post-item {
+  position: relative;
   display: flex;
   align-items: center;
+}
+.post-title {
+  font-size: 1.25rem !important;
+}
+.post-desc {
+  font-size: 1rem !important;
+}
+.post-date {
+  display: flex !important;
+}
+.post-menu {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
