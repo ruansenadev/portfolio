@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const helmet = require('helmet')
+const cors = require('cors')
+const logger = require('morgan')
 const mongoose = require('mongoose')
 
 mongoose.connect(process.env.MONGO_URL, { useCreateIndex: true, useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true })
@@ -18,7 +20,7 @@ const adminRouter = require('./routes/admin')
 const app = express()
 
 app.use(helmet({ contentSecurityPolicy: {
-    directives: {
+  directives: {
     defaultSrc: ["'self'"],
     baseUri: ["'self'"],
     blockAllMixedContent: [],
@@ -30,20 +32,22 @@ app.use(helmet({ contentSecurityPolicy: {
     scriptSrcAttr: ["'none'"],
     styleSrc: ["'self'", "https:", "'unsafe-inline'"],
     upgradeInsecureRequests: []
-}
+  }
 }}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.options('/*', cors())
+app.use('/api', cors())
 app.use('/api/auth', authRouter)
 app.use('/api/admin', adminRouter)
 app.use('/api/projects', projectsRouter)
 app.use('/api/posts', postsRouter)
 
-app.use(function (err, req, res, next) {
-  res.status(err.status || 500).json({ message: err.message || 'Erro no Servidor' })
-});
+app.use(/\/$/,logger('combined'), (req, res) => {
+  return res.redirect('https://ruansenadev.github.io/portfolio')
+})
 
 module.exports = app;
