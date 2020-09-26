@@ -63,11 +63,11 @@
       </a>
       <mat-divider></mat-divider>
       <div mat-subheader>Novo</div>
-      <a mat-list-item (click)="onNav('navAdmin')">
+      <a mat-list-item [routerLink]="['/album', 'new']" (click)="onNav('navAdmin')">
         <mat-icon class="nav-icon">add_circle_outline</mat-icon>
         Projeto
       </a>
-      <a mat-list-item (click)="onNav('navAdmin')">
+      <a mat-list-item [routerLink]="['/blog', 'new']" (click)="onNav('navAdmin')">
         <mat-icon class="nav-icon">add_circle_outline</mat-icon>
         Post
       </a>

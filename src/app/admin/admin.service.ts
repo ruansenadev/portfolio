@@ -63,7 +63,7 @@ export class AdminService {
     if (password_new) data.append('password_new', password_new)
     this.http.put<{ message: string }>(`${apiAdmin}/${_id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } })
-      this.authService.logout()
+      this.fetchAdmin()
     }, (e) => {
       this.admin$.error(e)
     })
