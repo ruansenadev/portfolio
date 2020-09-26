@@ -28,7 +28,7 @@
         </div>
       </div>
       <img *ngIf="project.thumbnailPath" class="mdc-image-list__image" [src]="project.thumbnailPath">
-      <p *ngIf="!project.thumbnailPath" class="mat-body-2 list__text">
+      <p *ngIf="!project.thumbnailPath" class="list__text">
         {{ project.description }}
       </p>
       <mat-divider [inset]="true"></mat-divider>

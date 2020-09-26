@@ -9,6 +9,10 @@
 
 # dependencies
 /node_modules
+/app-server
+
+# env
+.env
 
 # profiling files
 chrome-profiler-events*.json
@@ -47,3 +51,10 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Project build/public files
+/server/public
+
+# branches redundancy
+.env
+/server

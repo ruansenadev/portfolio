@@ -9,11 +9,11 @@ import { AdminResolver } from "./admin/admin.resolver";
 import { VoidComponent } from "./void/void.component";
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full', resolve: { admin: AdminResolver }, data: { animation: 'HomePage' } },
-  { path: 'login', component: LoginComponent, canActivate: [AuthGuard], data: { animation: 'LoginPage' } },
-  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canLoad: [AuthLoadGuard], data: { animation: 'AdminMod' } },
-  { path: 'blog', loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule), data: { animation: 'BlogMod' } },
-  { path: 'album', loadChildren: () => import('./album/album.module').then(m => m.AlbumModule), data: { animation: 'AlbumMod' } },
+  { path: '', component: HomeComponent, pathMatch: 'full', resolve: { admin: AdminResolver } },
+  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
+  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canLoad: [AuthLoadGuard] },
+  { path: 'blog', loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule) },
+  { path: 'album', loadChildren: () => import('./album/album.module').then(m => m.AlbumModule) },
   { path: '**', component: VoidComponent }
 ]
 

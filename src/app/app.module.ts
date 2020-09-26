@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, SecurityContext } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from "./app-routing.module";
 import { HttpClientModule } from "@angular/common/http";
@@ -71,7 +71,7 @@ import { SkillPipe } from './home/home-hero/skill.pipe';
     HttpClientModule,
     MatSnackBarModule,
     MatBottomSheetModule,
-    MarkdownModule.forRoot(),
+    MarkdownModule.forRoot({ sanitize: SecurityContext.NONE }),
     MatFormFieldModule,
     MatProgressBarModule,
     MatIconModule,
@@ -89,7 +89,7 @@ import { SkillPipe } from './home/home-hero/skill.pipe';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 4000 } },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],
   bootstrap: [AppComponent]

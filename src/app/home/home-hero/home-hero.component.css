@@ -1,16 +1,31 @@
 .hero {
-  padding: 3rem 1.5rem;
-  margin: 1rem .5rem 3rem;
+  padding: 2rem 1rem;
+  margin: .5rem .5rem 3rem;
   border-radius: unset;
+}
+.hero-text {
+  font: 400 16px Roboto, "Helvetica Neue", sans-serif;
+  letter-spacing: 1px;
+  text-align: justify;
+  line-height: 1.35;
 }
 .photo {
   border-radius: 50%;
   margin-bottom: 0;
 }
-mat-list {
-  display: flex;
-  flex-flow: row-reverse wrap-reverse;
+.skill {
+  font-weight: 500;
+  margin-right: .5rem;
 }
-mat-list-item {
-  flex: 1;
+.skill::after {
+  content: ': '
+} 
+.value::after {
+  content: ';'
+}
+@media(min-width: 37rem) {
+  .hero {
+    padding: 3rem 1.5rem;
+    margin: 1rem 1rem 3rem;
+  }
 }

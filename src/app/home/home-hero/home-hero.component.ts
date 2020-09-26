@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { KeyValue } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { Admin } from "../../admin/admin";
 
 @Component({
@@ -6,10 +7,8 @@ import { Admin } from "../../admin/admin";
   templateUrl: './home-hero.component.html',
   styleUrls: ['./home-hero.component.css']
 })
-export class HomeHeroComponent implements OnInit {
+export class HomeHeroComponent {
   constructor() { }
   @Input('admin') account: Admin
-
-  ngOnInit(): void {
-  }
+  preserveArrayOrder = (a: KeyValue<string, number>, b: KeyValue<string, number>): number => 0;
 }

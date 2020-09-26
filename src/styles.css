@@ -2,3 +2,4 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 main { padding-top: 2rem; }
 img { max-width: 100%; height: auto; }
+mat-icon { user-select: none; }

@@ -16,7 +16,17 @@ mat-card {
 mat-card-footer {
   padding: .5rem 1rem;
 }
-mat-card-subtitle {
+.post-info {
   display: flex;
   align-items: center;
+}
+.info {
+  display: flex;
+  align-items: center;
+  line-height: 1.7;
+  font-size: 1rem;
+  margin: 0 .5rem;
+}
+.info-icon {
+  margin-right: .25rem;
 }
