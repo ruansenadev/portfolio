@@ -1,5 +1,4 @@
 const express = require('express')
-const Counter = require('../models/counter')
 const Project = require('../models/project')
 const Auth = require('../middlewares/auth')
 const PathDir = require('../middlewares/pathdir')
@@ -9,8 +8,6 @@ const async = require('async')
 const moment = require('moment-timezone')
 moment.tz.setDefault('America/Bahia').locale('pt-br')
 const router = express.Router()
-
-const counterId = 'Project'
 
 const { IncomingForm } = require('formidable')
 const projectFormOptions = {
@@ -43,7 +40,8 @@ router.get('/', [
       })
   }
 ])
-router.get('/seqs', Auth, function(req, res) {
+
+router.get('/seqs', Auth, function (req, res) {
   Project.find({}, { _id: 0, seq: 1, name: 1 })
     .lean()
     .exec((err, result) => {
@@ -51,6 +49,7 @@ router.get('/seqs', Auth, function(req, res) {
       res.json(result)
     })
 })
+
 router.get('/:seq', [
   param('seq').isAlphanumeric().toInt(),
   function (req, res) {
@@ -67,6 +66,7 @@ router.get('/:seq', [
       })
   }
 ])
+
 router.post('/', Auth, PathDir(undefined, 'images', 'album'), function (req, res) {
   projectFormOptions.uploadDir = req.pathDir
   const form = new IncomingForm(projectFormOptions)
@@ -86,6 +86,7 @@ router.post('/', Auth, PathDir(undefined, 'images', 'album'), function (req, res
   form.parse(req, function (err, fields, files) {
     if (err) { return res.status(400).json({ message: 'Formulário inválido' }) }
     let project = new Project({
+      seq: fields.seq,
       name: fields.name,
       status: fields.status,
       description: fields.description,
@@ -96,24 +97,13 @@ router.post('/', Auth, PathDir(undefined, 'images', 'album'), function (req, res
     if (files.thumbnail) project.thumbnailPath = `/images/album/${dateUpload}-${files.thumbnail.name}`;
     if (fields.overview) project.overview = fields.overview;
     if (fields.homepage) project.homepage = fields.homepage;
-    Counter.findById(counterId)
-      .then((projectCount) => {
-        project.seq = projectCount.seq
-        project.save()
-          .then((projectSaved) => {
-            projectCount.updateOne({ seq: projectCount.seq + 1 })
-              .then(() => {
-                res.status(200).json({ message: 'Projeto adicionado!', project: projectSaved })
-              }).catch(() => {
-                projectSaved.deleteOne((err) => {
-                  if (err) { return res.status(502).json({ message: 'Falha, delete o projeto da DB!' }) }
-                  res.status(502).json({ message: 'Falha ao salvar' })
-                })
-              })
-          })
-      }).catch(() => { return res.status(502).json({ message: 'Falha ao salvar' }) })
+    project.save((err, projectSaved) => {
+      if (err) { return res.status(502).json({ message: 'Falha ao salvar' }) }
+      res.status(200).json({ message: 'Projeto adicionado!', project: projectSaved })
+    })
   })
 })
+
 router.put('/:id', Auth, [
   param('id').isMongoId(),
   PathDir(undefined, 'images', 'album'),
@@ -160,6 +150,7 @@ router.put('/:id', Auth, [
     })
   }
 ])
+
 router.delete('/:id', Auth, [
   param('id').isMongoId(),
   function (req, res) {
@@ -167,23 +158,9 @@ router.delete('/:id', Auth, [
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: 'ID inválido' })
     }
-    async.parallel({
-      projectDeleted: function (cb) {
-        Project.findByIdAndDelete({ _id: req.params.id }, { select: 'seq' }, (cb))
-      },
-      last: function (cb) {
-        Counter.findById(counterId, cb)
-      }
-    }, (err, results) => {
-      if (err || !results.projectDeleted) { return res.status(400).json({ message: 'Falha ao deletar' }) }
-      if (results.last.seq === results.projectDeleted.seq) {
-        Counter.updateOne({ _id: counterId }, { $inc: { seq: -1 } }, (err) => {
-          if (err) { return res.status(502).json({ message: `Falha ao atualizar sequência ${results.projectDeleted.seq}` }) }
-          res.status(200).json({ message: `Último projeto deletado.` })
-        })
-      } else {
-        res.status(200).json({ message: `Projeto ${results.projectDeleted.seq} deletado.` })
-      }
+    Project.findByIdAndDelete(req.params.id, { select: 'seq' }, (err, projectDeleted) => {
+      if (err || !projectDeleted) { return res.status(400).json({ message: 'Falha ao deletar' }) }
+      res.status(200).json({ message: `Projeto ${projectDeleted.seq} deletado.` })
     })
   }
 ])
