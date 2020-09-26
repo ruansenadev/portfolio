@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'home-contact',
   templateUrl: './home-contact.component.html',
   styleUrls: ['./home-contact.component.css']
 })
-export class HomeContactComponent implements OnInit {
-
+export class HomeContactComponent {
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

@@ -6,11 +6,12 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <p>{{ account.biodata }}</p>
-    <mat-list>
-      <mat-list-item *ngFor="let skill of account.skills | keyvalue">
-        <h4 matLine>{{ skill.key }}</h4>
-        <p matLine>{{ skill.value | skill }}</p>
+    <p class="mat-body-2 hero-text">{{ account.biodata }}</p>
+    <mat-list *ngIf="account.skills">
+      <span mat-subheader>Skills</span>
+      <mat-list-item *ngFor="let skill of account.skills | keyvalue: preserveArrayOrder">
+        <span class="skill">{{ skill.key }}</span>
+        <span class="value">{{ skill.value | skill }}</span>
       </mat-list-item>
     </mat-list>
   </mat-card-content>
