@@ -43,6 +43,14 @@ router.get('/', [
       })
   }
 ])
+router.get('/seqs', Auth, function(req, res) {
+  Project.find({}, { _id: 0, seq: 1, name: 1 })
+    .lean()
+    .exec((err, result) => {
+      if (err) { return res.status(502).json({ message: 'Falha ao buscar sequências' }) }
+      res.json(result)
+    })
+})
 router.get('/:seq', [
   param('seq').isAlphanumeric().toInt(),
   function (req, res) {
