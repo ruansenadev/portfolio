@@ -44,9 +44,7 @@
       </button>
 
     </mat-toolbar>
-    <div [@routeAnimations]="prepareRoute(outlet)">
-      <router-outlet #outlet="outlet"></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 
   <mat-sidenav #_drawer *ngIf="isAuth" class="sidenav" fixedInViewport position="end"
