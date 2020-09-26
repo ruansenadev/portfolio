@@ -6,6 +6,15 @@
         <mat-label>Projeto</mat-label>
         <input matInput formControlName="name" required (change)="onIntroChange()">
       </mat-form-field>
+      <mat-form-field appearance="outline" hintLabel="Sequência do projeto no álbum">
+        <mat-label>Número</mat-label>
+        <mat-select formControlName="seq" required>
+          <mat-option *ngFor="let sequence of sequences.available | keyvalue" [value]="sequence.key" [disabled]="sequence.value">
+            {{ sequence.key }}
+            <span *ngIf="sequences.projects.has(sequence.key)"> - {{ sequences.projects.get(sequence.key) }}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Status</mat-label>
         <mat-select formControlName="status" required>

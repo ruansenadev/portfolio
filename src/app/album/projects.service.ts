@@ -9,6 +9,12 @@ import { MessageComponent } from "../messages/message/message.component";
 import { environment } from "../../environments/environment";
 const apiProjects = environment.server + '/projects'
 
+export interface Sequences {
+  projects: Map<number, string>;
+  available: Map<number, boolean>;
+  next: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +31,20 @@ export class ProjectsService {
         return project
       })
       return data
+    }))
+  }
+  getSequences(): Observable<Sequences> {
+    return this.http.get<{ name: string; seq: number; }[]>(apiProjects + '/seqs').pipe(map(data => {
+      const projects = data.reduce((seqs, p) => {
+        seqs.set(p.seq, p.name)
+        return seqs
+      }, new Map());
+      let next = Array.from(projects.keys()).pop() + 1;
+      let available = new Map<number, boolean>()
+      for(let i = 1; i <= next; i++) {
+        available.set(i, Boolean(projects.get(i)))
+      }
+      return { projects, available, next }
     }))
   }
   populateProjects(behind: number = 0, items: number = 3): void {

@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { LEFT_ARROW, UP_ARROW, DOWN_ARROW, RIGHT_ARROW } from "@angular/cdk/keycodes";
 import { ActivatedRoute } from "@angular/router";
-import { ProjectsService } from "../projects.service";
+import { ProjectsService, Sequences } from "../projects.service";
 import { Project } from '../project';
 import { Subscription } from "rxjs";
 
@@ -24,15 +24,17 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   thumbnail: string = null
   preview: string | SafeUrl
   introduction: string = ''
+  sequences: Sequences
   chips: { [key: string]: string[] } = {
     technologies: [],
     keywords: []
   }
   ngOnInit(): void {
-    this.seq = +this.route.snapshot.paramMap.get('seq')
+    this.sequences = this.route.snapshot.data['sequences']
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
       status: new FormControl(null, Validators.required),
+      seq: new FormControl(this.sequences.next, Validators.required),
       description: new FormControl('', [Validators.required, Validators.maxLength(330)]),
       overview: new FormControl(''),
       thumbnail: new FormControl(null),
@@ -41,12 +43,14 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       homepage: new FormControl(null),
       keywords: new FormControl(null, Validators.required)
     })
+    this.seq = +this.route.snapshot.paramMap.get('seq')
     if (this.seq) {
       this.projectsService.getProject(this.seq).subscribe((project) => {
         this.project = project
         this.form.setValue({
           name: this.project.name,
           status: this.project.status,
+          seq: this.project.seq,
           description: this.project.description,
           overview: this.project.overview || '',
           thumbnail: null,
