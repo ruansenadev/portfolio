@@ -19,7 +19,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   isLoading: boolean = true
   form: FormGroup
   private arrows = [LEFT_ARROW, UP_ARROW, DOWN_ARROW, RIGHT_ARROW]
-  private seq: number
   private project: Project
   thumbnail: string = null
   preview: string | SafeUrl
@@ -31,47 +30,30 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.sequences = this.route.snapshot.data['sequences']
+    this.project = this.route.snapshot.data['project']
     this.form = new FormGroup({
-      name: new FormControl('', Validators.required),
-      status: new FormControl(null, Validators.required),
-      seq: new FormControl(this.sequences.next, Validators.required),
-      description: new FormControl('', [Validators.required, Validators.maxLength(330)]),
-      overview: new FormControl(''),
+      name: new FormControl(this.project ? this.project.name : '', Validators.required),
+      status: new FormControl(this.project ? this.project.status : null, Validators.required),
+      seq: new FormControl({ value: this.project ? this.project.seq : this.sequences.next, disabled: !!this.project }, Validators.required),
+      description: new FormControl(this.project ? this.project.description : '', [Validators.required, Validators.maxLength(330)]),
+      overview: new FormControl(this.project ? this.project.overview : ''),
       thumbnail: new FormControl(null),
-      technologies: new FormControl(null, Validators.required),
-      url: new FormControl(null, Validators.required),
-      homepage: new FormControl(null),
-      keywords: new FormControl(null, Validators.required)
+      technologies: new FormControl(this.project ? ' ' : null, Validators.required),
+      url: new FormControl(this.project ? this.project.url : null, Validators.required),
+      homepage: new FormControl(this.project && this.project.homepage ? this.project.homepage : null),
+      keywords: new FormControl(this.project ? ' ' : null, Validators.required)
     })
-    this.seq = +this.route.snapshot.paramMap.get('seq')
-    if (this.seq) {
-      this.projectsService.getProject(this.seq).subscribe((project) => {
-        this.project = project
-        this.form.setValue({
-          name: this.project.name,
-          status: this.project.status,
-          seq: this.project.seq,
-          description: this.project.description,
-          overview: this.project.overview || '',
-          thumbnail: null,
-          technologies: ' ',
-          url: this.project.url,
-          homepage: this.project.homepage || null,
-          keywords: ' '
-        })
-        this.introduction = `## ${this.form.value.name}\n***\n${this.form.value.description}\n`
-        this.chips.technologies = this.project.technologies
-        this.chips.keywords = this.project.keywords
-        if (this.project.thumbnailPath) {
-          this.thumbnail = this.project.thumbnailPath.slice(this.project.thumbnailPath.lastIndexOf('/') + 1).slice(20)
-          this.preview = this.project.thumbnailPath
-        }
-        this.isLoading = false
-      })
-    } else {
-      this.isLoading = false
+    if (this.project) {
+      this.introduction = `## ${this.form.value.name}\n***\n${this.form.value.description}\n`
+      this.chips.technologies = this.project.technologies
+      this.chips.keywords = this.project.keywords
+      if (this.project.thumbnailPath) {
+        this.thumbnail = this.project.thumbnailPath.slice(this.project.thumbnailPath.lastIndexOf('/') + 1).slice(20)
+        this.preview = this.project.thumbnailPath
+      }
     }
     this.listener = this.projectsService.getStream().subscribe(null, () => this.isLoading = false)
+    this.isLoading = false
   }
   onIntroChange(): void {
     if (this.form.value.overview) {
@@ -131,10 +113,10 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   onSend() {
     if (this.form.invalid) { return }
     this.isLoading = true
-    if (this.seq) {
-      this.projectsService.editProject(this.project._id, this.seq, this.form.value.name, this.form.value.status, this.form.value.thumbnail || this.project.thumbnailPath, this.thumbnail, this.form.value.description, this.form.value.overview || this.introduction, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
+    if (this.project) {
+      this.projectsService.editProject(this.project._id, this.project.seq, this.form.value.name, this.form.value.status, this.form.value.thumbnail || this.project.thumbnailPath, this.thumbnail, this.form.value.description, this.form.value.overview || this.introduction, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
     } else {
-      this.projectsService.addProject(this.form.value.name, this.form.value.status, this.form.value.thumbnail, this.thumbnail || null, this.form.value.description, this.form.value.overview || this.introduction, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
+      this.projectsService.addProject(this.form.value.name, this.form.value.seq, this.form.value.status, this.form.value.thumbnail, this.thumbnail || null, this.form.value.description, this.form.value.overview || this.introduction, this.chips.technologies, this.form.value.url, this.form.value.homepage, this.chips.keywords)
     }
   }
   canDeactivate(): boolean {

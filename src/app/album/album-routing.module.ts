@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: '', component: ProjectCardsListComponent },
   { path: 'new', component: ProjectFormComponent, canActivate: [AuthGuard], resolve: { sequences: SequencesResolver }, canDeactivate: [ProjectDeactivate] },
   { path: ':seq', component: ProjectPageComponent, resolve: { project: ProjectResolver } },
-  { path: 'edit/:seq', component: ProjectFormComponent, canActivate: [AuthGuard], canDeactivate: [ProjectDeactivate] }
+  { path: 'edit/:seq', component: ProjectFormComponent, canActivate: [AuthGuard], resolve: { project: ProjectResolver,sequences: SequencesResolver }, canDeactivate: [ProjectDeactivate] }
 ]
 
 @NgModule({
@@ -21,4 +21,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [AuthGuard, ProjectResolver, ProjectDeactivate, SequencesResolver]
 })
-export class AlbumRoutingModule {}
+export class AlbumRoutingModule { }
