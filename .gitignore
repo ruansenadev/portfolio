@@ -51,10 +51,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
-# Project build/public files
-/server/public
-
-# branches redundancy
-.env
-/server
