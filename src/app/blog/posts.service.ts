@@ -17,8 +17,9 @@ export class PostsService {
   constructor(private http: HttpClient, private router: Router, private messageBar: MatSnackBar) { }
   private posts: Post[] = []
   private stream = new Subject<{ posts: Post[], max: number }>()
-  getPosts(left: number = 0, items: number = 5): Observable<{ posts: Post[], max: number }> {
-    const query = `?left=${left}&items=${items}`
+  getPosts(left: number = 0, items: number = 5, year?: number, month?: number): Observable<{ posts: Post[], max: number }> {
+    const query = `?${year ? 'year=' + year + '&' : ''}${month ? 'month=' + month + '&' : ''}left=${left}&items=${items}`
+
     return this.http.get<{ posts: Post[], max: number }>(apiPosts + query).pipe(map(data => {
       data.posts = data.posts.map(post => {
         if (post.thumbnailPath && post.thumbnailPath.startsWith('/images')) post.thumbnailPath = environment.host + post.thumbnailPath
@@ -27,12 +28,12 @@ export class PostsService {
       return data
     }))
   }
-  populatePosts(left: number = 0, items: number = 5): void {
-    this.getPosts(left, items)
-    .subscribe((res) => {
-      this.posts = res.posts
-      this.stream.next({ posts: [...this.posts], max: res.max })
-    })
+  populatePosts(left: number = 0, items: number = 5, year?: number, month?: number): void {
+    this.getPosts(left, items, year, month)
+      .subscribe((res) => {
+        this.posts = res.posts
+        this.stream.next({ posts: [...this.posts], max: res.max })
+      })
   }
   getArchives() {
     return this.http.get<Archives[]>(`${apiPosts}/archives`)
@@ -53,7 +54,7 @@ export class PostsService {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Post', redirect: `blog/${res.post.slug}` } })
       this.posts.push(res.post)
       this.stream.next({ posts: [...this.posts], max: res.max })
-      this.router.navigate(['/'], { state : { done: true } })
+      this.router.navigate(['/'], { state: { done: true } })
     }, (e) => {
       this.stream.error(e)
     })
@@ -81,7 +82,7 @@ export class PostsService {
     data.append('labels', JSON.stringify(labels))
     this.http.put<{ message: string }>(`${apiPosts}/${_id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Post', redirect: `blog/${slug}` } })
-      this.router.navigate(['/'], { state : { done: true } })
+      this.router.navigate(['/'], { state: { done: true } })
     }, (e) => {
       this.stream.error(e)
     })

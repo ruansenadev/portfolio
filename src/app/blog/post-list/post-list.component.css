@@ -1,9 +1,12 @@
 .btn-action {
   margin: 0 1rem;
 }
-mat-card {
+.blog-list {
   padding-left: 0;
   padding-right: 0;
+}
+.list-paginator {
+  margin: unset;
 }
 .blog-heading {
   text-align: center;

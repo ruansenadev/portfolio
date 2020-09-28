@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="blog-list">
   <mat-card-header class="blog-heading">
     <mat-card-title-group>
       <mat-card-title>Blog</mat-card-title>
@@ -39,7 +39,7 @@
       </div>
     </mat-nav-list>
   </mat-card-content>
-  <mat-card-footer>
+  <mat-card-footer class="list-paginator">
     <mat-paginator [length]="length" [pageSize]="items" [pageSizeOptions]="itemsOptions" (page)="onPaginate($event)">
     </mat-paginator>
   </mat-card-footer>

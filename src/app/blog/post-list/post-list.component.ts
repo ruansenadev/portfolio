@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import { MatDialog } from "@angular/material/dialog";
 import { PostDialogComponent } from "../post-dialog/post-dialog.component";
@@ -15,8 +16,9 @@ import { MessageComponent } from "../../messages/message/message.component";
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  constructor(private postsService: PostsService, private dialog: MatDialog, private authService: AuthService, private messageBar: MatSnackBar) { }
+  constructor(private route: ActivatedRoute, private postsService: PostsService, private dialog: MatDialog, private authService: AuthService, private messageBar: MatSnackBar) { }
   posts: Post[] = []
+  private queryListener: Subscription;
   private postsListener: Subscription;
   isAuth: boolean = false;
   private authListener: Subscription;
@@ -26,7 +28,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   length: number;
   skeleton = Array(this.items)
   ngOnInit(): void {
-    this.postsService.populatePosts(this.left, this.items)
+    this.queryListener = this.route.queryParams.subscribe(params => {
+      if (params.year || params.month) this.postsService.populatePosts(this.left, this.items, params.year, params.month)
+      else this.postsService.populatePosts(this.left, this.items)
+    })
     this.postsListener = this.postsService.getStream().subscribe((res) => {
       this.posts = res.posts
       this.length = res.max
@@ -53,6 +58,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.postsService.populatePosts(this.left, this.items)
   }
   ngOnDestroy(): void {
+    this.queryListener.unsubscribe()
     this.postsListener.unsubscribe()
     this.authListener.unsubscribe()
   }

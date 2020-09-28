@@ -3,20 +3,20 @@
     <div mat-card-avatar>
       <mat-icon>archive</mat-icon>
     </div>
-    <mat-card-title>Arquivados</mat-card-title>
+    <mat-card-title>Arquivos</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <mat-accordion *ngFor="let archives of archivesList">
-      <mat-expansion-panel [expanded]="isYear(archives.year)">
+    <mat-accordion *ngFor="let archives of archivesList" class="headers-align">
+      <mat-expansion-panel [expanded]="isActualYear(archives.year)" (opened)="onExpandYear(archives.year)">
         <mat-expansion-panel-header>
           <mat-panel-title>{{ archives.year }}</mat-panel-title>
-          <mat-panel-description *ngIf="isYear(archives.year)">Neste ano</mat-panel-description>
+          <mat-panel-description><mat-icon inline>{{ isSelectedYear(archives.year) ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon></mat-panel-description>
         </mat-expansion-panel-header>
-        <mat-list>
-          <mat-list-item *ngFor="let archive of archives.months">
+        <mat-nav-list>
+          <a mat-list-item *ngFor="let archive of archives.months" [routerLink]="[]" [queryParams]="{ year: year, month: archive.num }">
             <span [matBadge]="archive.count" [matBadgeOverlap]="false" [matBadgePosition]="'before'" [matBadgeColor]="'accent'">{{ archive.month }}</span>
-          </mat-list-item>
-        </mat-list>
+          </a>
+        </mat-nav-list>
       </mat-expansion-panel>
     </mat-accordion>
   </mat-card-content>
