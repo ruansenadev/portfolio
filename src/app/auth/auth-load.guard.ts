@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Route, Router } from '@angular/router';
-import { AuthService } from "./auth.service";
+import { AuthService } from './auth.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthLoadGuard implements CanLoad {
@@ -10,6 +10,6 @@ export class AuthLoadGuard implements CanLoad {
     if (this.authService.getStatus()) {
       return true;
     }
-    this.router.navigateByUrl('/login')
+    this.router.navigateByUrl('/login');
   }
 }

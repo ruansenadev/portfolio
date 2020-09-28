@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
-import { Post } from "../post";
+import { ActivatedRoute } from '@angular/router';
+import { Post } from '../post';
 
 @Component({
-  selector: 'blog-post-page',
+  selector: 'app-blog-post-page',
   templateUrl: './post-page.component.html',
   styleUrls: ['./post-page.component.css']
 })
 export class PostPageComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
-  post: Post
+  post: Post;
   ngOnInit(): void {
-    this.post = this.route.snapshot.data["post"]
+    this.post = this.route.snapshot.data.post;
   }
 
 }

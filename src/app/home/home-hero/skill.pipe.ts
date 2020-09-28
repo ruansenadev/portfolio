@@ -8,11 +8,11 @@ export class SkillPipe implements PipeTransform {
   transform(value: any): string {
     switch (typeof value) {
       case 'object':
-        return `[ ${value.join(', ')} ]`
+        return `[ ${value.join(', ')} ]`;
       case 'string':
-        return `'${value}'`
+        return `'${value}'`;
       default:
-        return value+''
+        return value + '';
     }
   }
 

@@ -1,15 +1,15 @@
-<mat-card *ngIf="account" class="mat-elevation-z hero">
+<mat-card *ngIf="admin" class="mat-elevation-z hero">
   <mat-card-header>
     <mat-icon mat-card-avatar>code</mat-icon>
     <mat-card-title>
-      {{ account.profession }}
+      {{ admin.profession }}
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <p class="mat-body-2 hero-text">{{ account.biodata }}</p>
-    <mat-list *ngIf="account.skills">
+    <p class="mat-body-2 hero-text">{{ admin.biodata }}</p>
+    <mat-list *ngIf="admin.skills">
       <span mat-subheader>Skills</span>
-      <mat-list-item *ngFor="let skill of account.skills | keyvalue: preserveArrayOrder">
+      <mat-list-item *ngFor="let skill of admin.skills | keyvalue: preserveArrayOrder">
         <span class="skill">{{ skill.key }}</span>
         <span class="value">{{ skill.value | skill }}</span>
       </mat-list-item>

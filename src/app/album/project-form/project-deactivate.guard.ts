@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, CanDeactivate } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ProjectFormComponent } from "./project-form.component";
+import { ProjectFormComponent } from './project-form.component';
 
 @Injectable()
 export class ProjectDeactivate implements CanDeactivate<ProjectFormComponent> {
@@ -9,7 +9,7 @@ export class ProjectDeactivate implements CanDeactivate<ProjectFormComponent> {
   canDeactivate(
     component: ProjectFormComponent
   ): Observable<boolean>|Promise<boolean>|boolean {
-    const curNav = this.router.getCurrentNavigation()
-    return curNav.extras && curNav.extras.state && curNav.extras.state.done ? true : component.canDeactivate()
+    const curNav = this.router.getCurrentNavigation();
+    return curNav.extras && curNav.extras.state && curNav.extras.state.done ? true : component.canDeactivate();
   }
 }

@@ -10,5 +10,5 @@ export interface Post {
   modified: Date | null;
   labels: string[];
   reading: { minutes: number, text: string };
-  date_formated: { relative: string, locale: string }
+  date_formated: { relative: string, locale: string };
 }

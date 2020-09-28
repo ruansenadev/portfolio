@@ -1,5 +1,5 @@
 import { Component, OnInit, Output } from '@angular/core';
-import { AuthService } from "./auth/auth.service";
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +9,6 @@ import { AuthService } from "./auth/auth.service";
 export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}
   ngOnInit(): void {
-    this.authService.authBack()
+    this.authService.authBack();
   }
 }

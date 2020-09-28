@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'project-list-loader',
+  selector: 'app-project-list-loader',
   template: `
   <content-loader [width]="200" [height]="230">
   	<svg:rect x="20" y="0" rx="14" ry="14" width="80" height="28" />

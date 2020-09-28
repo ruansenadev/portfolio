@@ -16,7 +16,7 @@
                   <mat-icon>account_circle</mat-icon>
                 </mat-panel-description>
               </mat-expansion-panel-header>
-              <admin-profile-form [account]="account" [read]="panel.r" (done)="panel.r = $event"></admin-profile-form>
+              <app-admin-profile-form [account]="account" [read]="panel.r" (done)="panel.r = $event"></app-admin-profile-form>
               <mat-action-row>
                 <button mat-stroked-button [color]="panel.r ? 'primary' : 'warn'" (click)="panel.r = !panel.r">{{panel.r ? 'Editar' : 'Cancelar'}}</button>
               </mat-action-row>
@@ -34,7 +34,7 @@
                   <mat-icon>assignment_ind</mat-icon>
                 </mat-panel-description>
               </mat-expansion-panel-header>
-              <admin-professional-form [account]="account" [read]="panel.r" (done)="panel.r = $event"></admin-professional-form>
+              <app-admin-professional-form [account]="account" [read]="panel.r" (done)="panel.r = $event"></app-admin-professional-form>
               <mat-action-row>
                 <button mat-stroked-button [color]="panel.r ? 'primary' : 'warn'" (click)="panel.r = !panel.r">{{panel.r ? 'Editar' : 'Cancelar'}}</button>
               </mat-action-row>
@@ -52,7 +52,7 @@
                   <mat-icon>account_box</mat-icon>
                 </mat-panel-description>
               </mat-expansion-panel-header>
-              <admin-account-form [account]="account" [read]="panel.r" (done)="panel.r = $event"></admin-account-form>
+              <app-admin-account-form [account]="account" [read]="panel.r" (done)="panel.r = $event"></app-admin-account-form>
               <mat-action-row>
                 <button mat-stroked-button [color]="panel.r ? 'primary' : 'warn'" (click)="panel.r = !panel.r">{{panel.r ? 'Editar' : 'Cancelar'}}</button>
               </mat-action-row>

@@ -10,17 +10,17 @@ main {
 mat-card {
   margin-bottom: 1rem;
 }
-blog-post-list, blog-archives {
+app-blog-post-list, app-blog-archives {
   width: 100%;
   margin-bottom: 1rem;
 }
 @media (min-width: 47.5rem) {
-  blog-post-list {
+  app-blog-post-list {
     width: unset;
     flex: 1;
     margin-right: 1rem;
   }
-  blog-archives {
+  app-blog-archives {
     width: unset;
   }
 }

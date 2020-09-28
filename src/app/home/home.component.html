@@ -1,6 +1,6 @@
 <main>
   <section id="Profile">
-    <home-hero [admin]="admin"></home-hero>
+    <app-home-hero [admin]="admin"></app-home-hero>
   </section>
   <section id="Album" class="mat-elevation-z2">
     <app-carousel [title]="'Projetos'" [items]="projects | carousel : 'project'"></app-carousel>
@@ -24,6 +24,6 @@
       </h3>
       <p matLine>Para trabalho, projetos ou networking</p>
     </mat-card>
-    <home-contact></home-contact>
+    <app-home-contact></app-home-contact>
   </section>
 </main>

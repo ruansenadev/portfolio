@@ -1,40 +1,38 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from "rxjs";
-import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DispatcherService {
-  defaultTheme = 'light'
+  defaultTheme = 'light';
 
   getTheme(): string {
-    return localStorage.getItem('theme') || this.defaultTheme
+    return localStorage.getItem('theme') || this.defaultTheme;
   }
   loadTheme(theme: string): void {
-    getThemeLinkElement().setAttribute('href', themesBundles[theme])
+    getThemeLinkElement().setAttribute('href', themesBundles[theme]);
   }
   constructor() {
-    this.loadTheme(this.getTheme())
+    this.loadTheme(this.getTheme());
   }
   switchTheme(theme: string): void {
-    localStorage.setItem('theme', theme)
-    this.loadTheme(theme)
+    localStorage.setItem('theme', theme);
+    this.loadTheme(theme);
   }
 }
 
 const themesBundles = {
-  'light': "DeepPurpleAmber.css",
-  'dark': "PurpleGreen.css"
-}
+  light: 'DeepPurpleAmber.css',
+  dark: 'PurpleGreen.css'
+};
 
 function getThemeLinkElement() {
-  let el = document.getElementById('Theme')
+  let el = document.getElementById('Theme');
   if (!el) {
-    el = document.createElement("link")
-    el.setAttribute("rel", "stylesheet")
-    el.id = "Theme"
-    document.head.appendChild(el)
+    el = document.createElement('link');
+    el.setAttribute('rel', 'stylesheet');
+    el.id = 'Theme';
+    document.head.appendChild(el);
   }
-  return el
+  return el;
 }
