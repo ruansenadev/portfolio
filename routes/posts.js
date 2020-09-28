@@ -16,16 +16,31 @@ const postFormOptions = {
 }
 const allowedTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"]
 
+function getDateRangeQueries(year = moment().get('year'), month) {
+  let date, first, last
+  if (month) {
+    date = moment().year(year).month(month - 1)
+    first = date.clone().startOf('month')
+    last = date.clone().endOf('month')
+  } else {
+    date = moment().year(year)
+    first = date.clone().startOf('year')
+    last = date
+  }
+  return { date: { $gte: first, $lte: last } }
+}
 router.get('/', [
   query(['items', 'left']).isAlphanumeric().toInt(),
+  query(['year', 'month']).optional().isAlphanumeric().toInt(),
   function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: 'Paginação incorreta' })
     }
-    Post.countDocuments()
+    const dbQuery = getDateRangeQueries(req.query.year, req.query.month)
+    Post.countDocuments(dbQuery)
       .then((count) => {
-        Post.find({})
+        Post.find(dbQuery)
           .skip(req.query.left * req.query.items)
           .limit(req.query.items)
           .lean({ virtuals: true })
@@ -51,6 +66,7 @@ router.get('/archives', [
           _id: { year: '$_id.year' },
           months: {
             $push: {
+              num: '$_id.month',
               month: {
                 $let: {
                   vars: {
