@@ -7,7 +7,7 @@ import { Post } from '../blog/post';
   name: 'carousel'
 })
 export class CarouselPipe implements PipeTransform {
-  transform(list: Project[] | Post[], model: string): Item[] {
+  transform(list: unknown[], model: string): Item[] {
     if (!list || !list.length) { return []; }
     model = model.toLowerCase();
     if (model === 'project') {
