@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { SheetComponent } from './sheet/sheet.component';
 import { environment } from '../../environments/environment';
-const hostUrl = environment.host;
+const hostUrl = environment.serverHost;
 
 @Injectable({
   providedIn: 'root'

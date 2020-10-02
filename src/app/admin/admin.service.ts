@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 import { Subject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
-const apiAdmin = environment.server + '/admin';
+const apiAdmin = environment.api + '/admin';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,8 @@ export class AdminService {
   getAdmin(): Observable<Admin> {
     return this.http.get<Admin>(apiAdmin)
       .pipe(map(account => {
-        if (account.photo.startsWith('/images')) { account.photo = environment.host + account.photo; }
-        if (account.logo) { account.logo = environment.host + account.logo; }
+        if (account.photo.startsWith('/images')) { account.photo = environment.serverHost + account.photo; }
+        if (account.logo) { account.logo = environment.serverHost + account.logo; }
         return account;
       }));
   }

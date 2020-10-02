@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-const apiAuth = environment.server + '/auth';
+const apiAuth = environment.api + '/auth';
 
 @Injectable({
   providedIn: 'root'

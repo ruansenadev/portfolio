@@ -8,7 +8,7 @@ import { Archives } from './blog-archives/blog-archives.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageComponent } from '../messages/message/message.component';
 import { environment } from '../../environments/environment';
-const apiPosts = environment.server + '/posts';
+const apiPosts = environment.api + '/posts';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class PostsService {
     return this.http.get<{ posts: Post[], max: number }>(apiPosts + query).pipe(map(data => {
       data.posts = data.posts.map(post => {
         if (post.thumbnailPath && post.thumbnailPath.startsWith('/images')) {
-          post.thumbnailPath = environment.host + post.thumbnailPath;
+          post.thumbnailPath = environment.serverHost + post.thumbnailPath;
         }
         return post;
       });
@@ -75,7 +75,7 @@ export class PostsService {
   getPost(slug: string) {
     return this.http.get<Post>(`${apiPosts}/${slug}`).pipe(map(post => {
       if (post.thumbnailPath && post.thumbnailPath.startsWith('/images')) {
-        post.thumbnailPath = environment.host + post.thumbnailPath;
+        post.thumbnailPath = environment.serverHost + post.thumbnailPath;
       }
       return post;
     }));

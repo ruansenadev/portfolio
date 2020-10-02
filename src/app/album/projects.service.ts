@@ -7,7 +7,7 @@ import { Project } from './project';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageComponent } from '../messages/message/message.component';
 import { environment } from '../../environments/environment';
-const apiProjects = environment.server + '/projects';
+const apiProjects = environment.api + '/projects';
 
 export interface Sequences {
   projects: Map<number, string>;
@@ -28,7 +28,7 @@ export class ProjectsService {
     return this.http.get<{ projects: Project[], hasMore: boolean }>(apiProjects + query).pipe(map(data => {
       data.projects = data.projects.map(project => {
         if (project.thumbnailPath && project.thumbnailPath.startsWith('/images')) {
-          project.thumbnailPath = environment.host + project.thumbnailPath;
+          project.thumbnailPath = environment.serverHost + project.thumbnailPath;
         }
         return project;
       });
@@ -62,7 +62,7 @@ export class ProjectsService {
   getProject(seq: number) {
     return this.http.get<Project>(`${apiProjects}/${seq}`).pipe(map(project => {
       if (project.thumbnailPath && project.thumbnailPath.startsWith('/images')) {
-        project.thumbnailPath = environment.host + project.thumbnailPath;
+        project.thumbnailPath = environment.serverHost + project.thumbnailPath;
       }
       return project;
     }));
