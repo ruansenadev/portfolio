@@ -5,15 +5,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageComponent } from '../messages/message/message.component';
 import { environment } from '../../environments/environment';
 import { Subject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
+import { map } from 'rxjs/operators';
 const apiAdmin = environment.api + '/admin';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-  constructor(private http: HttpClient, private messageBar: MatSnackBar, private authService: AuthService) { }
+  constructor(private http: HttpClient, private messageBar: MatSnackBar) { }
   admin$ = new Subject<Admin>();
   getAdmin(): Observable<Admin> {
     return this.http.get<Admin>(apiAdmin)

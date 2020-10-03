@@ -17,8 +17,14 @@ export class AuthService {
   private listener = new Subject<boolean>();
   public redirect = '/';
 
+  setStatus(status: boolean): void {
+    this.status = status;
+  }
   getStatus(): boolean {
     return this.status;
+  }
+  setToken(token: string): void {
+    this.token = token;
   }
   getToken(): string {
     return this.token;
@@ -30,8 +36,8 @@ export class AuthService {
   login(email: string, password: string): void {
     const data = { email, password };
     this.http.post<{ message: string, token: string, expiration: number }>(apiAuth, data).subscribe((res) => {
-      this.token = res.token;
-      this.status = true;
+      this.setToken(res.token);
+      this.setStatus(true);
       this.listener.next(true);
       this.saveLocal(res.token, new Date(res.expiration).toISOString());
       this.setExpTime(res.expiration - Date.now());
@@ -41,7 +47,7 @@ export class AuthService {
     });
   }
   logout(): void {
-    this.status = false;
+    this.setStatus(false);
     this.listener.next(false);
     localStorage.clear();
     clearTimeout(this.expiration);
@@ -53,8 +59,8 @@ export class AuthService {
     if (!token || !date) { return; }
     const interval = new Date(date).getTime() - Date.now();
     if (interval > 0) {
-      this.token = token;
-      this.status = true;
+      this.setToken(token);
+      this.setStatus(true);
       this.listener.next(true);
       this.setExpTime(interval);
     } else {

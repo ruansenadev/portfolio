@@ -1,13 +1,17 @@
-import { TestBed } from '@angular/core/testing';
-
 import { ProjectsService } from './projects.service';
 
 describe('ProjectsService', () => {
   let service: ProjectsService;
+  let mockHttpClient;
+  let mockRouter;
+  let mockMessageService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(ProjectsService);
+  beforeAll(() => {
+    mockHttpClient = jasmine.createSpyObj(['get', 'post', 'put', 'delete']);
+    mockRouter = jasmine.createSpyObj(['navigate']);
+    mockMessageService = jasmine.createSpyObj(['openFromComponent']);
+
+    service = new ProjectsService(mockHttpClient, mockRouter, mockMessageService);
   });
 
   it('should be created', () => {

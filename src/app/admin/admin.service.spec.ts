@@ -1,13 +1,15 @@
-import { TestBed } from '@angular/core/testing';
-
 import { AdminService } from './admin.service';
 
 describe('AdminService', () => {
   let service: AdminService;
+  let mockHttpClient;
+  let mockMessageService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AdminService);
+  beforeAll(() => {
+    mockHttpClient = jasmine.createSpyObj(['get', 'put']);
+    mockMessageService = jasmine.createSpyObj(['openFromComponent']);
+
+    service = new AdminService(mockHttpClient, mockMessageService);
   });
 
   it('should be created', () => {

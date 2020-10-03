@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { SheetComponent } from './sheet/sheet.component';
 import { environment } from '../../environments/environment';
-const hostUrl = environment.serverHost;
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +16,7 @@ export class ShareService {
   };
   mapLinks(uri: string): { [key: string]: string } {
     return Object.entries(this.social).reduce((links, media) => {
-      links[media[0]] = media[1] + encodeURIComponent((hostUrl + uri));
+      links[media[0]] = media[1] + encodeURIComponent((environment.clientHost + uri));
       return links;
     }, {});
   }
