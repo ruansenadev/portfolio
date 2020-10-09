@@ -13,14 +13,14 @@
   border-radius: 50%;
   margin-bottom: 0;
 }
-.skill {
+.skill-name {
   font-weight: 500;
   margin-right: .5rem;
 }
-.skill::after {
+.skill-name::after {
   content: ': '
 } 
-.value::after {
+.skill-value::after {
   content: ';'
 }
 @media(min-width: 37rem) {

@@ -1,10 +1,10 @@
-import { Component, Input, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { ShareService } from '../share/share.service';
 
 export interface Item {
   icon: string;
   title: string;
-  img: string;
+  img?: string;
   desc: string;
   uri: string;
 }

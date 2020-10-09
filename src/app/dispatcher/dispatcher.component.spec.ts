@@ -4,14 +4,47 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { DispatcherComponent } from './dispatcher.component';
+import { DispatcherService } from './dispatcher.service';
+import { AdminService } from '../admin/admin.service';
+import { AuthService } from '../auth/auth.service';
+import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DispatcherComponent', () => {
   let component: DispatcherComponent;
   let fixture: ComponentFixture<DispatcherComponent>;
+  let mockAdminService, mockAuthService, mockService;
+
+  let mockAnchorEv;
+  const admin = {
+    name: 'Nyan',
+    email: 'foo@bar.baz',
+    last_name: 'Cat',
+    birthdate: new Date(2011, 3, 2),
+    address: { city: null, state: null },
+    photo: 'https://placekitten.com/150/150',
+    profession: 'Tester',
+    biodata: 'Nyanyanyanyanyanyanya!',
+    logo: null,
+    nickname: 'nyan',
+    skills: { fly: true, noise: 'high', rainbow: true },
+    social: null,
+    fullName: 'Nyan Cat',
+    location: null,
+    age: 9
+  };
+
+  beforeAll(() => {
+    mockService = jasmine.createSpyObj(['getTheme', 'switchTheme'], { defaultTheme: 'light' });
+    mockAdminService = jasmine.createSpyObj(['fetchAdmin', 'getStream']);
+    mockAuthService = jasmine.createSpyObj(['getStatus', 'getListener', 'logout']);
+    mockAnchorEv = jasmine.createSpyObj(['preventDefault']);
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -24,17 +57,60 @@ describe('DispatcherComponent', () => {
         MatListModule,
         MatSidenavModule,
         MatToolbarModule,
-      ]
+      ],
+      providers: [
+        { provide: DispatcherService, useValue: mockService },
+        { provide: AdminService, useValue: mockAdminService },
+        { provide: AuthService, useValue: mockAuthService }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DispatcherComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    mockService.getTheme.and.returnValue(mockService.defaultTheme);
+    mockAdminService.getStream.and.returnValue(of(admin));
+    mockAuthService.getListener.and.returnValue(of(false));
   });
 
-  it('should compile', () => {
-    expect(component).toBeTruthy();
+  it('should initialize with data', () => {
+    fixture.detectChanges();
+    expect(component.theme).toBe(mockService.defaultTheme);
+    expect(component.isAuth).toBeFalse();
+    expect(component.account).toEqual(admin);
   });
+
+  it('should call to switch theme when switcher is clicked', () => {
+    const switcherDE = fixture.debugElement.query(By.css('#switcher'));
+    mockService.getTheme.and.returnValue('dark');
+
+    switcherDE.triggerEventHandler('click', mockAnchorEv);
+
+    fixture.detectChanges();
+    expect(mockService.switchTheme).toHaveBeenCalled();
+    expect(component.theme).not.toBe(mockService.defaultTheme);
+  });
+
+  describe('Auth', () => {
+    beforeEach(() => {
+      mockAuthService.getListener.and.returnValue(of(true));
+      fixture.detectChanges();
+    });
+
+    it('should display a second nav', () => {
+      const sideNavDEs = fixture.debugElement.queryAll(By.directive(MatSidenav));
+      expect(sideNavDEs.length).toBe(2);
+    });
+
+    it('should destroy second nav when call logout', () => {
+      component.isAuth = false;
+      fixture.detectChanges();
+
+      const sideNavDEs = fixture.debugElement.queryAll(By.directive(MatSidenav));
+      expect(sideNavDEs.length).toBe(1);
+    });
+  });
+
 });

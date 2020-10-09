@@ -10,24 +10,19 @@ describe('ShareService', () => {
     service = new ShareService(mockSheetService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
-  it('should create all links', () => {
-    const social = service.social;
-    
-    const links = service.mapLinks(uri);
-
-    expect(Object.keys(links)).toEqual(Object.keys(social));
-  });
-
   it('should map shareable links', () => {
     const social = service.social;
 
     const links = service.mapLinks(uri);
 
+    expect(Object.keys(links)).toEqual(Object.keys(social));
     expect(Object.values(links)).not.toEqual(Object.values(social));
+  });
+
+  it('should call injected service for opening sheet', () => {
+    service.openSheet(uri);
+
+    expect(mockSheetService.open).toHaveBeenCalled();
   });
 
 });

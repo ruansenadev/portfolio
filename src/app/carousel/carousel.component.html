@@ -4,7 +4,7 @@
   </div>
   <div class="box" #box (pointerdown)="onPress($event)" (pointermove)="onMove($event)" (pointerup)="onRelease()">
     <ng-container *ngIf="!items.length; else card">
-      <app-carousel-loader *ngFor="let item of skeleton" class="item mat-elevation-z1"></app-carousel-loader>
+      <app-carousel-item-loader *ngFor="let item of skeleton" class="item mat-elevation-z1"></app-carousel-item-loader>
     </ng-container>
     <ng-template #card>
       <mat-card *ngFor="let item of items" class="item mat-elevation-z1">

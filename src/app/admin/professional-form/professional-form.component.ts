@@ -60,7 +60,7 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
     const chipIndex = this.chips[index].indexOf(chip);
     if (chipIndex > -1) { this.chips[index].splice(chipIndex, 1); }
   }
-  addUrl(index: number, e: InputEvent): void {
+  addUrl(index: number, e: Event): void {
     const input = e.target as HTMLInputElement;
     this.urls[index] = input.value;
   }

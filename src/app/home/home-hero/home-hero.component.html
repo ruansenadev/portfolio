@@ -1,17 +1,17 @@
 <mat-card *ngIf="admin" class="mat-elevation-z hero">
   <mat-card-header>
     <mat-icon mat-card-avatar>code</mat-icon>
-    <mat-card-title>
+    <mat-card-title class="hero-job">
       {{ admin.profession }}
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <p class="mat-body-2 hero-text">{{ admin.biodata }}</p>
-    <mat-list *ngIf="admin.skills">
+    <mat-list *ngIf="admin.skills" class="hero-skills">
       <span mat-subheader>Skills</span>
-      <mat-list-item *ngFor="let skill of admin.skills | keyvalue: preserveArrayOrder">
-        <span class="skill">{{ skill.key }}</span>
-        <span class="value">{{ skill.value | skill }}</span>
+      <mat-list-item *ngFor="let skill of admin.skills | keyvalue: preserveArrayOrder" class="skill">
+        <span class="skill-name">{{ skill.key }}</span>
+        <span class="skill-value">{{ skill.value | skill }}</span>
       </mat-list-item>
     </mat-list>
   </mat-card-content>

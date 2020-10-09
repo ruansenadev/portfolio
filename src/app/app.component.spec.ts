@@ -1,31 +1,42 @@
-import { TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { AuthService } from './auth/auth.service';
+import { Component } from '@angular/core';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let mockAuthService;
+
+  @Component({
+    selector: 'app-dispatcher',
+    template: '<div></div>'
+  })
+  class MockDispatcherComponent { }
+
+  beforeEach(waitForAsync(() => {
+    mockAuthService = jasmine.createSpyObj(['authBack']);
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        MockDispatcherComponent
       ],
+      providers: [{ provide: AuthService, useValue: mockAuthService }]
     }).compileComponents();
   }));
 
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+  });
+
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'portfolio'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('portfolio');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  it('should try to authenticate back', () => {
     fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('portfolio app is running!');
+
+    expect(mockAuthService.authBack).toHaveBeenCalled();
   });
 });

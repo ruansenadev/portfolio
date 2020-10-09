@@ -1,13 +1,13 @@
 export interface Project {
-  _id: string;
+  _id?: string;
   seq: number;
   name: string;
   status: string;
   description: string;
   overview: string;
-  thumbnailPath: string | null;
+  thumbnailPath?: string;
   technologies: string[];
   url: string;
-  homepage: string | null;
+  homepage?: string;
   keywords: string[];
 }

@@ -1,18 +1,49 @@
 import { AdminService } from './admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { environment } from '../../environments/environment';
+import { TestBed } from '@angular/core/testing';
 
 describe('AdminService', () => {
   let service: AdminService;
-  let mockHttpClient;
+  let httpTestingController: HttpTestingController;
   let mockMessageService;
+  const url = environment.api + '/admin';
+  const admin = {
+    name: 'Nyan',
+    email: 'foo@bar.baz',
+    last_name: 'Cat',
+    birthdate: new Date(2011, 3, 2),
+    address: { city: null, state: null },
+    photo: 'https://placekitten.com/150/150',
+    profession: 'Tester',
+    biodata: 'Nyanyanyanyanyanyanya!',
+    logo: null,
+    nickname: 'nyan',
+    skills: { fly: true, noise: 'high', rainbow: true },
+    social: null,
+    fullName: 'Nyan Cat',
+    location: null,
+    age: 9
+  };
 
-  beforeAll(() => {
-    mockHttpClient = jasmine.createSpyObj(['get', 'put']);
+  beforeEach(() => {
     mockMessageService = jasmine.createSpyObj(['openFromComponent']);
-
-    service = new AdminService(mockHttpClient, mockMessageService);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        AdminService,
+        { provide: MatSnackBar, useValue: mockMessageService }
+      ]
+    })
+    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.get(AdminService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it('should call api', () => {
+    service.fetchAdmin();
+
+    httpTestingController.expectOne(url).flush(admin);
+    httpTestingController.verify();
   });
 });

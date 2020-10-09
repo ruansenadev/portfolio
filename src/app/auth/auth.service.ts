@@ -15,7 +15,7 @@ export class AuthService {
   private token: string;
   private expiration: ReturnType<typeof setTimeout>;
   private listener = new Subject<boolean>();
-  public redirect = '/';
+  private redirect = '/';
 
   setStatus(status: boolean): void {
     this.status = status;
@@ -31,6 +31,9 @@ export class AuthService {
   }
   getListener() {
     return this.listener.asObservable();
+  }
+  setRedirect(uri: string): void {
+    this.redirect = uri;
   }
 
   login(email: string, password: string): void {

@@ -1,6 +1,7 @@
 import { AuthService } from './auth.service';
 import { of } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { tick, fakeAsync } from '@angular/core/testing';
 
 describe('AuthService', () => {
   let service: AuthService, mockHttpClient, mockRouter, token;
@@ -31,10 +32,12 @@ describe('AuthService', () => {
     it('should auth when login is called with right data', () => {
       const expiration = new Date(Date.now() + 10000000).valueOf();
 
+      spyOn(service, 'setExpTime');
       mockHttpClient.post.withArgs(apiAuth, { email, password }).and.returnValue(of({ message: 'sucesso', token, expiration }));
 
       service.login(email, password);
 
+      expect(service.setExpTime).toHaveBeenCalled();
       expect(service.getToken()).toBe(token);
       expect(service.getStatus()).toBeTrue();
     });
@@ -56,6 +59,17 @@ describe('AuthService', () => {
 
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
     });
+
+    it('should logout when token has expired', fakeAsync(() => {
+      const msExp = 10000000;
+      service.setStatus(true);
+      spyOn(service, 'logout');
+
+      service.setExpTime(msExp);
+      tick(msExp);
+
+      expect(service.logout).toHaveBeenCalled();
+    }));
   });
 
 });

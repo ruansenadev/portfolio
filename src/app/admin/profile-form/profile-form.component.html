@@ -27,7 +27,7 @@
           <mat-icon>{{ photoName ? 'send' : 'save'}}</mat-icon>
         </button>
       </div>
-      <input type="file" #photoInput accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false" (change)="onPick($event)">
+      <input type="file" #photoInput accept=".png, .jpg, .jpeg, .svg, .webp" (change)="onPick($event)">
     </div>
     <div class="col">
       <mat-form-field appearance="fill">

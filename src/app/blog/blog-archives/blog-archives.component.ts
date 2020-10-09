@@ -4,9 +4,7 @@ import { PostsService } from '../posts.service';
 
 export interface Archives {
   year: number;
-  months: [
-    { num: number, month: string, count: number }
-  ];
+  months: { num: number, month: string, count: number }[];
 }
 @Component({
   selector: 'app-blog-archives',

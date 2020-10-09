@@ -3,7 +3,7 @@
 
 module.exports = function (config) {
   config.set({
-    basePath: '',
+    basePath: './dist',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
@@ -20,6 +20,10 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
+    files: [
+      { pattern: '/DeepPurpleAmber.css', type: 'css', watched: false, served: true },
+      { pattern: '/PurpleGreen.css', type: 'css', watched: false, served: true }
+    ],
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,

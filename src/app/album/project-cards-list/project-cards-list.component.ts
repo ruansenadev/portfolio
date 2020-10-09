@@ -27,6 +27,7 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
   isFetching = true;
   skeleton = Array(this.items);
   private projectsListen: Subscription;
+  private authListen: Subscription;
   statusIcons: { [key: string]: string } = {
     Protótipagem: 'construction',
     Desenvolvimento: 'build_circle',
@@ -48,6 +49,7 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
       this.hasMore = res.hasMore;
     });
     this.isAuth = this.authService.getStatus();
+    this.authListen = this.authService.getListener().subscribe(status => this.isAuth = status);
   }
   onLoadMore() {
     this.isFetching = true;
@@ -70,5 +72,6 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.projectsListen.unsubscribe();
+    this.authListen.unsubscribe();
   }
 }

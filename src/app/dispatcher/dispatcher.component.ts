@@ -23,7 +23,7 @@ export class DispatcherComponent implements OnInit {
   @ViewChild('topNav') topNav: MatToolbar;
   @ViewChild('drawer') nav: MatSidenav;
   @ViewChild('_drawer') navAdmin: MatSidenav;
-  private theme: string;
+  theme: string;
   account: Admin;
   accountListener: Subscription;
   isAuth: boolean;
@@ -48,7 +48,7 @@ export class DispatcherComponent implements OnInit {
       (this[nav] as MatSidenav).close();
     }
   }
-  onLogout(e: Event): void {
+  onLogout(e): void {
     e.preventDefault();
     if (this.topNav) {
       this.navAdmin.close();

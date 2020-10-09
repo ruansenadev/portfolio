@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-carousel-loader',
+  selector: 'app-carousel-item-loader',
   template: `
   <content-loader [width]="200" [height]="160">
   	<svg:rect x="70" y="20" rx="4" ry="4" width="110" height="8.5" />

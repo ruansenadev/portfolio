@@ -17,44 +17,33 @@ export class PostFormComponent implements OnInit, OnDestroy {
   private listener: Subscription;
   isLoading = true;
   form: FormGroup;
-  private postSlug: string;
   private post: Post;
   thumbnail: string = null;
   preview: string | SafeUrl;
   modified: string;
   labels: string[] = [];
   ngOnInit(): void {
-    this.postSlug = this.route.snapshot.paramMap.get('slug');
+    this.post = this.route.snapshot.data.post;
     this.form = new FormGroup({
-      title: new FormControl(null, { validators: [Validators.required, Validators.maxLength(120)] }),
+      title: new FormControl(this.post ? this.post.title : null, { validators: [Validators.required, Validators.maxLength(120)] }),
       thumbnail: new FormControl(null),
-      markdown: new FormControl('', { validators: [Validators.required] }),
-      description: new FormControl(null, { validators: [Validators.maxLength(200)] }),
-      icon: new FormControl(null, { validators: [Validators.pattern('^[a-z0-9_]+[a-z0-9]$')] }),
-      labelsInput: new FormControl(null, { validators: [Validators.required] })
+      markdown: new FormControl(this.post ? this.post.markdown : '', { validators: [Validators.required] }),
+      description: new FormControl(this.post ? this.post.description : null, { validators: [Validators.maxLength(200)] }),
+      icon: new FormControl(this.post ? this.post.icon : null, { validators: [Validators.pattern('^[a-z0-9_]+[a-z0-9]$')] }),
+      labelsInput: new FormControl(this.post ? ' ' : null, { validators: [Validators.required] })
     });
-    if (this.postSlug) {
-      this.postsService.getPost(this.postSlug).subscribe((post) => {
-        this.post = post;
-        this.form.setValue({
-          title: this.post.title,
-          thumbnail: null,
-          markdown: this.post.markdown,
-          description: this.post.description || null,
-          icon: this.post.icon || null,
-          labelsInput: ' '
-        });
-        this.labels = this.post.labels;
-        if (this.post.thumbnailPath) {
-          this.thumbnail = this.post.thumbnailPath.slice(this.post.thumbnailPath.lastIndexOf('/') + 1).slice(20);
-          this.preview = this.post.thumbnailPath;
-        }
-        if (this.post.modified) { this.modified = new Date(this.post.modified).toLocaleString(); }
-        this.isLoading = false;
-      });
-    } else {
+
+    if (this.post) {
+      this.labels = this.post.labels;
+      if (this.post.thumbnailPath) {
+        this.thumbnail = this.post.thumbnailPath.slice(this.post.thumbnailPath.lastIndexOf('/') + 1).slice(20);
+        this.preview = this.post.thumbnailPath;
+      }
+      if (this.post.modified) { this.modified = new Date(this.post.modified).toLocaleString(); }
       this.isLoading = false;
     }
+
+    this.isLoading = false;
     this.listener = this.postsService.getStream().subscribe(() => {
       this.isLoading = false;
     });
@@ -92,11 +81,11 @@ export class PostFormComponent implements OnInit, OnDestroy {
   onSend() {
     if (this.form.invalid) { return; }
     this.isLoading = true;
-    if (this.postSlug) {
+    if (this.post) {
       this.postsService.editPost(
         this.post._id,
         this.form.value.title,
-        this.postSlug,
+        this.post.slug,
         this.post.date,
         this.form.value.thumbnail || this.post.thumbnailPath,
         this.thumbnail,

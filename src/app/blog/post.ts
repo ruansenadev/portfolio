@@ -1,13 +1,13 @@
 export interface Post {
-  _id: string;
+  _id?: string;
   title: string;
-  slug: string | null;
+  slug: string;
   date: Date;
-  thumbnailPath: string | null;
-  icon: string | null;
+  thumbnailPath?: string;
+  icon: string;
   markdown: string;
-  description: string | null;
-  modified: Date | null;
+  description?: string;
+  modified?: Date;
   labels: string[];
   reading: { minutes: number, text: string };
   date_formated: { relative: string, locale: string };

@@ -12,7 +12,12 @@ const routes: Routes = [
   { path: '', component: FeedComponent },
   { path: 'new', component: PostFormComponent, canActivate: [AuthGuard], canDeactivate: [PostDeactivate] },
   { path: ':slug', component: PostPageComponent, resolve: { post: PostResolver } },
-  { path: 'edit/:slug', component: PostFormComponent, canActivate: [AuthGuard], canDeactivate: [PostDeactivate] }
+  {
+    path: 'edit/:slug', component: PostFormComponent,
+    canActivate: [AuthGuard],
+    resolve: { post: PostResolver },
+    canDeactivate: [PostDeactivate]
+  }
 ];
 
 @NgModule({

@@ -24,7 +24,7 @@
           <mat-icon>{{ logoName ? 'send' : 'save'}}</mat-icon>
         </button>
       </div>
-      <input type="file" #logoInput accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false" (change)="onPick($event)">
+      <input type="file" #logoInput accept=".png, .jpg, .jpeg, .svg, .webp" (change)="onPick($event)">
     </div>
     <div class="col">
       <mat-form-field appearance="fill">

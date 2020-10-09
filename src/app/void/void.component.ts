@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-void',
   templateUrl: './void.component.html',
   styleUrls: ['./void.component.css']
 })
-export class VoidComponent implements OnInit {
+export class VoidComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

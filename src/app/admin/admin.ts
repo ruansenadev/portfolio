@@ -1,18 +1,18 @@
 export interface Admin {
-  _id: string;
+  _id?: string;
   name: string;
   email: string;
   last_name: string;
   birthdate: Date;
-  address: { city: string | null, state: string | null };
+  address: { city?: string, state?: string };
   photo: string;
   profession: string;
   biodata: string;
-  logo: string | null;
-  nickname: string | null;
-  skills: { [key: string]: any } | null;
-  social: { [key: string]: string } | null;
-  fullName: string | null;
+  logo?: string;
+  nickname?: string;
+  skills?: { [key: string]: any };
+  social?: { [key: string]: string };
+  fullName: string;
   location: string | null;
-  age: number | null;
+  age: number;
 }

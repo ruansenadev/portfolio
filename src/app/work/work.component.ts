@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-work',
   templateUrl: './work.component.html',
   styleUrls: ['./work.component.css']
 })
-export class WorkComponent implements OnInit {
-
+export class WorkComponent {
+  //TODO Add animations
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

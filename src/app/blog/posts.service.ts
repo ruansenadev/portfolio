@@ -18,7 +18,7 @@ export class PostsService {
   private posts: Post[] = [];
   private stream = new Subject<{ posts: Post[], max: number }>();
   getPosts(left: number = 0, items: number = 5, year?: number, month?: number): Observable<{ posts: Post[], max: number }> {
-    const query = `?${year ? 'year=' + year + '&' : ''}${month ? 'month=' + month + '&' : ''}left=${left}&items=${items}`;
+    const query = `?left=${left}&items=${items}${year ? '&year=' + year : ''}${month ? '&month=' + month : ''}`;
 
     return this.http.get<{ posts: Post[], max: number }>(apiPosts + query).pipe(map(data => {
       data.posts = data.posts.map(post => {
