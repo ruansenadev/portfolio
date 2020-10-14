@@ -58,7 +58,6 @@
   text-overflow: ellipsis;
 }
 .item-content {
-  padding: 0 .5rem;
   margin: auto !important;
   -webkit-user-drag: none;
 }
