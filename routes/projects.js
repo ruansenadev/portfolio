@@ -41,7 +41,7 @@ router.get('/', [
   }
 ])
 
-router.get('/seqs', Auth, function (req, res) {
+router.get('/seqs', function (req, res) {
   Project.find({}, { _id: 0, seq: 1, name: 1 })
     .lean()
     .exec((err, result) => {
