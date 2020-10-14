@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountFormComponent } from './account-form.component';
 import { AdminService } from '../admin.service';
@@ -34,9 +34,9 @@ describe('AccountFormComponent', () => {
     age: 9
   };
 
-  beforeAll(() => { mockAdminService = jasmine.createSpyObj(['getStream', 'editAccount']) });
+  beforeAll(() => { mockAdminService = jasmine.createSpyObj(['getStream', 'editAccount']); });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
@@ -50,7 +50,7 @@ describe('AccountFormComponent', () => {
       providers: [{ provide: AdminService, useValue: mockAdminService }],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -78,5 +78,5 @@ describe('AccountFormComponent', () => {
 
     expect(passwordChangeFormDE).toBeTruthy();
   });
-  
+
 });

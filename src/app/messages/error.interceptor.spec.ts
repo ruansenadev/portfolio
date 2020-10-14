@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ErrorInterceptor } from './error.interceptor';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,8 +9,9 @@ import { environment } from 'src/environments/environment';
 import { M } from '@angular/cdk/keycodes';
 
 describe('ErrorInterceptor', () => {
-   // TestBed.inject(ErrorInterceptor);
-  let mockMessageService, mockReqService;
+  // TestBed.inject(ErrorInterceptor);
+  let mockMessageService;
+  let mockReqService;
   let httpTestingController: HttpTestingController;
   const url = environment.api;
 
@@ -22,7 +23,7 @@ describe('ErrorInterceptor', () => {
     }
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     mockMessageService = jasmine.createSpyObj(['openFromComponent']);
     TestBed.configureTestingModule({
       imports: [
@@ -34,8 +35,8 @@ describe('ErrorInterceptor', () => {
         { provide: MatSnackBar, useValue: mockMessageService }
       ]
     }).compileComponents();
-    mockReqService = TestBed.get(MockReqService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    mockReqService = TestBed.inject(MockReqService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   }));
 
   it('should create message for server errors', () => {

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectDialogComponent } from './project-dialog.component';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -18,9 +18,9 @@ describe('ProjectDialogComponent', () => {
     status: 'Development',
     technologies: ['TypeScript', 'Jasmine', 'Karma'],
     url: 'https://localhost:4200/'
-  }
+  };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatDialogModule,

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PostDialogComponent } from './post-dialog.component';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -12,18 +12,18 @@ describe('PostDialogComponent', () => {
 
   const post: Post = {
     date: d,
-    date_formated: { relative: "há 1 min", locale: d.toLocaleDateString() },
-    description: "Testing",
-    icon: "test",
-    _id: "1b",
-    labels: ["Test", "Unit"],
-    markdown: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    reading: { text: "3 min read", minutes: 3 },
-    slug: "testing",
-    title: "Testing time"
-  }
+    date_formated: { relative: 'há 1 min', locale: d.toLocaleDateString() },
+    description: 'Testing',
+    icon: 'test',
+    _id: '1b',
+    labels: ['Test', 'Unit'],
+    markdown: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    reading: { text: '3 min read', minutes: 3 },
+    slug: 'testing',
+    title: 'Testing time'
+  };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatDialogModule,

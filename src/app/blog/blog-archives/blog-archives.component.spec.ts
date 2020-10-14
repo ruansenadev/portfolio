@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BlogArchivesComponent, Archives } from './blog-archives.component';
 import { PostsService } from '../posts.service';
@@ -9,7 +9,8 @@ import { of } from 'rxjs';
 describe('BlogArchivesComponent', () => {
   let component: BlogArchivesComponent;
   let fixture: ComponentFixture<BlogArchivesComponent>;
-  let mockPostsService, mockRouter;
+  let mockPostsService;
+  let mockRouter;
 
   const archivesList: Archives[] = [
     {
@@ -26,7 +27,7 @@ describe('BlogArchivesComponent', () => {
     mockRouter = jasmine.createSpyObj(['navigate']);
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [BlogArchivesComponent],
       providers: [
@@ -35,26 +36,26 @@ describe('BlogArchivesComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BlogArchivesComponent);
     component = fixture.componentInstance;
 
-    mockPostsService.getArchives.and.returnValue( of( archivesList ) );
+    mockPostsService.getArchives.and.returnValue(of(archivesList));
     fixture.detectChanges();
   });
 
-  it( 'should receive data', () => {
-    expect( component.archivesList ).toEqual( archivesList );
-  } );
+  it('should receive data', () => {
+    expect(component.archivesList).toEqual(archivesList);
+  });
 
-  it( 'should nav when select different date', () => {
+  it('should nav when select different date', () => {
     const year = 2021;
 
     component.onExpandYear(year);
 
-    expect(mockRouter.navigate).toHaveBeenCalledWith([], { queryParams: { year } } );
-  } );
+    expect(mockRouter.navigate).toHaveBeenCalledWith([], { queryParams: { year } });
+  });
 });

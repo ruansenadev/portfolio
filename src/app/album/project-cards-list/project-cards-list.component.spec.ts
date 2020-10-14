@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectCardsListComponent } from './project-cards-list.component';
 import { ProjectsService } from '../projects.service';
@@ -14,7 +14,10 @@ import { By } from '@angular/platform-browser';
 describe('ProjectCardsListComponent', () => {
   let component: ProjectCardsListComponent;
   let fixture: ComponentFixture<ProjectCardsListComponent>;
-  let mockProjectsService, mockDialogService, mockMessageService, mockAuthService;
+  let mockProjectsService;
+  let mockDialogService;
+  let mockMessageService;
+  let mockAuthService;
 
   const projects: Project[] = [
     {
@@ -48,7 +51,7 @@ describe('ProjectCardsListComponent', () => {
     mockMessageService = jasmine.createSpyObj(['openFromComponent']);
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         ProjectListLoaderComponent,

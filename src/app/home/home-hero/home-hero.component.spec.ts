@@ -23,7 +23,7 @@ describe('HomeHeroComponent', () => {
     fullName: 'Nyan Cat',
     location: null,
     age: 9
-  }
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -52,9 +52,9 @@ describe('HomeHeroComponent', () => {
 
     fixture.detectChanges();
 
-    let skillDEs = fixture.debugElement.queryAll(By.css('.skill'));
+    const skillDEs = fixture.debugElement.queryAll(By.css('.skill'));
     for (let i = 0; i < skillDEs.length; i++) {
       expect(skillDEs[i].nativeElement.querySelector('.skill-name').textContent).toBe(skillsNames[i]);
     }
-  })
+  });
 });

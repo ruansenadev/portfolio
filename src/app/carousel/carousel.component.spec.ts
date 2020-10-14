@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CarouselComponent, Item } from './carousel.component';
 import { ShareService } from '../share/share.service';
@@ -32,7 +32,7 @@ describe('CarouselComponent', () => {
     }
   ];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     mockShareService = jasmine.createSpyObj(['openSheet']);
     TestBed.configureTestingModule({
       declarations: [
@@ -42,7 +42,7 @@ describe('CarouselComponent', () => {
       providers: [{ provide: ShareService, useValue: mockShareService }],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

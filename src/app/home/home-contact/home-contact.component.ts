@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./home-contact.component.css']
 })
 export class HomeContactComponent {
-  //TODO add data from server
+  // TODO add data from server
   constructor() { }
 }

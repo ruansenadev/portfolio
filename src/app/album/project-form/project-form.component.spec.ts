@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ProjectFormComponent } from './project-form.component';
 import { ProjectsService, Sequences } from '../projects.service';
@@ -11,7 +11,9 @@ import { of } from 'rxjs';
 describe('ProjectFormComponent', () => {
   let component: ProjectFormComponent;
   let fixture: ComponentFixture<ProjectFormComponent>;
-  let mockProjectsService, mockRoute, mockSanitizer;
+  let mockProjectsService;
+  let mockRoute;
+  let mockSanitizer;
 
   const project: Project = {
     _id: '1',
@@ -23,20 +25,20 @@ describe('ProjectFormComponent', () => {
     status: 'Development',
     technologies: ['TypeScript', 'Jasmine', 'Karma'],
     url: 'https://localhost:4200/'
-  }
+  };
   const sequences: Sequences = {
     projects: new Map([[project.seq, project.name]]),
     available: new Map([[project.seq, false], [project.seq + 1, true]]),
-    next: project.seq+1
-  }
+    next: project.seq + 1
+  };
 
   beforeAll(() => {
     mockProjectsService = jasmine.createSpyObj(['getStream', 'addProject', 'editProject']);
     mockSanitizer = jasmine.createSpyObj(['bypassSecurityTrustUrl']);
-    mockRoute = jasmine.createSpyObj([], { snapshot: { data: { project, sequences }} })
+    mockRoute = jasmine.createSpyObj([], { snapshot: { data: { project, sequences } } });
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ProjectFormComponent],
       providers: [
@@ -46,7 +48,7 @@ describe('ProjectFormComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

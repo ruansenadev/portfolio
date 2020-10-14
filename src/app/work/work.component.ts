@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./work.component.css']
 })
 export class WorkComponent {
-  //TODO Add animations
+  // TODO Add animations
   constructor() { }
 
 }

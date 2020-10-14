@@ -11,7 +11,7 @@ describe('ContactComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HomeContactComponent],
       schemas: [NO_ERRORS_SCHEMA]
-    })
+    });
     fixture = TestBed.createComponent(HomeContactComponent);
     component = fixture.componentInstance;
   });

@@ -14,7 +14,7 @@ describe('CarouselPipe', () => {
     url: 'https://jasmine.github.io/tutorials/your_first_suite',
     homepage: null,
     keywords: ['Test runner', 'Unit test']
-  }
+  };
 
   beforeAll(() => { pipe = new CarouselPipe(); });
 
@@ -24,7 +24,7 @@ describe('CarouselPipe', () => {
 
   it('should not try to map an empty list', () => {
     expect(pipe.transform([], 'post')).toEqual([]);
-  })
+  });
 
   it('should create an empty list for unknown model', () => {
     expect(pipe.transform([project], 'batata')).toEqual([]);

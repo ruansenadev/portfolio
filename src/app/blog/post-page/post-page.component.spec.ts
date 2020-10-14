@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PostPageComponent } from './post-page.component';
 import { ActivatedRoute } from '@angular/router';
@@ -11,28 +11,28 @@ describe('PostPageComponent', () => {
   const d = new Date();
   const post = {
     date: d,
-    date_formated: { relative: "há 1 min", locale: d.toLocaleDateString() },
-    description: "Testing",
-    icon: "test",
-    _id: "1b",
-    labels: ["Test", "Unit"],
-    markdown: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    reading: { text: "3 min read", minutes: 3 },
-    slug: "testing",
-    title: "Testing time"
-  }
+    date_formated: { relative: 'há 1 min', locale: d.toLocaleDateString() },
+    description: 'Testing',
+    icon: 'test',
+    _id: '1b',
+    labels: ['Test', 'Unit'],
+    markdown: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    reading: { text: '3 min read', minutes: 3 },
+    slug: 'testing',
+    title: 'Testing time'
+  };
 
   beforeAll(() => {
     mockRoute = jasmine.createSpyObj([], { snapshot: { data: { post } } });
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [PostPageComponent],
       providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

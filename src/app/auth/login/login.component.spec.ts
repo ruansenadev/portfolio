@@ -1,6 +1,6 @@
 import { LoginComponent } from './login.component';
 import { of } from 'rxjs';
-import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { AuthService } from '../auth.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -10,7 +10,7 @@ describe('LoginComponent', () => {
   let mockAuthService;
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     mockAuthService = jasmine.createSpyObj(['getListener', 'login']);
     TestBed.configureTestingModule({
       declarations: [LoginComponent],

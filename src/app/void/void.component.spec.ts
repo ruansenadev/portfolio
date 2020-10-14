@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VoidComponent } from './void.component';
 
@@ -6,11 +6,11 @@ describe('VoidComponent', () => {
   let component: VoidComponent;
   let fixture: ComponentFixture<VoidComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ VoidComponent ]
+      declarations: [VoidComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
   beforeEach(() => {
     fixture = TestBed.createComponent(VoidComponent);

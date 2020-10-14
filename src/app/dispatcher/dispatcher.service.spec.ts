@@ -13,7 +13,12 @@ describe('DispatcherService', () => {
     template: '<div></div>'
   })
   class MockDispatcher {
-    constructor(service: DispatcherService) {}
+    constructor(private dispatcherService: DispatcherService) { }
+    theme = 'light';
+    onSwitchTheme(): void {
+      this.dispatcherService.switchTheme('dark');
+      this.theme = this.dispatcherService.getTheme();
+    }
   }
 
   beforeEach(() => {
@@ -22,15 +27,14 @@ describe('DispatcherService', () => {
       providers: [DispatcherService],
       schemas: []
     });
-    service = TestBed.get(DispatcherService);
+    service = TestBed.inject(DispatcherService);
     fixture = TestBed.createComponent(MockDispatcher);
   });
 
   describe('Theme', () => {
     it('should create link element', () => {
-      service.loadTheme(service.defaultTheme);
+      fixture.componentInstance.onSwitchTheme();
       const linkEl = fixture.debugElement.query(By.css('#Theme'));
-      console.log(linkEl);
       expect(linkEl).toBeTruthy();
     });
   });

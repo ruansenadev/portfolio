@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SheetComponent } from './sheet.component';
 import { MatListModule } from '@angular/material/list';
@@ -12,9 +12,9 @@ describe('SheetComponent', () => {
     WhatsApp: 'https://wa.me/?text=test',
     Facebook: 'https://www.facebook.com/sharer/sharer.php?u=https://example.com',
     Email: 'mailto:foo@bar.baz?&subject=&body=test'
-  }
+  };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     mockSheet = jasmine.createSpyObj(['dismiss']);
     TestBed.configureTestingModule({
       imports: [MatListModule],
@@ -24,7 +24,7 @@ describe('SheetComponent', () => {
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: data }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

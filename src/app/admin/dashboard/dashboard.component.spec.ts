@@ -1,6 +1,6 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -15,7 +15,8 @@ import { Admin } from '../admin';
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
-  let mockAdminService, mockRoute;
+  let mockAdminService;
+  let mockRoute;
   const admin = {
     name: 'Nyan',
     email: 'foo@bar.baz',
@@ -62,9 +63,9 @@ describe('DashboardComponent', () => {
     @Output() done = new EventEmitter<boolean>();
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     mockAdminService = jasmine.createSpyObj(['getStream']);
-    mockRoute = jasmine.createSpyObj([], { snapshot: { data: { account: admin } } })
+    mockRoute = jasmine.createSpyObj([], { snapshot: { data: { account: admin } } });
     TestBed.configureTestingModule({
       declarations: [
         DashboardComponent,
@@ -89,7 +90,7 @@ describe('DashboardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
-    mockAdminService.getStream.and.returnValue(of(admin))
+    mockAdminService.getStream.and.returnValue(of(admin));
     fixture.detectChanges();
   });
 

@@ -6,7 +6,9 @@ import { Router, RouterStateSnapshot } from '@angular/router';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
-  let mockAuthService, mockRouter, mockRouterState;
+  let mockAuthService;
+  let mockRouter;
+  let mockRouterState;
 
   beforeEach(() => {
     mockRouterState = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['url', 'toString', 'root'], { url: '/admin' });

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ProfileFormComponent } from './profile-form.component';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -11,7 +11,7 @@ describe('ProfileFormComponent', () => {
   let fixture: ComponentFixture<ProfileFormComponent>;
   let mockAdminService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     mockAdminService = jasmine.createSpyObj(['getStream', 'getGravatar', 'savePhoto', 'editProfile']);
     TestBed.configureTestingModule({
       declarations: [ProfileFormComponent],

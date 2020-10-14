@@ -35,9 +35,9 @@ describe('AdminService', () => {
         AdminService,
         { provide: MatSnackBar, useValue: mockMessageService }
       ]
-    })
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(AdminService);
+    });
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(AdminService);
   });
 
   it('should call api', () => {

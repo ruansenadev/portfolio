@@ -28,12 +28,13 @@ describe('ProjectsService', () => {
         { provide: MatSnackBar, useValue: mockMessagesService }
       ]
     });
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(ProjectsService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(ProjectsService);
   });
 
   it('should call api with queries', () => {
-    const behind = 0, items = 3;
+    const behind = 0;
+    const items = 3;
     const query = `?behind=${behind}&items=${items}`;
     service.getProjects(behind, items).subscribe();
 

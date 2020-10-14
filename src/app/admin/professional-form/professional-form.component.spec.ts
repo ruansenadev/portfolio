@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ProfessionalFormComponent } from './professional-form.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
@@ -19,7 +19,7 @@ describe('ProfessionalFormComponent', () => {
   let fixture: ComponentFixture<ProfessionalFormComponent>;
   let mockAdminService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     mockAdminService = jasmine.createSpyObj(['getStream', 'saveLogo', 'editProfessional']);
     TestBed.configureTestingModule({
       imports: [

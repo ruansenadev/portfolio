@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ProjectPageComponent } from './project-page.component';
 import { Project } from '../project';
@@ -20,9 +20,9 @@ describe('ProjectPageComponent', () => {
     status: 'Development',
     technologies: ['TypeScript', 'Jasmine', 'Karma'],
     url: 'https://localhost:4200/'
-  }
+  };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     mockRoute = jasmine.createSpyObj([], { snapshot: { data: { project } } });
     TestBed.configureTestingModule({
       declarations: [ProjectPageComponent],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MessageComponent } from './message.component';
 import { Router } from '@angular/router';
@@ -10,15 +10,16 @@ import { of } from 'rxjs';
 describe('MessageComponent', () => {
   let component: MessageComponent;
   let fixture: ComponentFixture<MessageComponent>;
-  let mockRouter, mockBarRef;
+  let mockRouter;
+  let mockBarRef;
   const data = { message: 'Message test', action: 'Close' };
-  
+
   beforeAll(() => {
     mockRouter = jasmine.createSpyObj(['navigateByUrl']);
     mockBarRef = jasmine.createSpyObj(['dismissWithAction', 'onAction']);
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatButtonModule,

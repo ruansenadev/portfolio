@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PostListComponent } from './post-list.component';
 import { ActivatedRoute } from '@angular/router';
@@ -12,7 +12,11 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 describe('PostListComponent', () => {
   let component: PostListComponent;
   let fixture: ComponentFixture<PostListComponent>;
-  let mockRoute, mockPostsService, mockAuthService, mockMessageBar, mockDialog;
+  let mockRoute;
+  let mockPostsService;
+  let mockAuthService;
+  let mockMessageBar;
+  let mockDialog;
 
   beforeAll(() => {
     mockDialog = jasmine.createSpyObj(['open']);
@@ -22,7 +26,7 @@ describe('PostListComponent', () => {
     mockAuthService = jasmine.createSpyObj(['getStatus', 'getListener']);
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [PostListComponent],
       providers: [
@@ -34,7 +38,7 @@ describe('PostListComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -43,7 +47,8 @@ describe('PostListComponent', () => {
   });
 
   it('should call for posts with params on init', () => {
-    const year = 2020, month = 9;
+    const year = 2020;
+    const month = 9;
     (Object.getOwnPropertyDescriptor(mockRoute, 'queryParams').get as any).and.returnValue(of({ year, month }));
 
     fixture.detectChanges();

@@ -16,7 +16,7 @@ export class MessageComponent implements OnInit {
     private router: Router) { }
   ngOnInit(): void {
     this.message.onAction().subscribe(() => {
-      if (this.data.redirect) this.router.navigateByUrl(this.data.redirect);
+      if (this.data.redirect) { this.router.navigateByUrl(this.data.redirect); }
     });
   }
 }

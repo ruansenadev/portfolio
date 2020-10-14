@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeedComponent } from './feed.component';
 import { Component } from '@angular/core';
@@ -16,9 +16,9 @@ describe('FeedComponent', () => {
     selector: 'app-blog-archives',
     template: '<div></div>'
   })
-  class MockArchives {}
+  class MockArchives { }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         MockPostList,
@@ -26,7 +26,7 @@ describe('FeedComponent', () => {
         FeedComponent
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

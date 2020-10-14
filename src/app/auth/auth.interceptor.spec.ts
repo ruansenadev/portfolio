@@ -8,7 +8,9 @@ import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 describe('AuthInterceptor', () => {
-  let mockAuthService, httpTestingController, mockReqService;
+  let mockAuthService;
+  let httpTestingController;
+  let mockReqService;
   const url = environment.api;
 
   @Injectable()
@@ -18,7 +20,7 @@ describe('AuthInterceptor', () => {
     req(): void {
       this.http.get(url).subscribe(() => {
         return;
-      })
+      });
     }
   }
 
@@ -32,8 +34,8 @@ describe('AuthInterceptor', () => {
         { provide: AuthService, useValue: mockAuthService }
       ]
     });
-    httpTestingController = TestBed.get(HttpTestingController);
-    mockReqService = TestBed.get(MockReqService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    mockReqService = TestBed.inject(MockReqService);
   });
 
   it('should be created', () => {
