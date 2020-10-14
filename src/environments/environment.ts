@@ -2,14 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-//serverHost for mapping images from server cors
-//api address for consuming api
-//clientHost for services share
-
+// serverHost for mapping images from server cors, ex dev: http://localhost:3000
+// api address for consuming api, ex dev: http://localhost:3000/api
+// clientHost for services share, ex dev: ${window.location.protocol}//${window.location.host}
 export const environment = {
   production: false,
-  serverHost: `http://localhost:3000`,
-  api: 'http://localhost:3000/api',
+  serverHost: `https://ruansenadev.azurewebsites.net`,
+  api: 'https://ruansenadev.azurewebsites.net/api',
   clientHost: `${window.location.protocol}//${window.location.host}`
 };
 

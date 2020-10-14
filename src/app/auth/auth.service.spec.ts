@@ -1,10 +1,13 @@
-import { AuthService } from './auth.service';
+import { AuthService } from './auth.service.prod';
 import { of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { tick, fakeAsync } from '@angular/core/testing';
 
 describe('AuthService', () => {
-  let service: AuthService, mockHttpClient, mockRouter, token;
+  let service: AuthService;
+  let mockHttpClient;
+  let mockRouter;
+  let token;
 
   beforeAll(() => {
     mockHttpClient = jasmine.createSpyObj(['post']);
@@ -21,7 +24,9 @@ describe('AuthService', () => {
   });
 
   describe('LogIn', () => {
-    let apiAuth, email, password;
+    let apiAuth;
+    let email;
+    let password;
 
     beforeAll(() => {
       apiAuth = environment.api + '/auth';

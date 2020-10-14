@@ -11,7 +11,7 @@ const apiAuth = environment.api + '/auth';
 })
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
-  private status = true;
+  private status: boolean;
   private token: string;
   private expiration: ReturnType<typeof setTimeout>;
   private listener = new Subject<boolean>();
@@ -37,12 +37,17 @@ export class AuthService {
   }
 
   login(email: string, password: string): void {
-    const expiration = new Date(Date.now() + 100000000);
-    this.setStatus(true);
-    this.listener.next(true);
-    this.saveLocal('', expiration.toISOString());
-    this.setExpTime(+expiration - Date.now());
-    this.router.navigate([this.redirect]);
+    const data = { email, password };
+    this.http.post<{ message: string, token: string, expiration: number }>(apiAuth, data).subscribe((res) => {
+      this.setToken(res.token);
+      this.setStatus(true);
+      this.listener.next(true);
+      this.saveLocal(res.token, new Date(res.expiration).toISOString());
+      this.setExpTime(res.expiration - Date.now());
+      this.router.navigate([this.redirect]);
+    }, () => {
+      this.listener.next(false);
+    });
   }
   logout(): void {
     this.setStatus(false);

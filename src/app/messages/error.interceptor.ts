@@ -17,6 +17,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler) {
     return next.handle(request).pipe(
       catchError((res: HttpErrorResponse) => {
+        if (!res.status) { res.error.message = 'Recurso bloqueado'; }
         this.messageBar.openFromComponent(MessageComponent, {
           data: { message: res.error.message || res.statusText },
           horizontalPosition: 'left'
