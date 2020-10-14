@@ -1,11 +1,11 @@
 # Portfolio
 
-  Web app pessoal e profissional, um perfil online. Com blog, e álbum de projetos para exíbi-los e linka-los externamente.
+  Restful API do app Portfolio.
 
 ## Overview
 
-Servidor em Express para app do Portfolio.
-Database conectada a [nuvem](https://www.mongodb.com/cloud), API Restful.
+Servidor em Express.
+Database MongoDB, modelada com Mongoose.
 ***
 ### Installation
 
@@ -13,14 +13,47 @@ Database conectada a [nuvem](https://www.mongodb.com/cloud), API Restful.
 
 ### Usage
 
-Primeiramente configure um arquivo `.env` no root, com link para sua db **MONGO_URL**, [gere](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) uma jwt secret 256-bit **TOKEN_SECRET**, e sua senha para gerar conta por script **ACCOUNT_PASS**.
- Seguidamente modifique o script `createAccount.js` com seus dados (poderá modificar depois no app), e execute-o com `node createAccount.js`, se a database tiver conectada corretamente deverá ver a saída da conta no comando.
+É necessário um cluster no [mongoDB Atlas](https://www.mongodb.com/cloud)
+[Veja este guia da MDN](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#Setting_up_the_MongoDB_database) para criar um de graça, caso não tenha, e copiar sua **connection string**.
 
-Após configurado, Inicie o server `npm run devstart` (localhost:3000).
+[Gere também](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) uma jwt secret 256-bit.
+
+1. Configure o arquivo `.env`:
+- Crie o arquivo `.env` no root
+- Forneça a url de conexão do mongodb:
+```
+MONGO_URL=sua_connection_string
+```
+- Forneça a secret key para autenticação:
+```
+TOKEN_SECRET=secret_jwt
+```
+
+2. Crie a conta administrador do portfolio:
+- No arquivo `.env` adicione uma senha para criar a conta:
+```
+ACCOUNT_PASS=senha_temporaria
+```
+- Modifique o script `createAccount.js` com seus dados
+- Seguidamente execute-o `node createAccount.js`
+- Deverá ver a saída com os dados da conta
+
+3. Inicie o server:
+```
+npm run devstart
+```
+
+4. Configure-o no app
+- Modifique o arquivo do app `src/environments/environment.ts` para linkar a API no localhost
+
+Workspace configurado!
+
 ***
-### Contribuindo
+### Contributing
 
-  PR são bem-vindas, crie um branch e commite e envie para testar e dar merge se for o caso. Me contate se desejar ser um contribuidor ativo.
+  Você quer ajudar á construir um Portfolio open source?
+Contribua ao projeto criando um Pull Request ou enviando uma Issue com uma sugestão/problema.
+Leia o [Guia de Contribuição](../CONTRIBUTING.md) para mais detalhes.
 
-#### Licença
-  [AGPLv3](https://choosealicense.com/licenses/agpl-3.0/) Livre para a cópia, contanto que mantenha créditos e a mesma licença.
+#### License
+  [GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/) Livre para a cópia, contanto que mantenha a mesma licença.
