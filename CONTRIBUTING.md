@@ -30,20 +30,12 @@ git checkout -b minha-mudanca-branch
 ```
 * Adicione as mudanças `git add -A`
 * Commite com uma boa descrição `git commit -m "detailed changes message"`
-* No app commite o estado do submodule
+* Push o commit do app-server para o GitHub
 ```
 // ~/Portfolio/app-server
-cd ..
-// ~/Portfolio
-git add app-server
-git commit -m "change message"
+git push origin app-server
 ```
-* Push o commite para o GitHub
-```
-// ~/Portfolio
-git push origin --recurse-submodules=on-demand
-```
-* No GitHub envie o PR para `portfolio:master`
+* No GitHub envie o PR do seu brach `app-server` para base `Portfolio:app-server`
 
 
 **Ao enviar um PR:**
