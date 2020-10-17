@@ -1,6 +1,5 @@
 import { AuthService } from './auth.service.prod';
 import { of } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { tick, fakeAsync } from '@angular/core/testing';
 
 describe('AuthService', () => {
@@ -24,12 +23,12 @@ describe('AuthService', () => {
   });
 
   describe('LogIn', () => {
-    let apiAuth;
+    let route;
     let email;
     let password;
 
     beforeAll(() => {
-      apiAuth = environment.api + '/auth';
+      route = '/auth';
       email = 'foo@bar.baz';
       password = '</>';
     });
@@ -38,7 +37,7 @@ describe('AuthService', () => {
       const expiration = new Date(Date.now() + 10000000).valueOf();
 
       spyOn(service, 'setExpTime');
-      mockHttpClient.post.withArgs(apiAuth, { email, password }).and.returnValue(of({ message: 'sucesso', token, expiration }));
+      mockHttpClient.post.withArgs(route, { email, password }).and.returnValue(of({ message: 'sucesso', token, expiration }));
 
       service.login(email, password);
 

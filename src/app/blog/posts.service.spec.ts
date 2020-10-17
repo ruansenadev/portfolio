@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from '../../environments/environment';
 import { Post } from './post';
 
 describe('PostsService', () => {
@@ -13,7 +12,7 @@ describe('PostsService', () => {
   let mockMessagesService;
 
   const d = new Date();
-  const url = environment.api + '/posts';
+  const route = '/posts';
   const posts: Post[] = [
     {
       date: d,
@@ -70,7 +69,7 @@ describe('PostsService', () => {
 
     service.getPosts(left, items, year, month).subscribe();
 
-    const req = httpTestingController.expectOne(url + query);
+    const req = httpTestingController.expectOne(route + query);
     req.flush({ posts, max: 4 });
     httpTestingController.verify();
   });

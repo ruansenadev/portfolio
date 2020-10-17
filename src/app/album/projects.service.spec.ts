@@ -3,14 +3,13 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from '../../environments/environment';
 
 describe('ProjectsService', () => {
   let service: ProjectsService;
   let httpTestingController: HttpTestingController;
   let mockRouter;
   let mockMessagesService;
-  const url = environment.api + '/projects';
+  const route = '/projects';
 
   beforeAll(() => {
     mockRouter = jasmine.createSpyObj(['navigate']);
@@ -38,7 +37,7 @@ describe('ProjectsService', () => {
     const query = `?behind=${behind}&items=${items}`;
     service.getProjects(behind, items).subscribe();
 
-    httpTestingController.expectOne(url + query);
+    httpTestingController.expectOne(route + query);
     httpTestingController.verify();
   });
 });

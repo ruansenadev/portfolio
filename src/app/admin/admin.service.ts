@@ -6,7 +6,7 @@ import { MessageComponent } from '../messages/message/message.component';
 import { environment } from '../../environments/environment';
 import { Subject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-const apiAdmin = environment.api + '/admin';
+const ROUTE = '/admin';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class AdminService {
   constructor(private http: HttpClient, private messageBar: MatSnackBar) { }
   admin$ = new Subject<Admin>();
   getAdmin(): Observable<Admin> {
-    return this.http.get<Admin>(apiAdmin)
+    return this.http.get<Admin>(ROUTE)
       .pipe(map(account => {
         if (account.photo.startsWith('/images')) { account.photo = environment.serverHost + account.photo; }
         if (account.logo) { account.logo = environment.serverHost + account.logo; }
@@ -31,12 +31,12 @@ export class AdminService {
     return this.admin$.asObservable();
   }
   getGravatar() {
-    return this.http.get<string>(apiAdmin + '?gravatar=true');
+    return this.http.get<string>(ROUTE + '?gravatar=true');
   }
   savePhoto(id: string, photo: File | string, photoName: string | null): void {
     const data = new FormData();
     photoName ? data.append('photo', photo, photoName) : data.append('photo', photo);
-    this.http.put<{ message: string }>(`${apiAdmin}/${id}`, data).subscribe((res) => {
+    this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } });
       this.fetchAdmin();
     });
@@ -48,7 +48,7 @@ export class AdminService {
     data.append('birthdate', new Date(birthdate).toISOString());
     if (city) { data.append('city', city); }
     if (city) { data.append('state', state); }
-    this.http.put<{ message: string }>(`${apiAdmin}/${id}`, data).subscribe((res) => {
+    this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } });
       this.fetchAdmin();
     }, (e) => {
@@ -60,7 +60,7 @@ export class AdminService {
     data.append('email', email);
     data.append('password', password);
     if (passwordNew) { data.append('password_new', passwordNew); }
-    this.http.put<{ message: string }>(`${apiAdmin}/${id}`, data).subscribe((res) => {
+    this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } });
       this.fetchAdmin();
     }, (e) => {
@@ -70,7 +70,7 @@ export class AdminService {
   saveLogo(id: string, logo: File | string, logoName: string | null): void {
     const data = new FormData();
     logoName ? data.append('logo', logo, logoName) : data.append('logo', logo);
-    this.http.put<{ message: string }>(`${apiAdmin}/${id}`, data).subscribe((res) => {
+    this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } });
       this.fetchAdmin();
     });
@@ -89,7 +89,7 @@ export class AdminService {
     data.append('biodata', biodata);
     if (skills) { data.append('skills', JSON.stringify(skills)); }
     if (social) { data.append('social', JSON.stringify(social)); }
-    this.http.put<{ message: string }>(`${apiAdmin}/${id}`, data).subscribe((res) => {
+    this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } });
       this.fetchAdmin();
     }, (e) => {

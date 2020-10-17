@@ -8,7 +8,7 @@ import { Archives } from './blog-archives/blog-archives.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageComponent } from '../messages/message/message.component';
 import { environment } from '../../environments/environment';
-const apiPosts = environment.api + '/posts';
+const ROUTE = '/posts';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class PostsService {
   getPosts(left: number = 0, items: number = 5, year?: number, month?: number): Observable<{ posts: Post[], max: number }> {
     const query = `?left=${left}&items=${items}${year ? '&year=' + year : ''}${month ? '&month=' + month : ''}`;
 
-    return this.http.get<{ posts: Post[], max: number }>(apiPosts + query).pipe(map(data => {
+    return this.http.get<{ posts: Post[], max: number }>(ROUTE + query).pipe(map(data => {
       data.posts = data.posts.map(post => {
         if (post.thumbnailPath && post.thumbnailPath.startsWith('/images')) {
           post.thumbnailPath = environment.serverHost + post.thumbnailPath;
@@ -38,7 +38,7 @@ export class PostsService {
       });
   }
   getArchives() {
-    return this.http.get<Archives[]>(`${apiPosts}/archives`);
+    return this.http.get<Archives[]>(`${ROUTE}/archives`);
   }
   getStream() {
     return this.stream.asObservable();
@@ -60,7 +60,7 @@ export class PostsService {
     data.append('markdown', markdown);
     if (description) { data.append('description', description); }
     data.append('labels', JSON.stringify(labels));
-    this.http.post<{ message: string, post: Post, max: number }>(apiPosts, data).subscribe((res) => {
+    this.http.post<{ message: string, post: Post, max: number }>(ROUTE, data).subscribe((res) => {
       this.messageBar.openFromComponent(
         MessageComponent,
         { data: { message: res.message, action: 'Post', redirect: `blog/${res.post.slug}` } }
@@ -73,7 +73,7 @@ export class PostsService {
     });
   }
   getPost(slug: string) {
-    return this.http.get<Post>(`${apiPosts}/${slug}`).pipe(map(post => {
+    return this.http.get<Post>(`${ROUTE}/${slug}`).pipe(map(post => {
       if (post.thumbnailPath && post.thumbnailPath.startsWith('/images')) {
         post.thumbnailPath = environment.serverHost + post.thumbnailPath;
       }
@@ -106,7 +106,7 @@ export class PostsService {
     if (description) { data.append('description', description); }
     data.append('modified', new Date().toISOString());
     data.append('labels', JSON.stringify(labels));
-    this.http.put<{ message: string }>(`${apiPosts}/${id}`, data).subscribe((res) => {
+    this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(
         MessageComponent,
         { data: { message: res.message, action: 'Post', redirect: `blog/${slug}` } }
@@ -117,6 +117,6 @@ export class PostsService {
     });
   }
   delPost(id: string) {
-    return this.http.delete<{ message: string }>(`${apiPosts}/${id}`);
+    return this.http.delete<{ message: string }>(`${ROUTE}/${id}`);
   }
 }
