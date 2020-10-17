@@ -44,6 +44,7 @@ import { VoidComponent } from './void/void.component';
 
 import { CarouselPipe } from './carousel/carousel.pipe';
 import { SkillPipe } from './home/home-hero/skill.pipe';
+import { RequestInterceptor } from './util/request.interceptor';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { SkillPipe } from './home/home-hero/skill.pipe';
     ContentLoaderModule
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },

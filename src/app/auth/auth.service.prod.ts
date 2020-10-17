@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-
-import { environment } from '../../environments/environment';
-const apiAuth = environment.api + '/auth';
+const ROUTE = '/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +36,7 @@ export class AuthService {
 
   login(email: string, password: string): void {
     const data = { email, password };
-    this.http.post<{ message: string, token: string, expiration: number }>(apiAuth, data).subscribe((res) => {
+    this.http.post<{ message: string, token: string, expiration: number }>(ROUTE, data).subscribe((res) => {
       this.setToken(res.token);
       this.setStatus(true);
       this.listener.next(true);

@@ -5,20 +5,19 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { environment } from '../../environments/environment';
 
 describe('AuthInterceptor', () => {
   let mockAuthService;
   let httpTestingController;
   let mockReqService;
-  const url = environment.api;
+  const route = '/auth';
 
   @Injectable()
   class MockReqService {
     constructor(private http: HttpClient) { }
 
     req(): void {
-      this.http.get(url).subscribe(() => {
+      this.http.get(route).subscribe(() => {
         return;
       });
     }
@@ -38,13 +37,13 @@ describe('AuthInterceptor', () => {
     mockReqService = TestBed.inject(MockReqService);
   });
 
-  it('should be created', () => {
-    const token = 'T0K3N';
+  it('should concat token on header', () => {
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
     mockAuthService.getToken.and.returnValue(token);
 
     mockReqService.req();
 
-    const httpReq = httpTestingController.expectOne(url);
+    const httpReq = httpTestingController.expectOne(route);
     expect(httpReq.request.headers.get('Authorization')).toContain(token);
   });
 });

@@ -5,21 +5,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Injectable } from '@angular/core';
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { M } from '@angular/cdk/keycodes';
 
 describe('ErrorInterceptor', () => {
   // TestBed.inject(ErrorInterceptor);
   let mockMessageService;
   let mockReqService;
   let httpTestingController: HttpTestingController;
-  const url = environment.api;
+  const route = '/any';
 
   @Injectable()
   class MockReqService {
     constructor(private http: HttpClient) { }
     req(): void {
-      this.http.get(url).subscribe(() => { });
+      this.http.get(route).subscribe(() => { });
     }
   }
 
@@ -39,11 +37,15 @@ describe('ErrorInterceptor', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
   }));
 
-  it('should create message for server errors', () => {
+  afterEach(() => {
+    httpTestingController.verify();
+  });
+
+  it('should create message for server response errors', () => {
     mockReqService.req();
 
-    const req = httpTestingController.expectOne(url);
-    req.error(new ErrorEvent('test error'), { status: 500, statusText: 'bad server error' });
+    const req = httpTestingController.expectOne(route);
+    req.flush({ message: 'bad request' }, { status: 500, statusText: 'internal server error' });
 
     expect(mockMessageService.openFromComponent).toHaveBeenCalled();
   });

@@ -1,14 +1,13 @@
 import { AdminService } from './admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from '../../environments/environment';
 import { TestBed } from '@angular/core/testing';
 
 describe('AdminService', () => {
   let service: AdminService;
   let httpTestingController: HttpTestingController;
   let mockMessageService;
-  const url = environment.api + '/admin';
+  const route = '/admin';
   const admin = {
     name: 'Nyan',
     email: 'foo@bar.baz',
@@ -43,7 +42,7 @@ describe('AdminService', () => {
   it('should call api', () => {
     service.fetchAdmin();
 
-    httpTestingController.expectOne(url).flush(admin);
+    httpTestingController.expectOne(route).flush(admin);
     httpTestingController.verify();
   });
 });
