@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Project } from './project';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageComponent } from '../messages/message/message.component';
-import { environment } from '../../environments/environment';
+import { imagesMap } from '../util/imageMap';
 const ROUTE = '/projects';
 
 export interface Sequences {
@@ -25,15 +25,9 @@ export class ProjectsService {
 
   getProjects(behind: number = 0, items: number = 3): Observable<{ projects: Project[], hasMore: boolean }> {
     const query = `?behind=${behind}&items=${items}`;
-    return this.http.get<{ projects: Project[], hasMore: boolean }>(ROUTE + query).pipe(map(data => {
-      data.projects = data.projects.map(project => {
-        if (project.thumbnailPath && project.thumbnailPath.startsWith('/images')) {
-          project.thumbnailPath = environment.serverHost + project.thumbnailPath;
-        }
-        return project;
-      });
-      return data;
-    }));
+    return this.http.get<{ projects: Project[], hasMore: boolean }>(ROUTE + query).pipe(
+      imagesMap('thumbnailPath')
+    );
   }
   getSequences(): Observable<Sequences> {
     return this.http.get<{ name: string; seq: number; }[]>(ROUTE + '/seqs').pipe(map(data => {
@@ -60,12 +54,8 @@ export class ProjectsService {
     return this.stream.asObservable();
   }
   getProject(seq: number) {
-    return this.http.get<Project>(`${ROUTE}/${seq}`).pipe(map(project => {
-      if (project.thumbnailPath && project.thumbnailPath.startsWith('/images')) {
-        project.thumbnailPath = environment.serverHost + project.thumbnailPath;
-      }
-      return project;
-    }));
+    return this.http.get<Project>(`${ROUTE}/${seq}`).pipe(
+      imagesMap('thumbnailPath'));
   }
   addProject(
     name: string,

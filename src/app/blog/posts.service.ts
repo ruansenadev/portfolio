@@ -8,6 +8,7 @@ import { Archives } from './blog-archives/blog-archives.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageComponent } from '../messages/message/message.component';
 import { environment } from '../../environments/environment';
+import { imagesMap } from '../util/imageMap';
 const ROUTE = '/posts';
 
 @Injectable({
@@ -20,15 +21,9 @@ export class PostsService {
   getPosts(left: number = 0, items: number = 5, year?: number, month?: number): Observable<{ posts: Post[], max: number }> {
     const query = `?left=${left}&items=${items}${year ? '&year=' + year : ''}${month ? '&month=' + month : ''}`;
 
-    return this.http.get<{ posts: Post[], max: number }>(ROUTE + query).pipe(map(data => {
-      data.posts = data.posts.map(post => {
-        if (post.thumbnailPath && post.thumbnailPath.startsWith('/images')) {
-          post.thumbnailPath = environment.serverHost + post.thumbnailPath;
-        }
-        return post;
-      });
-      return data;
-    }));
+    return this.http.get<{ posts: Post[], max: number }>(ROUTE + query).pipe(
+      imagesMap('thumbnailPath')
+    );
   }
   populatePosts(left: number = 0, items: number = 5, year?: number, month?: number): void {
     this.getPosts(left, items, year, month)
@@ -73,12 +68,9 @@ export class PostsService {
     });
   }
   getPost(slug: string) {
-    return this.http.get<Post>(`${ROUTE}/${slug}`).pipe(map(post => {
-      if (post.thumbnailPath && post.thumbnailPath.startsWith('/images')) {
-        post.thumbnailPath = environment.serverHost + post.thumbnailPath;
-      }
-      return post;
-    }));
+    return this.http.get<Post>(`${ROUTE}/${slug}`).pipe(
+      imagesMap('thumbnailPath')
+    );
   }
   editPost(
     id: string,

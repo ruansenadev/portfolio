@@ -3,9 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Admin } from './admin';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageComponent } from '../messages/message/message.component';
-import { environment } from '../../environments/environment';
 import { Subject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { imagesMap } from '../util/imageMap';
 const ROUTE = '/admin';
 
 @Injectable({
@@ -15,12 +14,9 @@ export class AdminService {
   constructor(private http: HttpClient, private messageBar: MatSnackBar) { }
   admin$ = new Subject<Admin>();
   getAdmin(): Observable<Admin> {
-    return this.http.get<Admin>(ROUTE)
-      .pipe(map(account => {
-        if (account.photo.startsWith('/images')) { account.photo = environment.serverHost + account.photo; }
-        if (account.logo) { account.logo = environment.serverHost + account.logo; }
-        return account;
-      }));
+    return this.http.get<Admin>(ROUTE).pipe(
+      imagesMap('photo', 'logo')
+    );
   }
   fetchAdmin(): void {
     this.getAdmin().subscribe(account => {
