@@ -45,6 +45,7 @@ import { VoidComponent } from './void/void.component';
 import { CarouselPipe } from './carousel/carousel.pipe';
 import { SkillPipe } from './home/home-hero/skill.pipe';
 import { RequestInterceptor } from './util/request.interceptor';
+import { StatusPipe } from './album/status.pipe';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { RequestInterceptor } from './util/request.interceptor';
     CarouselLoaderComponent,
     VoidComponent,
     CarouselPipe,
-    SkillPipe
+    SkillPipe,
+    StatusPipe
   ],
   imports: [
     BrowserModule,
