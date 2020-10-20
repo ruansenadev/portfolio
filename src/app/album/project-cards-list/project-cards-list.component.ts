@@ -28,18 +28,6 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
   skeleton = Array(this.items);
   private projectsListen: Subscription;
   private authListen: Subscription;
-  statusIcons: { [key: string]: string } = {
-    Protótipagem: 'construction',
-    Desenvolvimento: 'build_circle',
-    Encerrado: 'highlight_off',
-    Finalizado: 'check_circle'
-  };
-  statusColors: { [key: string]: string } = {
-    Protótipagem: '',
-    Desenvolvimento: 'accent',
-    Encerrado: 'warn',
-    Finalizado: 'primary'
-  };
   ngOnInit(): void {
     this.projectsService.populateProjects(this.behind, this.items);
     this.projectsListen = this.projectsService.getStream().subscribe((res) => {

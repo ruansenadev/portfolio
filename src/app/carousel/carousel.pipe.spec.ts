@@ -18,10 +18,6 @@ describe('CarouselPipe', () => {
 
   beforeAll(() => { pipe = new CarouselPipe(); });
 
-  it('create an instance', () => {
-    expect(pipe).toBeTruthy();
-  });
-
   it('should not try to map an empty list', () => {
     expect(pipe.transform([], 'post')).toEqual([]);
   });

@@ -10,6 +10,7 @@ import { Project } from '../project';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { StatusPipe } from '../status.pipe';
 
 describe('ProjectCardsListComponent', () => {
   let component: ProjectCardsListComponent;
@@ -54,6 +55,7 @@ describe('ProjectCardsListComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
+        StatusPipe,
         ProjectListLoaderComponent,
         ProjectCardsListComponent
       ],

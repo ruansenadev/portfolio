@@ -4,6 +4,7 @@ import { ProjectPageComponent } from './project-page.component';
 import { Project } from '../project';
 import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { StatusPipe } from '../status.pipe';
 
 describe('ProjectPageComponent', () => {
   let component: ProjectPageComponent;
@@ -25,7 +26,10 @@ describe('ProjectPageComponent', () => {
   beforeEach(waitForAsync(() => {
     mockRoute = jasmine.createSpyObj([], { snapshot: { data: { project } } });
     TestBed.configureTestingModule({
-      declarations: [ProjectPageComponent],
+      declarations: [
+        StatusPipe,
+        ProjectPageComponent
+      ],
       providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -6,8 +6,8 @@
       </mat-card-title>
       <mat-card-subtitle>
         <mat-chip-list>
-          <mat-chip [color]="statusColors[project.status]" selected>
-            <mat-icon class="status-icon">{{ statusIcons[project.status] }}</mat-icon>
+          <mat-chip [color]="project.status | status : 'color'" selected>
+            <mat-icon class="status-icon">{{ project.status | status }}</mat-icon>
             {{ project.status }}
           </mat-chip>
         </mat-chip-list>

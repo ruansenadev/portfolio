@@ -36,8 +36,8 @@
         matBadgePosition="before" matBadgeSize="large">
         <div class="mdc-image-list__label">{{ project.name }}</div>
         <mat-chip-list class="mdc-image-list__chip">
-          <mat-chip [color]="statusColors[project.status]" selected>
-            <mat-icon class="chip-icon">{{ statusIcons[project.status] }}</mat-icon>
+          <mat-chip [color]="project.status | status : 'color'" selected>
+            <mat-icon class="chip-icon">{{ project.status | status }}</mat-icon>
             {{ project.status }}
           </mat-chip>
         </mat-chip-list>
