@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 
 import { BlogRoutingModule } from './blog-routing.module';
 import { MarkdownModule } from 'ngx-markdown';
@@ -20,7 +18,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
-import { ContentLoaderModule } from '@ngneat/content-loader';
 
 import { PostFormComponent } from './post-form/post-form.component';
 import { FeedComponent } from './feed/feed.component';
@@ -29,6 +26,7 @@ import { PostListLoaderComponent } from './post-list/post-list-loader.component'
 import { PostDialogComponent } from './post-dialog/post-dialog.component';
 import { PostPageComponent } from './post-page/post-page.component';
 import { BlogArchivesComponent } from './blog-archives/blog-archives.component';
+import { SharedModule } from '../util/shared.module';
 
 @NgModule({
   declarations: [
@@ -41,9 +39,8 @@ import { BlogArchivesComponent } from './blog-archives/blog-archives.component';
     BlogArchivesComponent
   ],
   imports: [
-    CommonModule,
+    SharedModule,
     MarkdownModule.forChild(),
-    ReactiveFormsModule,
     MatChipsModule,
     BlogRoutingModule,
     MatPaginatorModule,
@@ -58,8 +55,7 @@ import { BlogArchivesComponent } from './blog-archives/blog-archives.component';
     MatButtonModule,
     MatInputModule,
     MatExpansionModule,
-    MatBadgeModule,
-    ContentLoaderModule
+    MatBadgeModule
   ],
   providers: [
     { provide: MAT_CHIPS_DEFAULT_OPTIONS, useValue: { separatorKeyCodes: [ENTER, COMMA] } },

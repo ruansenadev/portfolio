@@ -2,13 +2,11 @@ import { NgModule, SecurityContext } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MarkdownModule } from 'ngx-markdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
-import { ContentLoaderModule } from '@ngneat/content-loader';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -45,7 +43,7 @@ import { VoidComponent } from './void/void.component';
 import { CarouselPipe } from './carousel/carousel.pipe';
 import { SkillPipe } from './home/home-hero/skill.pipe';
 import { RequestInterceptor } from './util/request.interceptor';
-import { StatusPipe } from './album/status.pipe';
+import { SharedModule } from './util/shared.module';
 
 @NgModule({
   declarations: [
@@ -63,12 +61,11 @@ import { StatusPipe } from './album/status.pipe';
     CarouselLoaderComponent,
     VoidComponent,
     CarouselPipe,
-    SkillPipe,
-    StatusPipe
+    SkillPipe
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule,
+    SharedModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -86,8 +83,7 @@ import { StatusPipe } from './album/status.pipe';
     MatListModule,
     LayoutModule,
     MatSidenavModule,
-    MatBadgeModule,
-    ContentLoaderModule
+    MatBadgeModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true },
