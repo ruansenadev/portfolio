@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../util/shared.module';
 
 import { MarkdownModule } from 'ngx-markdown';
 import { AlbumRoutingModule } from './album-routing.module';
@@ -21,7 +20,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CdkScrollableModule, ScrollingModule } from '@angular/cdk/scrolling';
 import { MatBadgeModule } from '@angular/material/badge';
-import { ContentLoaderModule } from '@ngneat/content-loader';
 
 import { ProjectFormComponent } from './project-form/project-form.component';
 import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
@@ -38,12 +36,11 @@ import { ProjectListLoaderComponent } from './project-cards-list/project-list-lo
     ProjectPageComponent
   ],
   imports: [
-    CommonModule,
+    SharedModule,
     MarkdownModule.forChild(),
     ClipboardModule,
     CdkScrollableModule,
     ScrollingModule,
-    ReactiveFormsModule,
     AlbumRoutingModule,
     MatCardModule,
     MatMenuModule,
@@ -59,8 +56,7 @@ import { ProjectListLoaderComponent } from './project-cards-list/project-list-lo
     MatDialogModule,
     MatDividerModule,
     MatProgressSpinnerModule,
-    MatBadgeModule,
-    ContentLoaderModule
+    MatBadgeModule
   ]
 })
 export class AlbumModule { }
