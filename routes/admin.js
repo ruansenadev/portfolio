@@ -1,19 +1,12 @@
 const express = require('express')
 const Auth = require('../middlewares/auth')
-const PathDir = require('../middlewares/pathdir')
 const Admin = require('../models/admin')
 const md5 = require('md5')
 const bcrypt = require('bcryptjs')
-const path = require('path')
 const { param, validationResult } = require('express-validator')
 const router = express.Router()
 
 const { IncomingForm } = require('formidable')
-const adminFormOptions = {
-  keepExtensions: true,
-  maxFileSize: 10 * 1024 * 1024,
-  multiples: false
-}
 const allowedTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"]
 
 router.get('/', function (req, res) {
@@ -30,22 +23,14 @@ router.get('/', function (req, res) {
       res.json(admin)
     })
 })
-router.post('/', Auth, PathDir(undefined, 'images'), function (req, res) {
-  adminFormOptions.uploadDir = req.pathDir
-  const form = new IncomingForm(adminFormOptions)
-  form.on("fileBegin", function (filename, file) {
-    file.path = path.join(form.uploadDir, file.name)
-  })
+router.post('/', Auth, function (req, res) {
+  const form = new IncomingForm();
   form.onPart = (part) => {
-    if (part.mime) {
-      if (!allowedTypes.includes(part.mime)) {
-        req.destroy()
-        return res.status(415).json({ message: 'Mime-type inválido' })
-      }
+    if (part.filename === '' || !part.mime) {
+      form.handlePart(part);
     }
-    form.handlePart(part)
   }
-  form.parse(req, function (err, fields, files) {
+  form.parse(req, function (err, fields) {
     if (err) { return res.status(400).json({ message: 'Formulário inválido' }) }
     let admin = new Admin({
       name: fields.name,
@@ -54,13 +39,13 @@ router.post('/', Auth, PathDir(undefined, 'images'), function (req, res) {
       address: {},
       email: fields.email,
       password: bcrypt.hashSync(fields.password, 10),
-      photo: fields.photo ? `/images/${files.photo.name}` : `https://www.gravatar.com/avatar/${md5(fields.email.toLowerCase())}?s=200&d=identicon`,
+      photo: fields.photo ? `/images/${fields.photo}` : `https://www.gravatar.com/avatar/${md5(fields.email.toLowerCase())}?s=200&d=identicon`,
       profession: fields.profession,
       biodata: fields.biodata
     })
     if (fields.city) admin.address.city = fields.city
     if (fields.state) admin.address.state = fields.state
-    if (files.logo) admin.logo = `/images/${files.logo.name}`
+    if (fields.logo) admin.logo = `/images/${fields.logo}`
     if (fields.nickname) admin.nickname = fields.nickname
     if (fields.skills) admin.skills = JSON.parse(fields.skills)
     if (fields.social) admin.social = JSON.parse(fields.social)
@@ -71,28 +56,20 @@ router.post('/', Auth, PathDir(undefined, 'images'), function (req, res) {
   })
 })
 
-router.put('/:id', Auth, PathDir(undefined, 'images'), function (req, res) {
-  adminFormOptions.uploadDir = req.pathDir
-  const form = new IncomingForm(adminFormOptions)
-  form.on("fileBegin", function (filename, file) {
-    file.path = path.join(form.uploadDir, file.name)
-  })
+router.put('/:id', Auth, function (req, res) {
+  const form = new IncomingForm()
   form.onPart = (part) => {
-    if (part.mime) {
-      if (!allowedTypes.includes(part.mime)) {
-        req.destroy()
-        return res.status(415).json({ message: 'Mime-type inválido' })
-      }
+    if (part.filename === '' || !part.mime) {
+      form.handlePart(part);
     }
-    form.handlePart(part)
   }
   Admin.findById(req.params.id)
     .exec((err, admin) => {
       if (err | !admin) { return res.status(502).json({ message: 'Falha ao encontrar conta' }) }
-      form.parse(req, function (err, fields, files) {
+      form.parse(req, function (err, fields) {
         if (err) { return res.status(400).json({ message: 'Formulário inválido' }) }
-        if (files.photo) {
-          admin.photo = `/images/${files.photo.name}`
+        if (fields.photo) {
+          admin.photo = `/images/${fields.photo}`
           admin.updateOne(admin, (err, result) => {
             if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
             return res.status(200).json({ message: 'Foto atualizada!' })
@@ -103,9 +80,9 @@ router.put('/:id', Auth, PathDir(undefined, 'images'), function (req, res) {
             if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
             return res.status(200).json({ message: 'Foto atualizada!' })
           })
-        } else if (files.logo) {
+        } else if (fields.logo) {
           admin = new Admin(admin)
-          admin.logo = `/images/${files.logo.name}`
+          admin.logo = `/images/${fields.logo}`
           admin.updateOne(admin, (err, result) => {
             if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
             return res.status(200).json({ message: 'Logotipo atualizado' })
