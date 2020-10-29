@@ -1,20 +1,12 @@
 const express = require('express')
 const Post = require('../models/post')
 const Auth = require('../middlewares/auth')
-const PathDir = require('../middlewares/pathdir')
-const path = require('path')
 const { query, param, validationResult } = require('express-validator')
 const moment = require('moment-timezone')
 moment.tz.setDefault('America/Bahia').locale('pt-br')
 const router = express.Router()
 
 const { IncomingForm } = require('formidable')
-const postFormOptions = {
-  keepExtensions: true,
-  maxFileSize: 10 * 1024 * 1024,
-  multiples: false
-}
-const allowedTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"]
 
 function getDateRangeQueries(year = moment().get('year'), month) {
   let date, first, last
@@ -112,25 +104,14 @@ router.get('/:slug', [
       })
   }
 ])
-router.post('/', Auth, PathDir(undefined, 'images', 'blog'), function (req, res) {
-  postFormOptions.uploadDir = req.pathDir
-  const form = new IncomingForm(postFormOptions)
-  const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
-  form.on("fileBegin", function (filename, file) {
-    // keep name uploaded
-    file.path = path.join(form.uploadDir, `${dateUpload}-${file.name}`)
-  })
+router.post('/', Auth, function (req, res) {
+  const form = new IncomingForm()
   form.onPart = (part) => {
-    if (part.mime) {
-      // check mimetype
-      if (!allowedTypes.includes(part.mime)) {
-        req.destroy()
-        return res.status(415).json({ message: 'Mime-type inválido' })
-      }
+    if (part.filename === '' || !part.mime) {
+      form.handlePart(part);
     }
-    form.handlePart(part)
   }
-  form.parse(req, function (err, fields, files) {
+  form.parse(req, function (err, fields) {
     if (err) { return res.status(400).json({ message: 'Formulário inválido' }) }
     let post = new Post({
       title: fields.title,
@@ -138,7 +119,7 @@ router.post('/', Auth, PathDir(undefined, 'images', 'blog'), function (req, res)
       markdown: fields.markdown,
       labels: JSON.parse(fields.labels)
     })
-    if (files.thumbnail) post.thumbnailPath = `/images/blog/${dateUpload}-${files.thumbnail.name}`;
+    if (fields.thumbnailPath) post.thumbnailPath = fields.thumbnailPath;
     if (fields.icon) post.icon = fields.icon;
     if (fields.description) post.description = fields.description;
     post.save((err, postSaved) => {
@@ -148,21 +129,16 @@ router.post('/', Auth, PathDir(undefined, 'images', 'blog'), function (req, res)
       }).catch(() => { return res.status(502).json({ message: 'Falha ao atualizar' }) })
     })
   })
-})
-router.put('/:id', Auth, PathDir(undefined, 'images', 'blog'), function (req, res) {
-  postFormOptions.uploadDir = req.pathDir
-  const form = new IncomingForm(postFormOptions)
-  const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
-  form.on("fileBegin", function (filename, file) {
-    file.path = path.join(form.uploadDir, `${dateUpload}-${file.name}`)
-  })
+});
+
+router.put('/:id', Auth, function (req, res) {
+  const form = new IncomingForm()
   form.onPart = (part) => {
-    if (part.mime) {
-      if (!allowedTypes.includes(part.mime)) { return res.status(415).json({ message: 'Mime-type inválido' }) }
+    if (part.filename === '' || !part.mime) {
+      form.handlePart(part);
     }
-    form.handlePart(part)
   }
-  form.parse(req, function (err, fields, files) {
+  form.parse(req, function (err, fields) {
     if (err) { return res.status(400).json({ message: 'Formulário inválido' }) }
     let post = new Post({
       _id: fields._id,
@@ -173,7 +149,6 @@ router.put('/:id', Auth, PathDir(undefined, 'images', 'blog'), function (req, re
       modified: new Date(fields.modified),
       labels: JSON.parse(fields.labels)
     })
-    if (files.thumbnail) post.thumbnailPath = `/images/blog/${dateUpload}-${files.thumbnail.name}`;
     if (fields.thumbnailPath) post.thumbnailPath = fields.thumbnailPath;
     if (fields.description) post.description = fields.description;
     Post.updateOne({ _id: req.params.id }, post, (err, result) => {
