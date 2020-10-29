@@ -62,7 +62,7 @@ function applyWithArgs(val: { [key: string]: string }) {
     if (val.hasOwnProperty(imagePath)) {
       this.args.splice(i, 1);
       if (val[imagePath] && val[imagePath].startsWith(imagesFolder)) {
-        val[imagePath] = environment.serverHost + val[imagePath];
+        val[imagePath] = `${environment.staticsHost}/${val[imagePath]}`;
       }
     }
   }

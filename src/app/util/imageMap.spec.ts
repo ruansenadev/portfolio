@@ -7,10 +7,10 @@ describe('ImageMapOperator', () => {
   const data = {
     name: 'Portfolio',
     keywords: ['portfolio', 'mean-stack', 'angular', 'express'],
-    thumbnailPath: '/images/album/test.jpg',
+    thumbnailPath: 'images/album/test.jpg',
     deepData: [
       {
-        thumbnail: '/images/blog/test.png'
+        thumbnail: 'images/blog/test.png'
       }
     ],
   };
@@ -25,8 +25,8 @@ describe('ImageMapOperator', () => {
       imagesMap('thumbnailPath', 'thumbnail')
     )
       .subscribe((result) => {
-        expect(result.thumbnailPath).toContain(environment.serverHost);
-        expect(result.deepData[0].thumbnail).toContain(environment.serverHost);
+        expect(result.thumbnailPath).toContain(environment.staticsHost);
+        expect(result.deepData[0].thumbnail).toContain(environment.staticsHost);
       });
   });
 });
