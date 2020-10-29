@@ -18,15 +18,21 @@ Database MongoDB, modelada com Mongoose.
 
 [Gere também](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) uma jwt secret 256-bit.
 
-1. Configure o arquivo `.env`:
-- Crie o arquivo `.env` no root
-- Forneça a url de conexão do mongodb:
+1. Configure as vars num arquivo `.env`:
+- Crie o arquivo `.env` no root e forneça
+- Url de conexão do mongodb:
 ```
 MONGO_URL=sua_connection_string
 ```
-- Forneça a secret key para autenticação:
+- Secret key para autenticação:
 ```
 TOKEN_SECRET=secret_jwt
+```
+- S3 IAM params para uploads:
+```
+AWS_ACCESS_KEY_ID=k3y1d
+AWS_SECRET_ACCESS_KEY=p4s5
+S3_BUCKET_NAME=bucket-name
 ```
 
 2. Crie a conta administrador do portfolio:
