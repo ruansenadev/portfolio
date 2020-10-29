@@ -7,7 +7,6 @@ moment.tz.setDefault('America/Bahia').locale('pt-br')
 const router = express.Router()
 
 const { IncomingForm } = require('formidable')
-const allowedTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"]
 
 router.get('/', [
   query(['behind', 'items']).isAlphanumeric().toInt(),
@@ -77,7 +76,7 @@ router.post('/', Auth, function (req, res) {
       url: fields.url,
       keywords: JSON.parse(fields.keywords)
     })
-    if (fields.thumbnail) project.thumbnailPath = `/images/album/${dateUpload}-${fields.thumbnail}`;
+    if (fields.thumbnailPath) project.thumbnailPath = fields.thumbnailPath;
     if (fields.overview) project.overview = fields.overview;
     if (fields.homepage) project.homepage = fields.homepage;
     project.save((err, projectSaved) => {
@@ -112,7 +111,6 @@ router.put('/:id', Auth, [
         url: fields.url,
         keywords: JSON.parse(fields.keywords)
       })
-      if (fields.thumbnail) project.thumbnailPath = `/images/album/${dateUpload}-${fields.thumbnail}`;
       if (fields.thumbnailPath) project.thumbnailPath = fields.thumbnailPath;
       if (fields.overview) project.overview = fields.overview;
       if (fields.homepage) project.homepage = fields.homepage;

@@ -7,7 +7,6 @@ moment.tz.setDefault('America/Bahia').locale('pt-br')
 const router = express.Router()
 
 const { IncomingForm } = require('formidable')
-const allowedTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"]
 
 function getDateRangeQueries(year = moment().get('year'), month) {
   let date, first, last
@@ -107,7 +106,6 @@ router.get('/:slug', [
 ])
 router.post('/', Auth, function (req, res) {
   const form = new IncomingForm()
-  const dateUpload = moment().format('DD-MM-YYYY-hh-mm-ss')
   form.onPart = (part) => {
     if (part.filename === '' || !part.mime) {
       form.handlePart(part);
@@ -121,7 +119,7 @@ router.post('/', Auth, function (req, res) {
       markdown: fields.markdown,
       labels: JSON.parse(fields.labels)
     })
-    if (fields.thumbnail) post.thumbnailPath = `/images/blog/${dateUpload}-${fields.thumbnail}`;
+    if (fields.thumbnailPath) post.thumbnailPath = fields.thumbnailPath;
     if (fields.icon) post.icon = fields.icon;
     if (fields.description) post.description = fields.description;
     post.save((err, postSaved) => {
@@ -151,7 +149,6 @@ router.put('/:id', Auth, function (req, res) {
       modified: new Date(fields.modified),
       labels: JSON.parse(fields.labels)
     })
-    if (fields.thumbnail) post.thumbnailPath = `/images/blog/${dateUpload}-${fields.thumbnail}`;
     if (fields.thumbnailPath) post.thumbnailPath = fields.thumbnailPath;
     if (fields.description) post.description = fields.description;
     Post.updateOne({ _id: req.params.id }, post, (err, result) => {

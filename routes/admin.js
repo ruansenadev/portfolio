@@ -3,11 +3,10 @@ const Auth = require('../middlewares/auth')
 const Admin = require('../models/admin')
 const md5 = require('md5')
 const bcrypt = require('bcryptjs')
-const { param, validationResult } = require('express-validator')
+const { param, query, validationResult } = require('express-validator')
 const router = express.Router()
 
-const { IncomingForm } = require('formidable')
-const allowedTypes = ["image/png", "image/jpeg", "image/svg+xml", "image/webp"]
+const { IncomingForm } = require('formidable');
 
 router.get('/', function (req, res) {
   Admin.findOne()
@@ -22,7 +21,8 @@ router.get('/', function (req, res) {
       delete admin.password;
       res.json(admin)
     })
-})
+});
+
 router.post('/', Auth, function (req, res) {
   const form = new IncomingForm();
   form.onPart = (part) => {
@@ -39,13 +39,16 @@ router.post('/', Auth, function (req, res) {
       address: {},
       email: fields.email,
       password: bcrypt.hashSync(fields.password, 10),
-      photo: fields.photo ? `/images/${fields.photo}` : `https://www.gravatar.com/avatar/${md5(fields.email.toLowerCase())}?s=200&d=identicon`,
+      photo: (
+        fields.photo ?
+          fields.photo :
+          `https://www.gravatar.com/avatar/${md5(fields.email.toLowerCase())}?s=200&d=identicon`),
       profession: fields.profession,
       biodata: fields.biodata
     })
     if (fields.city) admin.address.city = fields.city
     if (fields.state) admin.address.state = fields.state
-    if (fields.logo) admin.logo = `/images/${fields.logo}`
+    if (fields.logo) admin.logo = fields.logo;
     if (fields.nickname) admin.nickname = fields.nickname
     if (fields.skills) admin.skills = JSON.parse(fields.skills)
     if (fields.social) admin.social = JSON.parse(fields.social)
@@ -69,12 +72,6 @@ router.put('/:id', Auth, function (req, res) {
       form.parse(req, function (err, fields) {
         if (err) { return res.status(400).json({ message: 'Formulário inválido' }) }
         if (fields.photo) {
-          admin.photo = `/images/${fields.photo}`
-          admin.updateOne(admin, (err, result) => {
-            if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
-            return res.status(200).json({ message: 'Foto atualizada!' })
-          })
-        } else if (fields.photo) {
           admin.photo = fields.photo
           admin.updateOne(admin, (err, result) => {
             if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
@@ -82,7 +79,7 @@ router.put('/:id', Auth, function (req, res) {
           })
         } else if (fields.logo) {
           admin = new Admin(admin)
-          admin.logo = `/images/${fields.logo}`
+          admin.logo = fields.logo
           admin.updateOne(admin, (err, result) => {
             if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }) }
             return res.status(200).json({ message: 'Logotipo atualizado' })
