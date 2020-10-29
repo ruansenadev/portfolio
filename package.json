@@ -25,10 +25,10 @@
     "mongoose": "^5.9.21",
     "mongoose-lean-virtuals": "^0.6.8",
     "reading-time": "^1.2.0",
-    "slug": "^3.3.0"
+    "slug": "^3.3.0",
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
-    "morgan": "^1.9.1",
     "nodemon": "^2.0.4"
   }
 }

@@ -48,7 +48,7 @@ app.use('/api/projects', projectsRouter)
 app.use('/api/posts', postsRouter)
 
 app.use(/\/$/,logger('combined'), (req, res) => {
-  return res.redirect('https://ruansenadev.github.io/portfolio')
+  return res.redirect('https://ruansenadev.github.io/Portfolio')
 })
 
 module.exports = app;
