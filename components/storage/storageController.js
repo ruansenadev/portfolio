@@ -1,7 +1,5 @@
-const { Router } = require('express');
 const { S3 } = require('aws-sdk');
 const { query, validationResult } = require('express-validator');
-const router = Router();
 
 const allowed = {
   extensions: ['png', 'jpg', 'jpeg', 'svg', 'webp'],
@@ -9,7 +7,7 @@ const allowed = {
   paths: ['admin', 'blog', 'album']
 };
 
-router.get('/sign-s3', [
+exports.getSignedUrl = [
   query('mimetype').isIn(allowed.mimes),
   query('filename').matches(`^[\\w-]+\\.(?:${allowed.extensions.join('$|') + '$'})`),
   query('path').isIn(allowed.paths),
@@ -39,6 +37,4 @@ router.get('/sign-s3', [
       });
     });
   }
-]);
-
-module.exports = router;
+];

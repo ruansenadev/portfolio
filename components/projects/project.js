@@ -1,7 +1,6 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const { Schema, model } = require('mongoose');
 
-const projectSchema = new Schema({
+const schema = new Schema({
   seq: { type: Number, required: true, unique: true },
   name: { type: String, required: true },
   status: { type: String, required: true, enum: ['Protótipagem', 'Desenvolvimento', 'Encerrado', 'Finalizado'] },
@@ -12,8 +11,8 @@ const projectSchema = new Schema({
   url: { type: String, required: true },
   homepage: { type: String },
   keywords: [{ type: String, required: true }]
-})
+});
 
-projectSchema.index({ url: 1, homepage: 1 }, { unique: true })
+schema.index({ url: 1, homepage: 1 }, { unique: true });
 
-module.exports = mongoose.model('Project', projectSchema)
+module.exports = model('Project', schema);
