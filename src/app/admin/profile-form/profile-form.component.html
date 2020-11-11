@@ -5,7 +5,7 @@
         <div class="photo-wrapper" [class]="noFocus">
           <img [src]="preview || photo">
         </div>
-        <button *ngIf="!read" mat-mini-fab type="button" class="photoMenu-btn" [matMenuTriggerFor]="photoMenu"
+        <button mat-mini-fab type="button" class="photoMenu-btn" [ngClass]="{'form--reading': read}" [matMenuTriggerFor]="photoMenu"
           aria-label="Toggle menu">
           <mat-icon>more_vert</mat-icon>
         </button>
@@ -24,7 +24,7 @@
           </button>
         </mat-menu>
         <!-- container if uploading else -->
-        <button mat-mini-fab *ngIf="!read && preview && !uploadStatus.hasUploaded" class="photo-btn" type="button"
+        <button mat-mini-fab *ngIf="preview && !uploadStatus.hasUploaded" class="photo-btn" type="button"
           color="accent" (click)="onUploadImage()">
           <mat-icon>send</mat-icon>
         </button>
@@ -69,5 +69,5 @@
       </mat-form-field>
     </div>
   </div>
-  <button *ngIf="!read" mat-raised-button color="primary" type="submit">Salvar</button>
+  <button mat-raised-button color="primary" [ngClass]="{'form--reading': read}" type="submit">Salvar</button>
 </form>

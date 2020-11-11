@@ -12,6 +12,9 @@ mat-form-field {
 .col:last-child {
   margin-right: 0;
 }
+.form--reading {
+  display: none;
+}
 .file {
   position: relative;
 }
