@@ -1,11 +1,17 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface UploadObject {
   data: File;
   url: string;
   key: string;
+}
+export interface UploadStatus {
+  isUploading: boolean;
+  uploadProgress: number;
+  hasUploaded: boolean;
 }
 
 @Injectable({
@@ -41,6 +47,24 @@ export class ImageStorageService {
         path
       }
     });
+  }
+  uploadImage(url: string, file: File): Observable<number> {
+    return this.http.put(url, file, { reportProgress: true, observe: 'events' })
+      .pipe(
+        map(uploadEvent => this.getUploadEventPercent(uploadEvent))
+      );
+  }
+  getUploadEventPercent(ev: HttpEvent<any>): number {
+    switch (ev.type) {
+      case HttpEventType.Sent:
+        return 0;
+      case HttpEventType.UploadProgress:
+        return Math.round(100 * ev.loaded / ev.total);
+      case HttpEventType.Response:
+        return 101;
+      default:
+        return NaN;
+    }
   }
 }
 
