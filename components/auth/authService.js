@@ -7,6 +7,6 @@ exports.verify = function (req, res, next) {
     req.account = { _id: token.id, email: token.email };
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'Você nao está autenticado' });
+    return res.status(401).json({ message: 'Você não está autenticado' });
   }
 }
