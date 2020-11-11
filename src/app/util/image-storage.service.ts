@@ -1,5 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+export interface UploadObject {
+  data: File;
+  url: string;
+  key: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +32,15 @@ export class ImageStorageService {
     const fileName = this.allowFileName(file.name);
     const blob = file.slice(0, file.size, file.type);
     return new File([blob], fileName, { type: file.type });
+  }
+  getSignedUrl(fileName: string, mimeType: string, path: string): Observable<{ url: string, key: string }> {
+    return this.http.get<{ url: string, key: string }>('/sign-s3', {
+      params: {
+        filename: fileName,
+        mimetype: mimeType,
+        path
+      }
+    });
   }
 }
 
