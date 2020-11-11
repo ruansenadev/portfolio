@@ -29,14 +29,6 @@ export class AdminService {
   getGravatar() {
     return this.http.get<string>(ROUTE + '?gravatar=true');
   }
-  savePhoto(id: string, photo: File | string, photoName: string | null): void {
-    const data = new FormData();
-    photoName ? data.append('photo', photo, photoName) : data.append('photo', photo);
-    this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
-      this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } });
-      this.fetchAdmin();
-    });
-  }
   editProfile(id: string, name: string, lastName: string, birthdate: Date, city: string | null, state: string | null) {
     const data = new FormData();
     data.append('name', name);
