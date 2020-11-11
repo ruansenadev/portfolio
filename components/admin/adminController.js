@@ -82,20 +82,7 @@ exports.updateAdmin = [
         if (err | !admin) { return res.status(502).json({ message: 'Falha ao encontrar conta' }); }
         form.parse(req, function (err, fields) {
           if (err) { return res.status(400).json({ message: 'Formulário inválido' }); }
-          if (fields.photo) {
-            admin.photo = fields.photo;
-            admin.updateOne(admin, (err, result) => {
-              if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }); }
-              return res.status(200).json({ message: 'Foto atualizada!' });
-            })
-          } else if (fields.logo) {
-            admin = new Admin(admin);
-            admin.logo = fields.logo;
-            admin.updateOne(admin, (err, result) => {
-              if (err || !result.n) { return res.status(502).json({ message: 'Falha ao salvar' }); }
-              return res.status(200).json({ message: 'Logotipo atualizado' });
-            })
-          } else if (fields.email || fields.password_new) {
+          if (fields.email || fields.password_new) {
             if (compareSync(fields.password, admin.password)) {
               admin = new Admin(admin);
               admin.email = fields.email;
@@ -127,6 +114,8 @@ exports.updateAdmin = [
               if (fields.state) admin.address.state = fields.state;
               admin.markModified('address');
             }
+            if (fields.photo) { admin.photo = fields.photo; }
+            if (fields.logo) { admin.logo = fields.logo; }
             admin.updateOne(admin, (err, result) => {
               if (err || !result.n) { return res.status(502).json({ message: 'Falha ao atualizar' }); }
               return res.status(200).json({ message: 'Dados atualizados!' });
