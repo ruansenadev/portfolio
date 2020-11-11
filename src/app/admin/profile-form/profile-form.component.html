@@ -29,7 +29,12 @@
           <mat-icon>send</mat-icon>
         </button>
       </div>
-      <input type="file" #photoInput accept=".png, .jpg, .jpeg, .svg, .webp" (change)="onPickImage($event)">
+      <div class="file">
+        <input class="file-input" type="file" #photoInput accept=".png, .jpg, .jpeg, .svg, .webp"
+          (change)="onPickImage($event)">
+        <mat-progress-bar *ngIf="preview && uploadStatus.isUploading" class="file-status" mode="determinate"
+          [value]="uploadStatus.uploadProgress"></mat-progress-bar>
+      </div>
     </div>
     <div class="col">
       <mat-form-field appearance="fill">

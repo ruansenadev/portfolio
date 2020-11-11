@@ -95,15 +95,25 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
   }
   onPickImage(e: Event): void {
     // TODO: add ft pick from image storage
+    this.noFocus = 'no-focus';
+    this.uploadStatus = {
+      isUploading: false,
+      uploadProgress: 0,
+      hasUploaded: false
+    };
     const inputFile = e.target as HTMLInputElement;
     this.upload = {
       data: null,
       url: null,
-      key: null
+      key: null,
+      uploadRequest: null
     };
     try {
       this.upload.data = this.imageStorage.validateFile(inputFile.files[0]);
     } catch (error) {
+      this.noFocus = '';
+      this.upload = null;
+      this.uploadStatus = null;
       return;
     }
     inputFile.value = '';
@@ -112,12 +122,8 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
       this.upload.data = null;
     };
     reader.onloadend = () => {
-      this.uploadStatus = {
-        isUploading: false,
-        uploadProgress: 0,
-        hasUploaded: false
-      };
       this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+      this.noFocus = '';
     };
     this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'admin')
       .subscribe((result) => {
@@ -142,23 +148,22 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
   }
   onUploadImage(): void {
     this.uploadStatus.isUploading = true;
-    const uploadReq = this.imageStorage.uploadImage(this.upload.url, this.upload.data)
+    this.upload.uploadRequest = this.imageStorage.uploadImage(this.upload.url, this.upload.data)
       .subscribe(progressDone => {
         switch (progressDone) {
           case 101:
-            this.uploadStatus.hasUploaded = true;
             this.profileForm.patchValue({
               photo: this.upload.key
             });
-            console.log(this.profileForm.value.photo);
+            this.uploadStatus.isUploading = false;
+            this.uploadStatus.hasUploaded = true;
             break;
           case NaN:
             this.uploadStatus.isUploading = false;
-            uploadReq.unsubscribe();
+            this.upload.uploadRequest.unsubscribe();
             break;
           default:
             this.uploadStatus.uploadProgress = progressDone;
-            console.log('uploaded: ' + progressDone);
         }
       });
   }

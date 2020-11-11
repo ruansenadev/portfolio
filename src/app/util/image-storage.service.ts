@@ -1,12 +1,13 @@
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface UploadObject {
   data: File;
   url: string;
   key: string;
+  uploadRequest: Subscription;
 }
 export interface UploadStatus {
   isUploading: boolean;
