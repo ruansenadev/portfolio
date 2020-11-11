@@ -125,7 +125,7 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
       this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
       this.noFocus = '';
     };
-    this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'admin')
+    this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'admin/photo')
       .subscribe((result) => {
         this.upload.url = result.url;
         this.upload.key = result.key;
@@ -174,12 +174,15 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
   // save image also
   onSubmit() {
     if (this.profileForm.invalid) { return; }
-    this.adminService.editProfile(this.account._id,
+    this.adminService.editProfile(
+      this.account._id,
       this.profileForm.value.name,
       this.profileForm.value.lastName,
       this.profileForm.value.birthdate,
       this.profileForm.value.city,
-      this.profileForm.value.state);
+      this.profileForm.value.state,
+      this.profileForm.value.photo
+    );
   }
   ngOnDestroy(): void {
     if (this.listener) { this.listener.unsubscribe(); }

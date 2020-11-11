@@ -29,13 +29,14 @@ export class AdminService {
   getGravatar() {
     return this.http.get<string>(ROUTE + '?gravatar=true');
   }
-  editProfile(id: string, name: string, lastName: string, birthdate: Date, city: string | null, state: string | null) {
+  editProfile(id: string, name: string, lastName: string, birthdate: Date, city?: string, state?: string, photo?: string) {
     const data = new FormData();
     data.append('name', name);
     data.append('last_name', lastName);
     data.append('birthdate', new Date(birthdate).toISOString());
     if (city) { data.append('city', city); }
-    if (city) { data.append('state', state); }
+    if (state) { data.append('state', state); }
+    if (photo) { data.append('photo', photo); }
     this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } });
       this.fetchAdmin();
