@@ -152,11 +152,11 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
       .subscribe(progressDone => {
         switch (progressDone) {
           case 101:
+            this.uploadStatus.hasUploaded = true;
+            this.uploadStatus.isUploading = false;
             this.profileForm.patchValue({
               photo: this.upload.key
             });
-            this.uploadStatus.isUploading = false;
-            this.uploadStatus.hasUploaded = true;
             break;
           case NaN:
             this.uploadStatus.isUploading = false;
@@ -166,6 +166,10 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
             this.uploadStatus.uploadProgress = progressDone;
         }
       });
+  }
+  onAbortUpload(): void {
+    this.upload.uploadRequest.unsubscribe();
+    this.uploadStatus.isUploading = false;
   }
   // save image also
   onSubmit() {
