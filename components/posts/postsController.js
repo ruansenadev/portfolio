@@ -170,9 +170,9 @@ exports.updatePost = [
       });
       if (fields.thumbnailPath) post.thumbnailPath = fields.thumbnailPath;
       if (fields.description) post.description = fields.description;
-      Post.updateOne({ _id: req.params.id }, post, (err, result) => {
-        if (err || !result.n) { return res.status(502).json({ message: 'Falha ao atualizar' }); }
-        return res.status(200).json({ message: 'Post atualizado!' });
+      Post.findByIdAndUpdate(req.params.id, post, { new: true, fields: { 'slug': 1 } }, (err, result) => {
+        if (err || !result) { return res.status(502).json({ message: 'Falha ao atualizar' }); }
+        return res.status(200).json({ message: 'Post atualizado!', slug: result.slug });
       });
     });
   }

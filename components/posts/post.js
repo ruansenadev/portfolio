@@ -33,7 +33,7 @@ schema.pre('validate', function (next) {
   this.slug = slugify(this.title);
   next();
 })
-schema.pre('updateOne', function (next) {
+schema.pre('findOneAndUpdate', function (next) {
   this._update.slug = slugify(this._update.title);
   next();
 });

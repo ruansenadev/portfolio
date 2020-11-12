@@ -11,7 +11,7 @@ exports.getSignedUrl = [
   verify,
   query('mimetype').isIn(allowed.mimes),
   query('filename').matches(`^[\\w-]+\\.(?:${allowed.extensions.join('$|') + '$'})`),
-  query('path').trim().matches(`^[a-z//]*$`).ltrim('/').ltrim('admin').ltrim('/'),
+  query('path').trim().matches(`^[a-z//]*$`).ltrim('/'),
   async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
