@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Admin } from '../admin';
 import { AdminService } from '../admin.service';
+import { ImageStorageService, UploadObject, UploadStatus } from '../../util/image-storage.service';
 
 @Component({
   selector: 'app-admin-profile-form',
@@ -11,7 +12,12 @@ import { AdminService } from '../admin.service';
   styleUrls: ['./profile-form.component.css']
 })
 export class ProfileFormComponent implements OnChanges, OnDestroy {
-  constructor(private fb: FormBuilder, private adminService: AdminService, private sanitizer: DomSanitizer) { }
+  constructor(
+    private fb: FormBuilder,
+    private adminService: AdminService,
+    private sanitizer: DomSanitizer,
+    private imageStorage: ImageStorageService
+  ) { }
   @Input() account: Admin;
   @Input() read = true;
   @Output() done = new EventEmitter<boolean>();
@@ -24,9 +30,10 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
     state: { value: null, disabled: this.read }
   });
   private listener: Subscription;
+  private upload: UploadObject;
+  uploadStatus: UploadStatus;
+  preview: string | SafeUrl;
   photo: string;
-  photoName = '';
-  upload: string | SafeUrl;
   noFocus = 'no-focus';
   states = [
     'Acre',
@@ -68,12 +75,12 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
           state: this.account.address.state || null
         });
         this.photo = this.account.photo;
-        this.upload = null;
       }
     }
     if (changes.read) {
       if (this.read) {
         this.profileForm.disable();
+        if (this.uploadStatus.isUploading) { this.onAbortUpload(); }
         if (this.listener) { this.listener.unsubscribe(); }
         this.noFocus = 'no-focus';
       } else {
@@ -87,45 +94,96 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
       }
     }
   }
-  onPick(e: Event): void {
-    const imageBlob = (e.target as HTMLInputElement).files[0];
-    this.profileForm.patchValue({ photo: imageBlob });
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const extIndex = imageBlob.name.lastIndexOf('.');
-      this.photoName = imageBlob.name.slice(0, (extIndex < 30 ? extIndex : 30)) + imageBlob.name.slice(extIndex);
-      this.upload = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+  onPickImage(e: Event): void {
+    // TODO: add ft pick from image storage
+    this.noFocus = 'no-focus';
+    this.uploadStatus = {
+      isUploading: false,
+      uploadProgress: 0,
+      hasUploaded: false
     };
-    reader.readAsDataURL(imageBlob);
+    const inputFile = e.target as HTMLInputElement;
+    this.upload = {
+      data: null,
+      url: null,
+      key: null,
+      uploadRequest: null
+    };
+    try {
+      this.upload.data = this.imageStorage.validateFile(inputFile.files[0]);
+    } catch (error) {
+      this.noFocus = '';
+      this.upload = null;
+      this.uploadStatus = null;
+      return;
+    }
+    inputFile.value = '';
+    const reader = new FileReader();
+    reader.onerror = () => {
+      this.upload.data = null;
+    };
+    reader.onloadend = () => {
+      this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+      this.noFocus = '';
+    };
+    this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'photo')
+      .subscribe((result) => {
+        this.upload.url = result.url;
+        this.upload.key = result.key;
+        reader.readAsDataURL(this.upload.data);
+      });
   }
   onRevertImage(): void {
+    // TODO: add ft remove from image storage
     this.profileForm.patchValue({ photo: null });
+    this.preview = null;
     this.upload = null;
-    this.photoName = '';
+    this.uploadStatus = null;
   }
-  onGetImage(): void {
+  onGetGravatar(): void {
     this.adminService.getGravatar().subscribe((gravatar) => {
       if (gravatar === this.account.photo) { return; }
       this.profileForm.patchValue({ photo: gravatar });
-      this.upload = gravatar;
-      this.photoName = '';
+      this.preview = gravatar;
     });
   }
-  onSaveImage(): void {
-    if (this.photoName) {
-      this.adminService.savePhoto(this.account._id, this.profileForm.value.photo, this.photoName);
-    } else {
-      this.adminService.savePhoto(this.account._id, this.profileForm.value.photo, null);
-    }
+  onUploadImage(): void {
+    this.uploadStatus.isUploading = true;
+    this.upload.uploadRequest = this.imageStorage.uploadImage(this.upload.url, this.upload.data)
+      .subscribe(progressDone => {
+        switch (progressDone) {
+          case 101:
+            this.uploadStatus.hasUploaded = true;
+            this.uploadStatus.isUploading = false;
+            this.profileForm.patchValue({
+              photo: this.upload.key
+            });
+            break;
+          case NaN:
+            this.uploadStatus.isUploading = false;
+            this.upload.uploadRequest.unsubscribe();
+            break;
+          default:
+            this.uploadStatus.uploadProgress = progressDone;
+        }
+      });
   }
+  onAbortUpload(): void {
+    this.upload.uploadRequest.unsubscribe();
+    this.uploadStatus.isUploading = false;
+  }
+  // save image also
   onSubmit() {
     if (this.profileForm.invalid) { return; }
-    this.adminService.editProfile(this.account._id,
+    this.adminService.editProfile(
+      this.account._id,
       this.profileForm.value.name,
       this.profileForm.value.lastName,
       this.profileForm.value.birthdate,
       this.profileForm.value.city,
-      this.profileForm.value.state);
+      this.profileForm.value.state,
+      this.profileForm.value.photo
+    );
   }
   ngOnDestroy(): void {
     if (this.listener) { this.listener.unsubscribe(); }

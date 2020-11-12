@@ -29,21 +29,14 @@ export class AdminService {
   getGravatar() {
     return this.http.get<string>(ROUTE + '?gravatar=true');
   }
-  savePhoto(id: string, photo: File | string, photoName: string | null): void {
-    const data = new FormData();
-    photoName ? data.append('photo', photo, photoName) : data.append('photo', photo);
-    this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
-      this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } });
-      this.fetchAdmin();
-    });
-  }
-  editProfile(id: string, name: string, lastName: string, birthdate: Date, city: string | null, state: string | null) {
+  editProfile(id: string, name: string, lastName: string, birthdate: Date, city?: string, state?: string, photo?: string) {
     const data = new FormData();
     data.append('name', name);
     data.append('last_name', lastName);
     data.append('birthdate', new Date(birthdate).toISOString());
     if (city) { data.append('city', city); }
-    if (city) { data.append('state', state); }
+    if (state) { data.append('state', state); }
+    if (photo) { data.append('photo', photo); }
     this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } });
       this.fetchAdmin();
@@ -63,26 +56,20 @@ export class AdminService {
       this.admin$.error(e);
     });
   }
-  saveLogo(id: string, logo: File | string, logoName: string | null): void {
-    const data = new FormData();
-    logoName ? data.append('logo', logo, logoName) : data.append('logo', logo);
-    this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
-      this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message } });
-      this.fetchAdmin();
-    });
-  }
   editProfessional(
     id: string,
     profession: string,
-    nickname: string | null,
     biodata: string,
-    skills: { [key: string]: any } | null,
-    social: { [key: string]: string } | null) {
+    logo?: string,
+    nickname?: string,
+    skills?: { [key: string]: any },
+    social?: { [key: string]: string }) {
     const data = new FormData();
     data.append('_id', id);
     data.append('profession', profession);
-    if (nickname) { data.append('nickname', nickname); }
     data.append('biodata', biodata);
+    if (logo) { data.append('logo', logo); }
+    if (nickname) { data.append('nickname', nickname); }
     if (skills) { data.append('skills', JSON.stringify(skills)); }
     if (social) { data.append('social', JSON.stringify(social)); }
     this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {

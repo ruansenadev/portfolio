@@ -2,7 +2,7 @@
   "name": "portfolio-app",
   "version": "1.0.0",
   "scripts": {
-    "start": "ng serve",
+    "start": "ng serve --open",
     "build": "ng build --prod",
     "ng": "ng",
     "test": "ng test --source-map=false",
@@ -28,7 +28,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1001.4",
+    "@angular-devkit/build-angular": "^0.1002.0",
     "@angular/cdk": "^10.2.3",
     "@angular/cli": "~10.1.4",
     "@angular/compiler-cli": "~10.1.4",

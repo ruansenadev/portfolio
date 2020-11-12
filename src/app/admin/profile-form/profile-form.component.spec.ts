@@ -5,14 +5,17 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AdminService } from '../admin.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ImageStorageService } from 'src/app/util/image-storage.service';
 
 describe('ProfileFormComponent', () => {
   let component: ProfileFormComponent;
   let fixture: ComponentFixture<ProfileFormComponent>;
   let mockAdminService;
+  let mockImageStorage;
 
   beforeEach(waitForAsync(() => {
     mockAdminService = jasmine.createSpyObj(['getStream', 'getGravatar', 'savePhoto', 'editProfile']);
+    mockImageStorage = jasmine.createSpyObj(['validateFile', 'getSignedUrl', 'uploadImage']);
     TestBed.configureTestingModule({
       declarations: [ProfileFormComponent],
       imports: [
@@ -21,7 +24,8 @@ describe('ProfileFormComponent', () => {
       providers: [
         FormBuilder,
         DomSanitizer,
-        { provide: AdminService, useValue: mockAdminService }
+        { provide: AdminService, useValue: mockAdminService },
+        { provide: ImageStorageService, useValue: mockImageStorage }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

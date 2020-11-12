@@ -3,10 +3,10 @@
     <div class="col">
       <div class="photo-field">
         <div class="photo-wrapper" [class]="noFocus">
-          <img [src]="upload || photo" [alt]="photoName">
+          <img [src]="preview || photo">
         </div>
-        <button *ngIf="!read" mat-mini-fab type="button" class="photoMenu-btn" [matMenuTriggerFor]="photoMenu"
-          aria-label="Toggle menu">
+        <button *ngIf="!uploadStatus || !uploadStatus.isUploading" mat-mini-fab type="button" class="photoMenu-btn"
+          [ngClass]="{'form--reading': read}" [matMenuTriggerFor]="photoMenu" aria-label="Toggle menu">
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #photoMenu="matMenu" xPosition="before">
@@ -14,20 +14,27 @@
             <mat-icon>cloud_upload</mat-icon>
             Upload
           </button>
-          <button *ngIf="upload" mat-menu-item (click)="onRevertImage()">
+          <button *ngIf="preview" mat-menu-item (click)="onRevertImage()">
             <mat-icon>autorenew</mat-icon>
-            <span>Remover</span>
+            <span>Reverter</span>
           </button>
-          <button *ngIf="!upload" mat-menu-item (click)="onGetImage()">
+          <button *ngIf="!preview" mat-menu-item (click)="onGetGravatar()">
             <mat-icon>cloud_circle</mat-icon>
             Gravatar
           </button>
         </mat-menu>
-        <button mat-mini-fab *ngIf="!read && upload" class="photo-btn" type="button" color="accent" (click)="onSaveImage()">
-          <mat-icon>{{ photoName ? 'send' : 'save'}}</mat-icon>
+        <button mat-mini-fab *ngIf="preview && !uploadStatus.hasUploaded" class="photo-btn" type="button"
+          [color]="uploadStatus.isUploading ? 'accent' : 'primary'" [ngClass]="{'form--reading': read}"
+          (click)="uploadStatus.isUploading ? onAbortUpload() : onUploadImage()">
+          <mat-icon>{{ uploadStatus.isUploading ? 'cancel_schedule_send' : 'send' }}</mat-icon>
         </button>
       </div>
-      <input type="file" #photoInput accept=".png, .jpg, .jpeg, .svg, .webp" (change)="onPick($event)">
+      <div class="file">
+        <input class="file-input" type="file" #photoInput accept=".png, .jpg, .jpeg, .svg, .webp"
+          (change)="onPickImage($event)">
+        <mat-progress-bar *ngIf="preview && uploadStatus.isUploading" class="file-status" mode="determinate"
+          [value]="uploadStatus.uploadProgress"></mat-progress-bar>
+      </div>
     </div>
     <div class="col">
       <mat-form-field appearance="fill">
@@ -62,5 +69,5 @@
       </mat-form-field>
     </div>
   </div>
-  <button *ngIf="!read" mat-raised-button color="primary" type="submit">Salvar</button>
+  <button mat-raised-button color="primary" [ngClass]="{'form--reading': read}" type="submit">Salvar</button>
 </form>

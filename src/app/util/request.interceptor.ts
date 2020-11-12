@@ -6,10 +6,12 @@ const api = environment.api;
 
 @Injectable()
 export class RequestInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const request = req.clone({
-      url: api + req.url
-    });
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (request.url.startsWith('/')) {
+      request = request.clone({
+        url: api + request.url
+      });
+    }
     return next.handle(request);
   }
 }

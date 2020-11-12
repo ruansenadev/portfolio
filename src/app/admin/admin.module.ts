@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../util/shared.module';
 
 import { MatChipsModule, MAT_CHIPS_DEFAULT_OPTIONS } from '@angular/material/chips';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
 import { AdminRoutingModule } from './admin-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
@@ -28,13 +27,12 @@ import { ProfessionalFormComponent } from './professional-form/professional-form
     ProfessionalFormComponent
   ],
   imports: [
-    CommonModule,
+    SharedModule,
     AdminRoutingModule,
     MatExpansionModule,
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
-    ReactiveFormsModule,
     MatInputModule,
     MatSelectModule,
     MatNativeDateModule,

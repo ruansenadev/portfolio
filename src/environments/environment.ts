@@ -4,7 +4,7 @@
 
 // staticsHost for mapping images from server cors,
 // ex dev: 'http://localhost:3000',
-// ex prod: 'https://s3.amazonaws.com/bucketname'
+// ex prod: 'https://bucketname.s3.amazonaws.com'
 
 // api address for consuming api,
 // ex dev: 'http://localhost:3000/api',
@@ -15,7 +15,7 @@
 
 export const environment = {
   production: false,
-  staticsHost: `http://s3.amazonaws.com/portfolio-ruansenadev`,
+  staticsHost: `https://portfolio-ruansenadev.s3.amazonaws.com`,
   api: 'https://portfolio-ruansenadev.herokuapp.com/api',
   clientHost: `${window.location.protocol}//${window.location.host}`
 };

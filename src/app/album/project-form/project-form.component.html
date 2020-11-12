@@ -9,7 +9,8 @@
       <mat-form-field appearance="outline" hintLabel="Sequência do projeto no álbum">
         <mat-label>Número</mat-label>
         <mat-select formControlName="seq" required>
-          <mat-option *ngFor="let sequence of sequences.available | keyvalue" [value]="sequence.key" [disabled]="sequence.value">
+          <mat-option *ngFor="let sequence of sequences.available | keyvalue" [value]="sequence.key"
+            [disabled]="sequence.value">
             {{ sequence.key }}
             <span *ngIf="sequences.projects.has(sequence.key)"> - {{ sequences.projects.get(sequence.key) }}</span>
           </mat-option>
@@ -28,38 +29,63 @@
       <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title *ngIf="thumbnail">{{ thumbnail }}</mat-panel-title>
-            <mat-panel-description>
+            <mat-panel-title>
+              <mat-icon *ngIf="preview || thumbnail" inline="true">insert_photo</mat-icon>
               Thumbnail
-              <mat-icon>insert_photo</mat-icon>
+            </mat-panel-title>
+            <mat-panel-description *ngIf="uploadStatus">
+              <mat-progress-bar *ngIf="uploadStatus.isUploading" mode="determinate"
+                [value]="uploadStatus.uploadProgress"></mat-progress-bar>
+              <mat-icon *ngIf="!uploadStatus.isUploading">
+                {{ uploadStatus.hasUploaded ? 'done' : 'send' }}
+              </mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <div *ngIf="preview" class="imagePreview">
-            <img [src]="preview">
+          <div class="imagePreview" [class]="noFocus">
+            <img [src]="preview || thumbnail">
           </div>
-          <input type="file" #thumb accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false" (change)="onPick($event)">
+          <input type="file" #thumb accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false"
+            (change)="onPickImage($event)">
           <mat-action-row>
-            <button mat-stroked-button type="button" color="primary" (click)="thumb.click()">Upload</button>
+            <button mat-stroked-button *ngIf="preview && !uploadStatus.hasUploaded" class="photo-btn" type="button"
+              [color]="uploadStatus.isUploading ? 'warn' : 'accent'"
+              (click)="uploadStatus.isUploading ? onAbortUpload() : onUploadImage()">
+              {{ uploadStatus.isUploading ? 'Cancelar' : 'Enviar' }}
+            </button>
+            <button *ngIf="preview && !uploadStatus.isUploading" mat-stroked-button type="button" color="warn"
+              (click)="onRevertImage()">
+              Reverter
+            </button>
+            <button *ngIf="!uploadStatus || !uploadStatus.isUploading" mat-stroked-button type="button" color="primary"
+              (click)="thumb.click()">
+              Upload
+            </button>
           </mat-action-row>
         </mat-expansion-panel>
       </mat-accordion>
       <mat-form-field appearance="fill">
         <mat-label>Descrição</mat-label>
-        <textarea matInput cdkTextareaAutosize rows="3" formControlName="description" required maxlength="330" (change)="onIntroChange()"></textarea>
+        <textarea matInput cdkTextareaAutosize rows="3" formControlName="description" required maxlength="330"
+          (change)="onIntroChange()"></textarea>
         <mat-hint>Um parágrafo sobre o projeto</mat-hint>
       </mat-form-field>
-      <mat-form-field appearance="outline" hintLabel="Adicione conteúdos, recursos, referências... (Descrição é mantida)">
+      <mat-form-field appearance="outline"
+        hintLabel="Adicione conteúdos, recursos, referências... (Descrição é mantida)">
         <mat-label>Visão geral</mat-label>
-        <textarea matInput cdkTextareaAutosize formControlName="overview" rows="6" (keydown)="onOverviewInput($event)" (change)="onOverviewChange()"></textarea>
+        <textarea matInput cdkTextareaAutosize formControlName="overview" rows="6" (keydown)="onOverviewInput($event)"
+          (change)="onOverviewChange()"></textarea>
         <mat-hint align="end"><a href="https://commonmark.org/help" target="_blank">Markdown reference</a></mat-hint>
       </mat-form-field>
       <mat-form-field>
         <mat-chip-list #technologiesList>
-          <mat-chip *ngFor="let item of chips.technologies" [removable]="true" (removed)="removeChip(item, 'technologies')">
+          <mat-chip *ngFor="let item of chips.technologies" [removable]="true"
+            (removed)="removeChip(item, 'technologies')">
             {{ item }}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
-          <input matInput formControlName="technologies" placeholder="Add tecnologia..." [matChipInputFor]="technologiesList" [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="addChip($event, 'technologies')">
+          <input matInput formControlName="technologies" placeholder="Add tecnologia..."
+            [matChipInputFor]="technologiesList" [matChipInputAddOnBlur]="true"
+            (matChipInputTokenEnd)="addChip($event, 'technologies')">
         </mat-chip-list>
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -77,7 +103,8 @@
             {{ word }}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
-          <input matInput formControlName="keywords" placeholder="Add palavra-chave..." [matChipInputFor]="keywordsList" [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="addChip($event, 'keywords')">
+          <input matInput formControlName="keywords" placeholder="Add palavra-chave..." [matChipInputFor]="keywordsList"
+            [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="addChip($event, 'keywords')">
         </mat-chip-list>
       </mat-form-field>
       <button type="submit" mat-flat-button color="primary">Enviar</button>

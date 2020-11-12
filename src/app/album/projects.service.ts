@@ -61,26 +61,25 @@ export class ProjectsService {
     name: string,
     seq: number,
     status: string,
-    thumbnail: File | null,
-    thumbnailName: string | null,
     description: string,
     overview: string,
     technologies: string[],
     url: string,
-    homepage: string | null,
-    keywords: string[]
+    keywords: string[],
+    thumbnail?: string,
+    homepage?: string,
   ): void {
     const data = new FormData();
     data.append('name', name);
     data.append('seq', '' + seq);
     data.append('status', status);
-    if (thumbnail) { data.append('thumbnail', thumbnail, thumbnailName); }
     data.append('description', description);
     data.append('overview', overview);
     data.append('technologies', JSON.stringify(technologies));
     data.append('url', url);
-    if (homepage) { data.append('homepage', homepage); }
     data.append('keywords', JSON.stringify(keywords));
+    if (thumbnail) { data.append('thumbnailPath', thumbnail); }
+    if (homepage) { data.append('homepage', homepage); }
     this.http.post<{ message: string, project: Project }>(ROUTE, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Projeto', redirect: `album/${res.project.seq}` } });
       this.router.navigate(['/album'], { state: { done: true } });
@@ -90,34 +89,29 @@ export class ProjectsService {
   }
   editProject(
     id: string,
-    seq: number,
     name: string,
+    seq: number,
     status: string,
-    thumbnail: File | string | null,
-    thumbnailName: string | null,
     description: string,
     overview: string,
     technologies: string[],
     url: string,
-    homepage: string | null,
-    keywords: string[]
+    keywords: string[],
+    thumbnail?: string,
+    homepage?: string,
   ): void {
     const data = new FormData();
     data.append('_id', id);
-    data.append('seq', seq + '');
     data.append('name', name);
+    data.append('seq', seq + '');
     data.append('status', status);
-    if (typeof thumbnail === 'object') {
-      data.append('thumbnail', thumbnail, thumbnailName);
-    } else if (thumbnail) {
-      data.append('thumbnailPath', thumbnail);
-    }
     data.append('description', description);
     data.append('overview', overview);
     data.append('technologies', JSON.stringify(technologies));
     data.append('url', url);
-    if (homepage) { data.append('homepage', homepage); }
     data.append('keywords', JSON.stringify(keywords));
+    if (thumbnail) { data.append('thumbnailPath', thumbnail); }
+    if (homepage) { data.append('homepage', homepage); }
     this.http.put<{ message: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Projeto', redirect: `album/${seq}` } });
       this.router.navigate(['/album'], { state: { done: true } });

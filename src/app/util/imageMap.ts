@@ -16,7 +16,7 @@ export function setMapLevel(level: MAP_LEVEL) {
 }
 
 let mapLevel = MAP_LEVEL.NORMAL;
-let imagesFolder = '/images';
+let imagesFolder = 'images';
 
 export function imagesMap(...args: string[]) {
   return (source: Observable<any>) => source.pipe(

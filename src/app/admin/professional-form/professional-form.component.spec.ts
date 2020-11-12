@@ -13,14 +13,17 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AdminService } from '../admin.service';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ImageStorageService } from 'src/app/util/image-storage.service';
 
 describe('ProfessionalFormComponent', () => {
   let component: ProfessionalFormComponent;
   let fixture: ComponentFixture<ProfessionalFormComponent>;
   let mockAdminService;
+  let mockImageStorage;
 
   beforeEach(waitForAsync(() => {
     mockAdminService = jasmine.createSpyObj(['getStream', 'saveLogo', 'editProfessional']);
+    mockImageStorage = jasmine.createSpyObj(['validateFile', 'getSignedUrl', 'uploadImage']);
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
@@ -38,7 +41,8 @@ describe('ProfessionalFormComponent', () => {
       providers: [
         FormBuilder,
         DomSanitizer,
-        { provide: AdminService, useValue: mockAdminService }
+        { provide: AdminService, useValue: mockAdminService },
+        { provide: ImageStorageService, useValue: mockImageStorage }
       ]
     })
     .compileComponents();

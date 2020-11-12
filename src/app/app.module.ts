@@ -9,7 +9,6 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -73,7 +72,6 @@ import { SharedModule } from './util/shared.module';
     MatBottomSheetModule,
     MarkdownModule.forRoot({ sanitize: SecurityContext.NONE }),
     MatFormFieldModule,
-    MatProgressBarModule,
     MatIconModule,
     MatToolbarModule,
     MatCardModule,

@@ -14,8 +14,8 @@ describe('RequestInterceptor', () => {
   class RequestService {
     constructor(private http: HttpClient) { }
 
-    req() {
-      this.http.get(route).subscribe();
+    req(apiRoute: string) {
+      this.http.get(apiRoute).subscribe();
     }
   }
 
@@ -38,7 +38,7 @@ describe('RequestInterceptor', () => {
   });
 
   it('should concat api url before requested url', () => {
-    mockRequestService.req();
+    mockRequestService.req(route);
 
     const req = httpController.expectOne(environment.api + route);
   });

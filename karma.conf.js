@@ -21,8 +21,8 @@ module.exports = function (config) {
       fixWebpackSourcePaths: true
     },
     files: [
-      { pattern: '/DeepPurpleAmber.css', type: 'css', watched: false, served: true },
-      { pattern: '/PurpleGreen.css', type: 'css', watched: false, served: true }
+      { pattern: 'DeepPurpleAmber.css', type: 'css', watched: false, served: true },
+      { pattern: 'PurpleGreen.css', type: 'css', watched: false, served: true }
     ],
     reporters: ['progress', 'kjhtml'],
     port: 9876,

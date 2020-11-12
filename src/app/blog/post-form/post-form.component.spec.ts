@@ -7,6 +7,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
 import { PostsService } from '../posts.service';
 import { Post } from '../post';
+import { ImageStorageService } from 'src/app/util/image-storage.service';
 
 describe('PostFormComponent', () => {
   let component: PostFormComponent;
@@ -14,6 +15,7 @@ describe('PostFormComponent', () => {
   let mockPostsService;
   let mockRoute;
   let mockSanitizer;
+  let mockImageStorage;
   const d = new Date();
   const post: Post = {
     date: d,
@@ -30,6 +32,7 @@ describe('PostFormComponent', () => {
 
   beforeAll(() => {
     mockPostsService = jasmine.createSpyObj(['getStream', 'addProject', 'editProject']);
+    mockImageStorage = jasmine.createSpyObj(['validateFile', 'getSignedUrl', 'uploadImage']);
     mockSanitizer = jasmine.createSpyObj(['bypassSecurityTrustUrl']);
     mockRoute = jasmine.createSpyObj([], { snapshot: { data: { post } } });
   });
@@ -40,7 +43,8 @@ describe('PostFormComponent', () => {
       providers: [
         { provide: PostsService, useValue: mockPostsService },
         { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: DomSanitizer, useValue: mockSanitizer }
+        { provide: DomSanitizer, useValue: mockSanitizer },
+        { provide: ImageStorageService, useValue: mockImageStorage }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

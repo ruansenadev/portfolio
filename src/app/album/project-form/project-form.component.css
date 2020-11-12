@@ -33,3 +33,6 @@ mat-panel-description {
 .imagePreview img {
   max-width: 100%;
 }
+.no-focus {
+  opacity: 0.2;
+}

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectsService, Sequences } from '../projects.service';
 import { Project } from '../project';
 import { Subscription } from 'rxjs';
+import { ImageStorageService, UploadObject, UploadStatus } from 'src/app/util/image-storage.service';
 
 @Component({
   selector: 'app-project-form',
@@ -13,14 +14,22 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./project-form.component.css']
 })
 export class ProjectFormComponent implements OnInit, OnDestroy {
-  constructor(private projectsService: ProjectsService, private route: ActivatedRoute, private sanitizer: DomSanitizer) { }
+  constructor(
+    private projectsService: ProjectsService,
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer,
+    private imageStorage: ImageStorageService
+  ) { }
   private listener: Subscription;
   isLoading = true;
   form: FormGroup;
   private arrows = ['ArrowLeft', 'ArrowUp', 'ArrowDown', 'ArrowRight'];
   private project: Project;
-  thumbnail: string = null;
+  private upload: UploadObject;
+  uploadStatus: UploadStatus;
   preview: string | SafeUrl;
+  thumbnail: string;
+  noFocus = '';
   introduction = '';
   sequences: Sequences;
   chips: { [key: string]: string[] } = {
@@ -47,8 +56,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       this.chips.technologies = this.project.technologies;
       this.chips.keywords = this.project.keywords;
       if (this.project.thumbnailPath) {
-        this.thumbnail = this.project.thumbnailPath.slice(this.project.thumbnailPath.lastIndexOf('/') + 1).slice(20);
-        this.preview = this.project.thumbnailPath;
+        this.thumbnail = this.project.thumbnailPath;
       }
     }
     this.listener = this.projectsService.getStream().subscribe(() => this.isLoading = false);
@@ -89,16 +97,74 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       }
     }
   }
-  onPick(e: Event): void {
-    const imageBlob = (e.target as HTMLInputElement).files[0];
-    this.form.patchValue({ thumbnail: imageBlob });
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const extIndex = imageBlob.name.lastIndexOf('.');
-      this.thumbnail = imageBlob.name.slice(0, (extIndex < 30 ? extIndex : 30)) + imageBlob.name.slice(extIndex);
-      this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+  onPickImage(e: Event): void {
+    this.noFocus = 'no-focus';
+    this.uploadStatus = {
+      isUploading: false,
+      uploadProgress: 0,
+      hasUploaded: false
     };
-    reader.readAsDataURL(imageBlob);
+    const inputFile = e.target as HTMLInputElement;
+    this.upload = {
+      data: null,
+      url: null,
+      key: null,
+      uploadRequest: null
+    };
+    try {
+      this.upload.data = this.imageStorage.validateFile(inputFile.files[0]);
+    } catch (error) {
+      this.noFocus = '';
+      this.upload = null;
+      this.uploadStatus = null;
+      return;
+    }
+    inputFile.value = '';
+    const reader = new FileReader();
+    reader.onerror = () => {
+      this.upload.data = null;
+    };
+    reader.onloadend = () => {
+      this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+      this.noFocus = '';
+    };
+    this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'album')
+      .subscribe((result) => {
+        this.upload.url = result.url;
+        this.upload.key = result.key;
+        reader.readAsDataURL(this.upload.data);
+      });
+  }
+  onRevertImage(): void {
+    this.form.patchValue({ thumbnail: null });
+    this.preview = null;
+    this.upload = null;
+    this.uploadStatus = null;
+  }
+  onUploadImage(): void {
+    this.uploadStatus.isUploading = true;
+    this.upload.uploadRequest = this.imageStorage.uploadImage(this.upload.url, this.upload.data)
+      .subscribe(progressDone => {
+        switch (progressDone) {
+          case 101:
+            this.uploadStatus.hasUploaded = true;
+            this.uploadStatus.isUploading = false;
+            this.form.patchValue({
+              thumbnail: this.upload.key
+            });
+            break;
+          case NaN:
+            this.uploadStatus.isUploading = false;
+            this.upload.uploadRequest.unsubscribe();
+            break;
+          default:
+            this.uploadStatus.uploadProgress = progressDone;
+        }
+      });
+  }
+  onAbortUpload(): void {
+    this.upload.uploadRequest.unsubscribe();
+    this.uploadStatus.isUploading = false;
   }
   addChip(e: MatChipInputEvent, list: string): void {
     const value = (e.value || '').trim();
@@ -115,29 +181,30 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     if (this.project) {
       this.projectsService.editProject(
         this.project._id,
-        this.project.seq,
         this.form.value.name,
+        this.project.seq,
         this.form.value.status,
-        this.form.value.thumbnail || this.project.thumbnailPath,
-        this.thumbnail, this.form.value.description,
+        this.form.value.description,
         this.form.value.overview || this.introduction,
         this.chips.technologies,
         this.form.value.url,
-        this.form.value.homepage,
-        this.chips.keywords);
+        this.chips.keywords,
+        this.form.value.thumbnail,
+        this.form.value.homepage
+      );
     } else {
       this.projectsService.addProject(
         this.form.value.name,
         this.form.value.seq,
         this.form.value.status,
-        this.form.value.thumbnail,
-        this.thumbnail || null,
         this.form.value.description,
         this.form.value.overview || this.introduction,
         this.chips.technologies,
         this.form.value.url,
-        this.form.value.homepage,
-        this.chips.keywords);
+        this.chips.keywords,
+        this.form.value.thumbnail,
+        this.form.value.homepage
+      );
     }
   }
   canDeactivate(): boolean {

@@ -3,9 +3,10 @@
     <div class="col">
       <div class="logo-field">
         <div class="logo-wrapper" [class]="noFocus">
-          <img [src]="upload || logo" [alt]="logoName">
+          <img [src]="preview || logo">
         </div>
-        <button *ngIf="!read" mat-mini-fab type="button" class="logoMenu-btn" [matMenuTriggerFor]="logoMenu"
+        <button *ngIf="!uploadStatus || !uploadStatus.isUploading" mat-mini-fab type="button"
+          [ngClass]="{'form--reading': read}" class="logoMenu-btn" [matMenuTriggerFor]="logoMenu"
           aria-label="Toggle menu">
           <mat-icon>more_vert</mat-icon>
         </button>
@@ -14,17 +15,23 @@
             <mat-icon>cloud_upload</mat-icon>
             Upload
           </button>
-          <button *ngIf="upload" mat-menu-item (click)="onRevertImage()">
+          <button *ngIf="preview" mat-menu-item (click)="onRevertImage()">
             <mat-icon>autorenew</mat-icon>
-            <span>Remover</span>
+            <span>Reverter</span>
           </button>
         </mat-menu>
-        <button mat-mini-fab *ngIf="!read && upload" class="logo-btn" type="button" color="accent"
-          (click)="onSaveImage()">
-          <mat-icon>{{ logoName ? 'send' : 'save'}}</mat-icon>
+        <button mat-mini-fab *ngIf="preview && !uploadStatus.hasUploaded" class="logo-btn" type="button"
+          [color]="uploadStatus.isUploading ? 'accent' : 'primary'" [ngClass]="{'form--reading': read}"
+          (click)="uploadStatus.isUploading ? onAbortUpload() : onUploadImage()">
+          <mat-icon>{{ uploadStatus.isUploading ? 'cancel_schedule_send' : 'send' }}</mat-icon>
         </button>
       </div>
-      <input type="file" #logoInput accept=".png, .jpg, .jpeg, .svg, .webp" (change)="onPick($event)">
+      <div class="file">
+        <input class="file-input" type="file" #logoInput accept=".png, .jpg, .jpeg, .svg, .webp"
+          (change)="onPickImage($event)">
+        <mat-progress-bar *ngIf="preview && uploadStatus.isUploading" class="file-status" mode="determinate"
+          [value]="uploadStatus.uploadProgress"></mat-progress-bar>
+      </div>
     </div>
     <div class="col">
       <mat-form-field appearance="fill">
@@ -46,7 +53,7 @@
       </mat-form-field>
     </div>
   </div>
-  <div *ngIf="!read" class="row" formArrayName="skills">
+  <div class="row" formArrayName="skills" [ngClass]="{'form--reading': read}">
     <div class="col">
       <div class="mat-subheading-2 label-title">
         <button mat-mini-fab type="button" class="btn-icon" (click)="addEntry('skills')">
@@ -77,7 +84,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!read" class="row" formArrayName="social">
+  <div class="row" formArrayName="social" [ngClass]="{'form--reading': read}">
     <div class="col">
       <div class="mat-subheading-2 label-title">
         <button mat-mini-fab type="button" class="btn-icon" (click)="addEntry('social')">
@@ -103,6 +110,6 @@
     </div>
   </div>
   <div class="row row-center">
-    <button *ngIf="!read" mat-raised-button color="primary" type="submit">Salvar</button>
+    <button mat-raised-button color="primary" type="submit" [ngClass]="{'form--reading': read}">Salvar</button>
   </div>
 </form>

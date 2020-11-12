@@ -15,18 +15,37 @@
       <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title *ngIf="thumbnail">{{ thumbnail }}</mat-panel-title>
-            <mat-panel-description>
+            <mat-panel-title>
+              <mat-icon *ngIf="preview || thumbnail" inline="true">insert_photo</mat-icon>
               Thumbnail
-              <mat-icon>insert_photo</mat-icon>
+            </mat-panel-title>
+            <mat-panel-description *ngIf="uploadStatus">
+              <mat-progress-bar *ngIf="uploadStatus.isUploading" mode="determinate"
+                [value]="uploadStatus.uploadProgress"></mat-progress-bar>
+              <mat-icon *ngIf="!uploadStatus.isUploading">
+                {{ uploadStatus.hasUploaded ? 'done' : 'send' }}
+              </mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <div *ngIf="preview" class="imagePreview">
-            <img [src]="preview">
+          <div class="imagePreview" [class]="noFocus">
+            <img [src]="preview || thumbnail">
           </div>
-          <input type="file" #thumb accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false" (change)="onPick($event)">
+          <input type="file" #thumb accept=".png, .jpg, .jpeg, .svg, .webp" multiple="false"
+            (change)="onPickImage($event)">
           <mat-action-row>
-            <button mat-stroked-button type="button" color="primary" (click)="thumb.click()">Upload</button>
+            <button mat-stroked-button *ngIf="preview && !uploadStatus.hasUploaded" class="photo-btn" type="button"
+              [color]="uploadStatus.isUploading ? 'warn' : 'accent'"
+              (click)="uploadStatus.isUploading ? onAbortUpload() : onUploadImage()">
+              {{ uploadStatus.isUploading ? 'Cancelar' : 'Enviar' }}
+            </button>
+            <button *ngIf="preview && !uploadStatus.isUploading" mat-stroked-button type="button" color="warn"
+              (click)="onRevertImage()">
+              Reverter
+            </button>
+            <button *ngIf="!uploadStatus || !uploadStatus.isUploading" mat-stroked-button type="button" color="primary"
+              (click)="thumb.click()">
+              Upload
+            </button>
           </mat-action-row>
         </mat-expansion-panel>
       </mat-accordion>

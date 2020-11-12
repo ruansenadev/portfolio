@@ -5,17 +5,17 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) { }
   intercept(request: HttpRequest<unknown>, next: HttpHandler) {
     const token = this.authService.getToken();
-    if (token) {
-      const authReq = request.clone({
+    if (token && (request.url.includes(environment.api) || request.url.startsWith('/'))) {
+      request = request.clone({
         headers: request.headers.set('Authorization', 'Bearer ' + token)
       });
-      return next.handle(authReq);
     }
     return next.handle(request);
   }
