@@ -32,7 +32,7 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
   private upload: UploadObject;
   uploadStatus: UploadStatus;
   preview: string | SafeUrl;
-  logo = 'https://www.stevensegallery.com/360/170';
+  logo: string;
   noFocus = 'no-focus';
   professionalForm = this.fb.group({
     logo: { value: null, disabled: this.read },
@@ -144,7 +144,7 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
       this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
       this.noFocus = '';
     };
-    this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'admin/logo')
+    this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'logo')
       .subscribe((result) => {
         this.upload.url = result.url;
         this.upload.key = result.key;

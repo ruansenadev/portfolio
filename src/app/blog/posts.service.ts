@@ -55,7 +55,7 @@ export class PostsService {
     data.append('markdown', markdown);
     data.append('labels', JSON.stringify(labels));
     if (icon) { data.append('icon', icon); }
-    if (thumbnail) { data.append('thumbnail', thumbnail); }
+    if (thumbnail) { data.append('thumbnailPath', thumbnail); }
     if (description) { data.append('description', description); }
     this.http.post<{ message: string, post: Post }>(ROUTE, data).subscribe((res) => {
       this.messageBar.openFromComponent(
@@ -85,7 +85,7 @@ export class PostsService {
     data.append('labels', JSON.stringify(labels));
     data.append('icon', icon);
     data.append('modified', new Date().toISOString());
-    if (thumbnail) { data.append('thumbnail', thumbnail); }
+    if (thumbnail) { data.append('thumbnailPath', thumbnail); }
     if (description) { data.append('description', description); }
     this.http.put<{ message: string, slug: string }>(`${ROUTE}/${id}`, data).subscribe((res) => {
       this.messageBar.openFromComponent(

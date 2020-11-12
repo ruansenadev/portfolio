@@ -78,7 +78,7 @@ export class ProjectsService {
     data.append('technologies', JSON.stringify(technologies));
     data.append('url', url);
     data.append('keywords', JSON.stringify(keywords));
-    if (thumbnail) { data.append('thumbnail', thumbnail); }
+    if (thumbnail) { data.append('thumbnailPath', thumbnail); }
     if (homepage) { data.append('homepage', homepage); }
     this.http.post<{ message: string, project: Project }>(ROUTE, data).subscribe((res) => {
       this.messageBar.openFromComponent(MessageComponent, { data: { message: res.message, action: 'Projeto', redirect: `album/${res.project.seq}` } });

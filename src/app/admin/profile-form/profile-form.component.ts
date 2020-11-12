@@ -126,7 +126,7 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
       this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
       this.noFocus = '';
     };
-    this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'admin/photo')
+    this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'photo')
       .subscribe((result) => {
         this.upload.url = result.url;
         this.upload.key = result.key;
