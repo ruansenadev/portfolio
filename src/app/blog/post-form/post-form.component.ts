@@ -6,6 +6,7 @@ import { PostsService } from '../posts.service';
 import { ActivatedRoute } from '@angular/router';
 import { Post } from '../post';
 import { Subscription } from 'rxjs';
+import { ImageStorageService, UploadObject, UploadStatus } from 'src/app/util/image-storage.service';
 
 @Component({
   selector: 'app-blog-post-form',
@@ -13,13 +14,21 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./post-form.component.css']
 })
 export class PostFormComponent implements OnInit, OnDestroy {
-  constructor(private postsService: PostsService, private route: ActivatedRoute, private sanitizer: DomSanitizer) { }
+  constructor(
+    private postsService: PostsService,
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer,
+    private imageStorage: ImageStorageService
+  ) { }
   private listener: Subscription;
   isLoading = true;
   form: FormGroup;
   private post: Post;
-  thumbnail: string = null;
+  private upload: UploadObject;
+  uploadStatus: UploadStatus;
   preview: string | SafeUrl;
+  thumbnail: string;
+  noFocus = '';
   modified: string;
   labels: string[] = [];
   ngOnInit(): void {
@@ -36,8 +45,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
     if (this.post) {
       this.labels = this.post.labels;
       if (this.post.thumbnailPath) {
-        this.thumbnail = this.post.thumbnailPath.slice(this.post.thumbnailPath.lastIndexOf('/') + 1).slice(20);
-        this.preview = this.post.thumbnailPath;
+        this.thumbnail = this.post.thumbnailPath;
       }
       if (this.post.modified) { this.modified = new Date(this.post.modified).toLocaleString(); }
       this.isLoading = false;
@@ -58,16 +66,74 @@ export class PostFormComponent implements OnInit, OnDestroy {
       target.selectionStart = target.selectionEnd = start + 1;
     }
   }
-  onPick(e: Event): void {
-    const imageBlob = (e.target as HTMLInputElement).files[0];
-    this.form.patchValue({ thumbnail: imageBlob });
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const extIndex = imageBlob.name.lastIndexOf('.');
-      this.thumbnail = imageBlob.name.slice(0, (extIndex < 30 ? extIndex : 30)) + imageBlob.name.slice(extIndex);
-      this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+  onPickImage(e: Event): void {
+    this.noFocus = 'no-focus';
+    this.uploadStatus = {
+      isUploading: false,
+      uploadProgress: 0,
+      hasUploaded: false
     };
-    reader.readAsDataURL(imageBlob);
+    const inputFile = e.target as HTMLInputElement;
+    this.upload = {
+      data: null,
+      url: null,
+      key: null,
+      uploadRequest: null
+    };
+    try {
+      this.upload.data = this.imageStorage.validateFile(inputFile.files[0]);
+    } catch (error) {
+      this.noFocus = '';
+      this.upload = null;
+      this.uploadStatus = null;
+      return;
+    }
+    inputFile.value = '';
+    const reader = new FileReader();
+    reader.onerror = () => {
+      this.upload.data = null;
+    };
+    reader.onloadend = () => {
+      this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+      this.noFocus = '';
+    };
+    this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'album')
+      .subscribe((result) => {
+        this.upload.url = result.url;
+        this.upload.key = result.key;
+        reader.readAsDataURL(this.upload.data);
+      });
+  }
+  onRevertImage(): void {
+    this.form.patchValue({ thumbnail: null });
+    this.preview = null;
+    this.upload = null;
+    this.uploadStatus = null;
+  }
+  onUploadImage(): void {
+    this.uploadStatus.isUploading = true;
+    this.upload.uploadRequest = this.imageStorage.uploadImage(this.upload.url, this.upload.data)
+      .subscribe(progressDone => {
+        switch (progressDone) {
+          case 101:
+            this.uploadStatus.hasUploaded = true;
+            this.uploadStatus.isUploading = false;
+            this.form.patchValue({
+              thumbnail: this.upload.key
+            });
+            break;
+          case NaN:
+            this.uploadStatus.isUploading = false;
+            this.upload.uploadRequest.unsubscribe();
+            break;
+          default:
+            this.uploadStatus.uploadProgress = progressDone;
+        }
+      });
+  }
+  onAbortUpload(): void {
+    this.upload.uploadRequest.unsubscribe();
+    this.uploadStatus.isUploading = false;
   }
   addLabel(e: MatChipInputEvent): void {
     const value = (e.value || '').trim();
@@ -85,23 +151,22 @@ export class PostFormComponent implements OnInit, OnDestroy {
       this.postsService.editPost(
         this.post._id,
         this.form.value.title,
-        this.post.slug,
         this.post.date,
-        this.form.value.thumbnail || this.post.thumbnailPath,
-        this.thumbnail,
-        this.form.value.icon,
         this.form.value.markdown,
-        this.form.value.description,
-        this.labels);
+        this.labels,
+        this.form.value.icon,
+        this.form.value.thumbnail,
+        this.form.value.description
+      );
     } else {
       this.postsService.addPost(
         this.form.value.title,
-        this.form.value.thumbnail,
-        this.thumbnail,
-        this.form.value.icon,
         this.form.value.markdown,
-        this.form.value.description,
-        this.labels);
+        this.labels,
+        this.form.value.icon,
+        this.form.value.thumbnail,
+        this.form.value.description
+      );
     }
   }
   canDeactivate(): boolean {

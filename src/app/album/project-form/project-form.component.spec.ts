@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
+import { ImageStorageService } from 'src/app/util/image-storage.service';
 
 describe('ProjectFormComponent', () => {
   let component: ProjectFormComponent;
@@ -14,6 +15,7 @@ describe('ProjectFormComponent', () => {
   let mockProjectsService;
   let mockRoute;
   let mockSanitizer;
+  let mockImageStorage;
 
   const project: Project = {
     _id: '1',
@@ -34,6 +36,7 @@ describe('ProjectFormComponent', () => {
 
   beforeAll(() => {
     mockProjectsService = jasmine.createSpyObj(['getStream', 'addProject', 'editProject']);
+    mockImageStorage = jasmine.createSpyObj(['validateFile', 'getSignedUrl', 'uploadImage']);
     mockSanitizer = jasmine.createSpyObj(['bypassSecurityTrustUrl']);
     mockRoute = jasmine.createSpyObj([], { snapshot: { data: { project, sequences } } });
   });
@@ -44,7 +47,8 @@ describe('ProjectFormComponent', () => {
       providers: [
         { provide: ProjectsService, useValue: mockProjectsService },
         { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: DomSanitizer, useValue: mockSanitizer }
+        { provide: DomSanitizer, useValue: mockSanitizer },
+        { provide: ImageStorageService, useValue: mockImageStorage }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
