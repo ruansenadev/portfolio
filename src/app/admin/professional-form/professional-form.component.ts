@@ -5,6 +5,7 @@ import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Admin } from '../admin';
 import { AdminService } from '../admin.service';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { ImageStorageService, UploadObject, UploadStatus } from 'src/app/util/image-storage.service';
 
 @Component({
   selector: 'app-admin-professional-form',
@@ -12,7 +13,12 @@ import { MatChipInputEvent } from '@angular/material/chips';
   styleUrls: ['./professional-form.component.css']
 })
 export class ProfessionalFormComponent implements OnChanges, OnDestroy {
-  constructor(private fb: FormBuilder, private adminService: AdminService, private sanitizer: DomSanitizer) { }
+  constructor(
+    private fb: FormBuilder,
+    private adminService: AdminService,
+    private sanitizer: DomSanitizer,
+    private imageStorage: ImageStorageService
+  ) { }
   @Input() account: Admin;
   @Input() read = true;
   @Output() done = new EventEmitter<boolean>();
@@ -23,9 +29,10 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
   urls: { [key: number]: string } = {
     0: 'http://www.example.com/'
   };
+  private upload: UploadObject;
+  uploadStatus: UploadStatus;
+  preview: string | SafeUrl;
   logo = 'https://www.stevensegallery.com/360/170';
-  logoName = '';
-  upload: string | SafeUrl;
   noFocus = 'no-focus';
   professionalForm = this.fb.group({
     logo: { value: null, disabled: this.read },
@@ -74,7 +81,6 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
         });
         if (this.account.logo) {
           this.logo = this.account.logo;
-          this.upload = null;
         }
         let i = 0;
         for (const prop of Object.keys(this.account.skills)) {
@@ -93,6 +99,7 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
     if (changes.read) {
       if (this.read) {
         this.professionalForm.disable();
+        if (this.uploadStatus.isUploading) { this.onAbortUpload(); }
         if (this.listener) { this.listener.unsubscribe(); }
         this.noFocus = 'no-focus';
       } else {
@@ -106,28 +113,74 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
       }
     }
   }
-  onPick(e: Event): void {
-    const imageBlob = (e.target as HTMLInputElement).files[0];
-    this.professionalForm.patchValue({ logo: imageBlob });
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const extIndex = imageBlob.name.lastIndexOf('.');
-      this.logoName = imageBlob.name.slice(0, (extIndex < 30 ? extIndex : 30)) + imageBlob.name.slice(extIndex);
-      this.upload = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+  onPickImage(e: Event): void {
+    this.noFocus = 'no-focus';
+    this.uploadStatus = {
+      isUploading: false,
+      uploadProgress: 0,
+      hasUploaded: false
     };
-    reader.readAsDataURL(imageBlob);
+    const inputFile = e.target as HTMLInputElement;
+    this.upload = {
+      data: null,
+      url: null,
+      key: null,
+      uploadRequest: null
+    };
+    try {
+      this.upload.data = this.imageStorage.validateFile(inputFile.files[0]);
+    } catch (error) {
+      this.noFocus = '';
+      this.upload = null;
+      this.uploadStatus = null;
+      return;
+    }
+    inputFile.value = '';
+    const reader = new FileReader();
+    reader.onerror = () => {
+      this.upload.data = null;
+    };
+    reader.onloadend = () => {
+      this.preview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+      this.noFocus = '';
+    };
+    this.imageStorage.getSignedUrl(this.upload.data.name, this.upload.data.type, 'admin/logo')
+      .subscribe((result) => {
+        this.upload.url = result.url;
+        this.upload.key = result.key;
+        reader.readAsDataURL(this.upload.data);
+      });
   }
   onRevertImage(): void {
     this.professionalForm.patchValue({ logo: null });
+    this.preview = null;
     this.upload = null;
-    this.logoName = '';
+    this.uploadStatus = null;
   }
-  onSaveImage(): void {
-    if (this.logoName) {
-      this.adminService.saveLogo(this.account._id, this.professionalForm.value.logo, this.logoName);
-    } else {
-      this.adminService.saveLogo(this.account._id, this.professionalForm.value.logo, null);
-    }
+  onUploadImage(): void {
+    this.uploadStatus.isUploading = true;
+    this.upload.uploadRequest = this.imageStorage.uploadImage(this.upload.url, this.upload.data)
+      .subscribe(progressDone => {
+        switch (progressDone) {
+          case 101:
+            this.uploadStatus.hasUploaded = true;
+            this.uploadStatus.isUploading = false;
+            this.professionalForm.patchValue({
+              logo: this.upload.key
+            });
+            break;
+          case NaN:
+            this.uploadStatus.isUploading = false;
+            this.upload.uploadRequest.unsubscribe();
+            break;
+          default:
+            this.uploadStatus.uploadProgress = progressDone;
+        }
+      });
+  }
+  onAbortUpload(): void {
+    this.upload.uploadRequest.unsubscribe();
+    this.uploadStatus.isUploading = false;
   }
   mapList(list: string[], dic: { [key: number]: string | string[] }): { [key: string]: any } {
     if (list.length !== Object.keys(dic).length) { return null; }
@@ -141,8 +194,9 @@ export class ProfessionalFormComponent implements OnChanges, OnDestroy {
     this.adminService.editProfessional(
       this.account._id,
       this.professionalForm.value.profession,
-      this.professionalForm.value.nickname,
       this.professionalForm.value.biodata,
+      this.professionalForm.value.logo,
+      this.professionalForm.value.nickname,
       this.skills.value.some(e => !!e) ? this.mapList(this.skills.value, this.chips) : null,
       this.social.value.some(e => !!e) ? this.mapList(this.social.value, this.urls) : null
     );

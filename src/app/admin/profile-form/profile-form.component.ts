@@ -80,6 +80,7 @@ export class ProfileFormComponent implements OnChanges, OnDestroy {
     if (changes.read) {
       if (this.read) {
         this.profileForm.disable();
+        if (this.uploadStatus.isUploading) { this.onAbortUpload(); }
         if (this.listener) { this.listener.unsubscribe(); }
         this.noFocus = 'no-focus';
       } else {

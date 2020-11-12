@@ -5,8 +5,8 @@
         <div class="photo-wrapper" [class]="noFocus">
           <img [src]="preview || photo">
         </div>
-        <button *ngIf="!uploadStatus || !uploadStatus.isUploading" mat-mini-fab type="button" class="photoMenu-btn" [ngClass]="{'form--reading': read}"
-          [matMenuTriggerFor]="photoMenu" aria-label="Toggle menu">
+        <button *ngIf="!uploadStatus || !uploadStatus.isUploading" mat-mini-fab type="button" class="photoMenu-btn"
+          [ngClass]="{'form--reading': read}" [matMenuTriggerFor]="photoMenu" aria-label="Toggle menu">
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #photoMenu="matMenu" xPosition="before">
@@ -24,7 +24,7 @@
           </button>
         </mat-menu>
         <button mat-mini-fab *ngIf="preview && !uploadStatus.hasUploaded" class="photo-btn" type="button"
-          [color]="uploadStatus.isUploading ? 'accent' : 'primary'"
+          [color]="uploadStatus.isUploading ? 'accent' : 'primary'" [ngClass]="{'form--reading': read}"
           (click)="uploadStatus.isUploading ? onAbortUpload() : onUploadImage()">
           <mat-icon>{{ uploadStatus.isUploading ? 'cancel_schedule_send' : 'send' }}</mat-icon>
         </button>
