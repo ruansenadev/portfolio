@@ -1,79 +1,75 @@
 import { AuthService } from './auth.service.prod';
 import { of } from 'rxjs';
-import { tick, fakeAsync } from '@angular/core/testing';
+import { TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { Router } from '@angular/router';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let mockHttpClient;
+  let httpTestingController: HttpTestingController;
   let mockRouter;
-  let token;
+  const route = '/auth';
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
+  const email = 'foo@bar.baz';
+  const password = '</>';
 
   beforeAll(() => {
-    mockHttpClient = jasmine.createSpyObj(['post']);
     mockRouter = jasmine.createSpyObj(['navigate']);
-    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
   });
 
   beforeEach(() => {
-    service = new AuthService(mockHttpClient, mockRouter);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        AuthService,
+        { provide: Router, useValue: mockRouter }
+      ]
+    });
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(AuthService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  beforeEach(() => {
+    const expiration = Date.now() + 10000000;
+
+    service.login(email, password);
+
+    const req = httpTestingController.expectOne(route);
+    req.flush({ message: 'sucesso', token, expiration });
   });
 
-  describe('LogIn', () => {
-    let route;
-    let email;
-    let password;
-
-    beforeAll(() => {
-      route = '/auth';
-      email = 'foo@bar.baz';
-      password = '</>';
+  it('should auth', fakeAsync(() => {
+    service.status$.subscribe(status => {
+      expect(status).toBeTrue();
+      expect(service.bearer).toContain(token);
     });
+  }));
 
-    it('should auth when login is called with right data', () => {
-      const expiration = new Date(Date.now() + 10000000).valueOf();
+  it('should deauth when logout is called', fakeAsync(() => {
+    service.logout();
 
-      spyOn(service, 'setExpTime');
-      mockHttpClient.post.withArgs(route, { email, password }).and.returnValue(of({ message: 'sucesso', token, expiration }));
-
-      service.login(email, password);
-
-      expect(service.setExpTime).toHaveBeenCalled();
-      expect(service.getToken()).toBe(token);
-      expect(service.getStatus()).toBeTrue();
+    service.status$.subscribe(status => {
+      expect(status).toBeFalse();
+      expect(service.bearer).toBeFalsy();
     });
+  }));
+
+  it('should logout when token has expired', fakeAsync(() => {
+    const msExp = 10000000;
+
+    spyOn(service, 'logout');
+
+    service.setExpTime(msExp);
+    tick(msExp);
+
+    expect(service.logout).toHaveBeenCalled();
+  }));
+
+  it('should navigate home when logout', () => {
+    mockRouter.navigate.and.returnValue(null);
+
+    service.logout();
+
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
   });
-
-  describe('LogOut', () => {
-    it('should deauth when logout is called', () => {
-      service.setStatus(true);
-
-      service.logout();
-
-      expect(service.getStatus()).toBeFalse();
-    });
-
-    it('should navigate home when log out', () => {
-      mockRouter.navigate.and.returnValue('true');
-
-      service.logout();
-
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
-    });
-
-    it('should logout when token has expired', fakeAsync(() => {
-      const msExp = 10000000;
-      service.setStatus(true);
-      spyOn(service, 'logout');
-
-      service.setExpTime(msExp);
-      tick(msExp);
-
-      expect(service.logout).toHaveBeenCalled();
-    }));
-  });
-
 });

@@ -1,53 +1,42 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
-  private status = true;
   private token: string;
   private expiration: ReturnType<typeof setTimeout>;
-  private listener = new Subject<boolean>();
-  private redirect = '/';
+  private subject = new BehaviorSubject<boolean>(true);
+  private goto = ['/'];
 
-  setStatus(status: boolean): void {
-    this.status = status;
+  get status$(): Observable<boolean> {
+    return this.subject.asObservable();
   }
-  getStatus(): boolean {
-    return this.status;
+  get bearer(): string {
+    return this.token ? 'Bearer ' + this.token : '';
   }
-  setToken(token: string): void {
-    this.token = token;
-  }
-  getToken(): string {
-    return this.token;
-  }
-  getListener() {
-    return this.listener.asObservable();
-  }
-  setRedirect(uri: string): void {
-    this.redirect = uri;
+  set redirect(uri: string) {
+    this.goto = [uri];
   }
 
   login(email: string, password: string): void {
     const expiration = new Date(Date.now() + 100000000);
-    this.setStatus(true);
-    this.listener.next(true);
+    this.subject.next(true);
     this.saveLocal('', expiration.toISOString());
     this.setExpTime(+expiration - Date.now());
-    this.router.navigate([this.redirect]);
+    this.router.navigate(this.goto);
   }
   logout(): void {
-    this.setStatus(false);
-    this.setToken('');
-    this.listener.next(false);
+    this.token = '';
+    this.redirect = '/';
     localStorage.clear();
+    this.subject.next(false);
     clearTimeout(this.expiration);
-    this.router.navigate(['/']);
+    this.router.navigate(this.goto);
   }
   authBack(): void {
     const token = localStorage.getItem('token');
@@ -55,9 +44,8 @@ export class AuthService {
     if (!token || !date) { return; }
     const interval = new Date(date).getTime() - Date.now();
     if (interval > 0) {
-      this.setToken(token);
-      this.setStatus(true);
-      this.listener.next(true);
+      this.token = token;
+      this.subject.next(true);
       this.setExpTime(interval);
     } else {
       localStorage.clear();
