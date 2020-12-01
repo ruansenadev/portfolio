@@ -11,10 +11,10 @@ import { environment } from 'src/environments/environment.prod';
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) { }
   intercept(request: HttpRequest<unknown>, next: HttpHandler) {
-    const token = this.authService.getToken();
+    const token = this.authService.bearer;
     if (token && (request.url.includes(environment.api) || request.url.startsWith('/'))) {
       request = request.clone({
-        headers: request.headers.set('Authorization', 'Bearer ' + token)
+        headers: request.headers.set('Authorization', token)
       });
     }
     return next.handle(request);

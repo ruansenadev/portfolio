@@ -11,6 +11,7 @@ describe('AuthInterceptor', () => {
   let httpTestingController;
   let mockReqService;
   const route = '/auth';
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
 
   @Injectable()
   class MockReqService {
@@ -24,7 +25,7 @@ describe('AuthInterceptor', () => {
   }
 
   beforeEach(() => {
-    mockAuthService = jasmine.createSpyObj(['getToken']);
+    mockAuthService = jasmine.createSpyObj([], { bearer: 'Bearer ' + token });
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -38,9 +39,6 @@ describe('AuthInterceptor', () => {
   });
 
   it('should concat token on header', () => {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
-    mockAuthService.getToken.and.returnValue(token);
-
     mockReqService.req();
 
     const httpReq = httpTestingController.expectOne(route);
