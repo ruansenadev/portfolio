@@ -38,7 +38,7 @@
       </button>
       <span>ruansenadev</span>
       <span class="spacer"></span>
-      <button *ngIf="isAuth" type="button" aria-label="Alternar menu admin" mat-icon-button
+      <button *ngIf="auth.status$ | async" type="button" aria-label="Alternar menu admin" mat-icon-button
         (click)="onToggle('navAdmin')">
         <mat-icon aria-label="Menu admin ícone">admin_panel_settings</mat-icon>
       </button>
@@ -47,7 +47,7 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 
-  <mat-sidenav #_drawer *ngIf="isAuth" class="sidenav" fixedInViewport position="end"
+  <mat-sidenav #_drawer *ngIf="auth.status$ | async" class="sidenav" fixedInViewport position="end"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'push' : 'side'"
     [opened]="(isHandset$ | async) === false">
     <mat-toolbar>

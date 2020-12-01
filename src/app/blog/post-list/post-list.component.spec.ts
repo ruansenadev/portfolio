@@ -17,11 +17,13 @@ describe('PostListComponent', () => {
   let mockAuthService;
   let mockMessageBar;
   let mockDialog;
+  const year = 2020;
+  const month = 9;
 
   beforeAll(() => {
     mockDialog = jasmine.createSpyObj(['open']);
     mockMessageBar = jasmine.createSpyObj(['openFromComponent']);
-    mockRoute = jasmine.createSpyObj([], { queryParams: {} });
+    mockRoute = jasmine.createSpyObj([], { queryParams: of({ year, month }) });
     mockPostsService = jasmine.createSpyObj(['populatePosts', 'getStream', 'delPost']);
     mockAuthService = jasmine.createSpyObj(['getStatus', 'getListener']);
   });
@@ -46,10 +48,8 @@ describe('PostListComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should call for posts with params on init', () => {
-    const year = 2020;
-    const month = 9;
-    (Object.getOwnPropertyDescriptor(mockRoute, 'queryParams').get as any).and.returnValue(of({ year, month }));
+  it('should call for posts with initiated params', () => {
+    mockPostsService.getStream.and.returnValue(of({ posts: [], max: 0 }));
 
     fixture.detectChanges();
 

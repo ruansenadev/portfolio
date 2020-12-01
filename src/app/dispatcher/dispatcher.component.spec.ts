@@ -11,7 +11,7 @@ import { DispatcherComponent } from './dispatcher.component';
 import { DispatcherService } from './dispatcher.service';
 import { AdminService } from '../admin/admin.service';
 import { AuthService } from '../auth/auth.service';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -19,6 +19,7 @@ describe('DispatcherComponent', () => {
   let component: DispatcherComponent;
   let fixture: ComponentFixture<DispatcherComponent>;
   let mockAdminService;
+  const mockAuthSubject = new BehaviorSubject<boolean>(false);
   let mockAuthService;
   let mockService;
 
@@ -44,7 +45,7 @@ describe('DispatcherComponent', () => {
   beforeAll(() => {
     mockService = jasmine.createSpyObj(['getTheme', 'switchTheme'], { defaultTheme: 'light' });
     mockAdminService = jasmine.createSpyObj(['fetchAdmin', 'getStream']);
-    mockAuthService = jasmine.createSpyObj(['getStatus', 'getListener', 'logout']);
+    mockAuthService = jasmine.createSpyObj(['logout'], { subject: mockAuthSubject, status$: mockAuthSubject.asObservable() });
     mockAnchorEv = jasmine.createSpyObj(['preventDefault']);
   });
 
@@ -74,13 +75,11 @@ describe('DispatcherComponent', () => {
     component = fixture.componentInstance;
     mockService.getTheme.and.returnValue(mockService.defaultTheme);
     mockAdminService.getStream.and.returnValue(of(admin));
-    mockAuthService.getListener.and.returnValue(of(false));
   });
 
   it('should initialize with data', () => {
     fixture.detectChanges();
     expect(component.theme).toBe(mockService.defaultTheme);
-    expect(component.isAuth).toBeFalse();
     expect(component.account).toEqual(admin);
   });
 
@@ -97,7 +96,7 @@ describe('DispatcherComponent', () => {
 
   describe('Auth', () => {
     beforeEach(() => {
-      mockAuthService.getListener.and.returnValue(of(true));
+      mockAuthSubject.next(true);
       fixture.detectChanges();
     });
 
@@ -106,8 +105,8 @@ describe('DispatcherComponent', () => {
       expect(sideNavDEs.length).toBe(2);
     });
 
-    it('should destroy second nav when call logout', () => {
-      component.isAuth = false;
+    it('should destroy second nav when logout', () => {
+      mockAuthSubject.next(false);
       fixture.detectChanges();
 
       const sideNavDEs = fixture.debugElement.queryAll(By.directive(MatSidenav));

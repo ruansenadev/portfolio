@@ -11,7 +11,7 @@ describe('LoginComponent', () => {
 
 
   beforeEach(waitForAsync(() => {
-    mockAuthService = jasmine.createSpyObj(['getListener', 'login']);
+    mockAuthService = jasmine.createSpyObj(['login'], { status$: of(false) });
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
       providers: [{ provide: AuthService, useValue: mockAuthService }],
@@ -22,7 +22,6 @@ describe('LoginComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    mockAuthService.getListener.and.returnValue(of(false));
     fixture.detectChanges();
   });
 

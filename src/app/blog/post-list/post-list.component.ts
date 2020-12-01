@@ -20,13 +20,12 @@ export class PostListComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private postsService: PostsService,
     private dialog: MatDialog,
-    private authService: AuthService,
-    private messageBar: MatSnackBar) { }
+    private messageBar: MatSnackBar,
+    public auth: AuthService,
+    ) { }
   posts: Post[] = [];
   private queryListener: Subscription;
   private postsListener: Subscription;
-  isAuth = false;
-  private authListener: Subscription;
   left = 0;
   itemsOptions = [5, 10, 15];
   items = 10;
@@ -41,8 +40,6 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.posts = res.posts;
       this.length = res.max;
     });
-    this.isAuth = this.authService.getStatus();
-    this.authListener = this.authService.getListener().subscribe((status) => this.isAuth = status);
   }
   delPost(post: Post): void {
     this.dialog.open(PostDialogComponent, {
@@ -65,6 +62,5 @@ export class PostListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.queryListener.unsubscribe();
     this.postsListener.unsubscribe();
-    this.authListener.unsubscribe();
   }
 }

@@ -18,16 +18,15 @@ export class DispatcherComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private adminService: AdminService,
-    private authService: AuthService,
-    private dispatcherService: DispatcherService) { }
+    private dispatcherService: DispatcherService,
+    public auth: AuthService
+  ) { }
   @ViewChild('topNav') topNav: MatToolbar;
   @ViewChild('drawer') nav: MatSidenav;
   @ViewChild('_drawer') navAdmin: MatSidenav;
   theme: string;
   account: Admin;
   accountListener: Subscription;
-  isAuth: boolean;
-  authListener: Subscription;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
@@ -37,8 +36,6 @@ export class DispatcherComponent implements OnInit {
     this.theme = this.dispatcherService.getTheme();
     this.adminService.fetchAdmin();
     this.accountListener = this.adminService.getStream().subscribe((account) => this.account = account);
-    this.isAuth = this.authService.getStatus();
-    this.authListener = this.authService.getListener().subscribe((status) => this.isAuth = status);
   }
   onToggle(nav: string): void {
     (this[nav] as MatSidenav).toggle();
@@ -52,9 +49,9 @@ export class DispatcherComponent implements OnInit {
     e.preventDefault();
     if (this.topNav) {
       this.navAdmin.close();
-      this.navAdmin._closedStream.subscribe(() => this.authService.logout());
+      this.navAdmin._closedStream.subscribe(() => this.auth.logout());
     } else {
-      this.authService.logout();
+      this.auth.logout();
     }
   }
   onSwitchTheme(e): void {

@@ -17,17 +17,16 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
   constructor(
     private projectsService: ProjectsService,
     private dialog: MatDialog,
-    private authService: AuthService,
-    private messageBar: MatSnackBar) { }
+    private messageBar: MatSnackBar,
+    public auth: AuthService,
+  ) { }
   projects: Project[] = [];
-  isAuth: boolean;
   behind = 0;
   items = 3;
   hasMore = true;
   isFetching = true;
   skeleton = Array(this.items);
   private projectsListen: Subscription;
-  private authListen: Subscription;
   ngOnInit(): void {
     this.projectsService.populateProjects(this.behind, this.items);
     this.projectsListen = this.projectsService.getStream().subscribe((res) => {
@@ -36,8 +35,6 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
       this.behind += this.items;
       this.hasMore = res.hasMore;
     });
-    this.isAuth = this.authService.getStatus();
-    this.authListen = this.authService.getListener().subscribe(status => this.isAuth = status);
   }
   onLoadMore() {
     this.isFetching = true;
@@ -60,6 +57,5 @@ export class ProjectCardsListComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.projectsListen.unsubscribe();
-    this.authListen.unsubscribe();
   }
 }

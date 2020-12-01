@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: new FormControl(null, { validators: [Validators.required] })
     });
     this.isLoading = false;
-    this.listener = this.authService.getListener().subscribe(() => this.isLoading = false);
+    this.listener = this.authService.status$.subscribe(() => this.isLoading = false);
   }
 
   onSubmit(): void {

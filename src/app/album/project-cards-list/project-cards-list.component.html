@@ -1,7 +1,7 @@
 <main class="container">
   <mat-card class="beam mat-elevation-z1">
     <span>Projetos</span>
-    <a *ngIf="isAuth" mat-mini-fab routerLink="new">
+    <a *ngIf="auth.status$ | async" mat-mini-fab routerLink="new">
       <mat-icon>add</mat-icon>
     </a>
   </mat-card>
@@ -11,7 +11,7 @@
         <mat-chip-list>
           <mat-chip *ngFor="let item of project.technologies">{{ item }}</mat-chip>
         </mat-chip-list>
-        <div *ngIf="isAuth">
+        <div *ngIf="auth.status$ | async">
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Toggle menu">
             <mat-icon>more_vert</mat-icon>
           </button>
